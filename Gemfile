@@ -30,18 +30,23 @@ end
 group :development, :test do
   gem 'sqlite3'
   gem 'ruby-debug'
-  gem 'cucumber-rails'
+  # gem 'cucumber-rails'  # Received a warning that 'Cucumber-rails required outside of env.rb.  The rest of loading is being defered until env.rb is called.
+    #To avoid this warning, move 'gem cucumber-rails' under only group :test in your Gemfile'  So I moved the gem to the test environment.
   gem 'cucumber-rails-training-wheels'
   gem 'database_cleaner'
   gem 'capybara'
   gem 'launchy'
   gem 'rspec-rails'
-  gem 'simplecov'
+  # gem 'simplecov'  # simplecov requires ruby 1.9.2 to run and I'm running 1.8.7.  I keep getting warnings about this, so I'm deactivating this gem.
   gem 'ZenTest'
 end
 group :production do
   gem 'pg'
 end
+group :test do
+  gem 'cucumber-rails'
+end
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
