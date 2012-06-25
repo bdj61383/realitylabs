@@ -1,0 +1,11 @@
+%h1 Create New User
+
+= form_tag users_path do
+
+  = label :user, :username, 'Username'
+  = text_field :user, 'username'
+
+  = label :user, :password, 'Password'
+  = text_field :user, 'password'
+
+  = submit_tag 'Create New User'

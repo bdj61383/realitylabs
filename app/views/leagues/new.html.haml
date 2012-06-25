@@ -1,0 +1,11 @@
+%h1 Create New League
+
+= form_tag leagues_path do
+
+  = label :league, :name, 'Name'
+  = text_field :league, 'name'
+
+  = label :league, :confirmation_code, 'Confirmation Code'
+  = text_field :league, 'confirmation_code'
+
+  = submit_tag 'Create New League'

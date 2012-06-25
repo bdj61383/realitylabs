@@ -1,3 +1,16 @@
 %h1 Hello World!!!
 %p 
-	This is just some rando text I'm throwing up to illustrate that everything's working as it should.  Holla!  This page should appear in /users as the index page.
+  This is just some rando text I'm throwing up to illustrate that everything's working as it should.  Holla!  This page should appear in /users as the index page.
+
+%table#users
+  %thead
+    %tr
+      %th User ID
+      %th Username
+      %th Password
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.id
+        %td= user.username 
+        %td= user.password
