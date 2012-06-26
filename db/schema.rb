@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120623224513) do
+ActiveRecord::Schema.define(:version => 20120625223918) do
 
   create_table "leagues", :force => true do |t|
     t.string   "name"
@@ -25,8 +25,9 @@ ActiveRecord::Schema.define(:version => 20120623224513) do
     t.string   "email"
     t.integer  "league_id"
     t.text     "team"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "lc",         :default => false
   end
 
 end

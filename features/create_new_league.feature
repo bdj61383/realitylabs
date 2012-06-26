@@ -2,7 +2,7 @@ Feature: User can start a new league
 
   As a user of the website
   So that I can start a league and invite my friends to play with me
-  I want to create a new league
+  I want to create a new league and become the League Commissioner 
 
 Background: Start from the New League link on the home page
 
