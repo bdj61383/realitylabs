@@ -15,8 +15,9 @@ class LeaguesController < ApplicationController
     @league = League.new(params[:league])
     @user = @league.users.build(params[:user])
     @league_id = @league.id
-    @user.update_attribute('league_id', @league_id)
-    @user.update_attribute('lc', 1)
+    # @user.update_attribute('league_id', @league_id)
+    # @user.update_attribute('lc', 1)
+    @user.update_attributes(:league_id => @league_id, :lc => 1)
 
     #this is for creating the :contestant_pool default hash where 'name'=>'survive'
     @hash = {}
@@ -24,7 +25,11 @@ class LeaguesController < ApplicationController
     @contestants.each do |x|
       @hash.merge!(x.name => x.survive)
     end
-    @league.update_attribute('contestant_pool', @hash)
+    
+
+    #this is for creating the :scoring_system default hash where 'survive'=>'1', etc.
+    @score = {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1}
+    @league.update_attributes(:contestant_pool => @hash, :scoring_system => @score)
 
     if @league.save
       redirect_to :action => 'index'

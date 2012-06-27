@@ -1,3 +1,9 @@
 class AddUserColumnLc < ActiveRecord::Migration
-  add_column :users, :lc, :boolean, :default => 0
+	def up
+  		add_column :users, :lc, :boolean, :default => 0
+  	end
+
+  	def down
+  		remove_column :users, :lc
+  	end
 end

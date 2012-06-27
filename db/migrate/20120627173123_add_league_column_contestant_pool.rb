@@ -1,3 +1,9 @@
 class AddLeagueColumnContestantPool < ActiveRecord::Migration
-  add_column :leagues, :contestant_pool, :text
+	def up
+  		add_column :leagues, :contestant_pool, :text
+  	end
+
+  	def down
+  		remove_column :league, :contestant_pool
+  	end
 end
