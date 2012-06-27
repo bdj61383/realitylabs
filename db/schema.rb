@@ -10,7 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120625223918) do
+ActiveRecord::Schema.define(:version => 20120626202851) do
+
+  create_table "contestants", :force => true do |t|
+    t.string   "name"
+    t.integer  "round"
+    t.boolean  "survive"
+    t.boolean  "immunity"
+    t.boolean  "merger"
+    t.boolean  "final_three"
+    t.boolean  "winner"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "leagues", :force => true do |t|
     t.string   "name"
