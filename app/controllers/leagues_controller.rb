@@ -8,6 +8,7 @@ class LeaguesController < ApplicationController
     # default: render 'new' template
     @league = League.new
     @user = User.new
+    @contestants = Contestant.all
   end
 
   def create
@@ -16,6 +17,15 @@ class LeaguesController < ApplicationController
     @league_id = @league.id
     @user.update_attribute('league_id', @league_id)
     @user.update_attribute('lc', 1)
+
+    #this is for creating the :contestant_pool default hash where 'name'=>'survive'
+    @hash = {}
+    @contestants = Contestant.all
+    @contestants.each do |x|
+      @hash.merge!(x.name => x.survive)
+    end
+    @league.update_attribute('contestant_pool', @hash)
+
     if @league.save
       redirect_to :action => 'index'
     else

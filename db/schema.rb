@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120626202851) do
+ActiveRecord::Schema.define(:version => 20120627173123) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20120626202851) do
     t.string   "confirmation_code"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.text     "contestant_pool"
   end
 
   create_table "users", :force => true do |t|
