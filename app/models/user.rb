@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 	serialize :team, Array
 
 	def score
-		# First, convert the user's 'team' array to an array with hashes as its elements, representing the results of this week.
+		# Here we iterate through each member of the user's team, placing the corresponding values from the league's 'scoring_system' in an empty array whenever our conditions are met.
 		@sys = self.league.scoring_system
 		@array = []
 		self.team.each do |member|
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 			if @con.final_three; @array << @sys[:final_three]; end
 			if @con.winner; @array << @sys[:winner]; end
 		end
-		@total = @array.inject(0) {|result, element| result + element}
-		return @total
+		# This adds all of the elements in the array
+		return @array.reduce(:+)
 	end
 end
