@@ -5,14 +5,22 @@ Realitylabs::Application.routes.draw do
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action
-
+  match 'contestants/add_round' => 'contestants#add_round'
+  match 'contestants/update_round' => 'contestants#update_round'
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :leagues, :users
+  resources :leagues, :users, :contestants
+  resources :contestants do
+    collection do
+      get 'add_round'
+      put 'update_round'
+    end
+  end
+
 
   # Sample resource route with options:
   #   resources :products do

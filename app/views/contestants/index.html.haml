@@ -1,0 +1,25 @@
+%h1 Hello World!!!
+%p 
+  This is just some rando text I'm throwing up to illustrate that everything's working as it should.  Holla!  This page should appear in /contestants as the index page.
+
+
+%h1 Round #{@round}
+%table#leagues
+  %thead
+    %tr
+      %th Contestant Name
+      %th Survive
+      %th Immunity
+      %th Merger
+      %th Final Three
+      %th Winner
+  %tbody
+    - @contestants.each do |contestant|
+      %tr
+        %td= contestant.name 
+        %td= contestant.survive 
+        %td= contestant.immunity
+        %td= contestant.merger
+        %td= contestant.final_three
+
+

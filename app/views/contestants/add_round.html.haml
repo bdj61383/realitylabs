@@ -1,0 +1,44 @@
+%h1 Add Results from Elimination Round
+%p These should be the results from Round 2. 
+/ - @contestants.each do |contestant|
+/ 	%h2= contestant.name
+
+= form_for :contestant, :url => '/contestants/update_round', :method => :put do |x|
+	%table
+		%thead
+			%tr
+				%th Contestant
+				%th Survive
+				%th Immunity
+				%th Merger
+				%th Final Three
+				%th Winner
+		%tbody
+			- @contestants.each do |contestant|
+				%tr
+					%td= contestant.name 
+					%td
+						/ = x.label :survive
+						= x.check_box "#{contestant.id}_survive", :checked => contestant.survive 
+					%td
+						/ = x.label :immunity
+						= x.check_box "#{contestant.id}_immunity"
+					%td
+						/ = x.label :merger
+						= x.check_box "#{contestant.id}_merger" 
+					%td
+						/ = x.label :final_three
+						= x.check_box "#{contestant.id}_final_three"
+					%td
+						/ = x.label :winner
+						= x.check_box "#{contestant.id}_winner" 
+	= submit_tag 'Add New Round Information'
+
+
+/ = form_tag update_round_contestants_path, :method => :put do
+
+/ %ul
+/   - @contestants.each do |contestant|
+/     %li= contestant.name
+
+/   = submit_tag 'Add New Round Information'

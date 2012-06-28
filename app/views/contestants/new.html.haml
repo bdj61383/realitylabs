@@ -1,0 +1,8 @@
+%h1 Add Contestant
+
+= form_tag contestants_path do
+
+  = label :contestant, :name, 'First and Last'
+  = text_field :contestant, 'name'
+
+  = submit_tag 'Add New Contestant'

@@ -1,0 +1,22 @@
+%h1 Add Results from Elimination Round
+%p These should be the results from Round #{Contestant.find_by_id(1).round}.
+
+= form_tag update_round_contestants_path, :method => :put do
+
+%ul
+  - @contestants.each do |contestant|
+        %li contestant.name
+
+  / = label :movie, :title, 'Title'
+  / = text_field :movie, 'title'
+
+  / = label :movie, :rating, 'Rating'
+  / = select :movie, :rating, ['G','PG','PG-13','R','NC-17']
+
+  / = label :movie, :director, 'Director'
+  / = text_field :movie, 'director'
+
+  / = label :movie, :release_date, 'Released On'
+  / = date_select :movie, :release_date
+
+  = submit_tag 'Add New Round Information'
