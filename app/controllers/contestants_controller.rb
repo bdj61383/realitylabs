@@ -2,16 +2,31 @@ class ContestantsController < ApplicationController
 
 	def index 
 		@contestants = Contestant.all
-		@round = Contestant.find_by_id(1).round
+		@round = @contestants[0].round
 	end
 
 	def add_round
 		@contestants = Contestant.all
+		@round = @contestants[0].round
 	end
 
 	def update_round
 		# @contestants = Contestant.all
-		@params = params[:contestant]['2_survive']
+
+		@con = Contestant.all
+		@next_round = @con[0].round + 1
+		@conditions = ['survive', 'immunity', 'merger', 'final_three', 'winner']
+		@array = []
+		@con.each do |x|
+			@conditions.each do |y|
+				x.update_attribute("#{y}", params[:contestant]["#{x.id}_#{y}"])
+				@array << params[:contestant]["#{x.id}_#{y}"]
+			end
+			x.update_attribute("round", @next_round)
+		end
+		# @params = params[:contestant].inspect
+		Contestant.rake_db_copy
+		redirect_to contestants_path
 	end
 
 	def new
@@ -20,7 +35,7 @@ class ContestantsController < ApplicationController
 
 	def create
 	  @contestant = Contestant.new(params[:contestant])
-	  @contestant.update_attributes(:round => 1, :survive => 1, :merger => 0, :immunity => 0, :final_three => 0, :winner => 0)
+	  @contestant.update_attributes(:round => 0, :survive => 1, :merger => 0, :immunity => 0, :final_three => 0, :winner => 0)
 	  @contestant.save
 	  flash[:notice] = "#{@contestant.name} was successfully created."
 	  redirect_to contestants_path

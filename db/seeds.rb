@@ -6,8 +6,14 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
-Contestant.create!(:name => "Billy Madison", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 1)
-Contestant.create!(:name => "Richard Price", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 1)
-Contestant.create!(:name => "Allison Andrews", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 1)
-Contestant.create!(:name => "Burt Reynolds", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 1)
-Contestant.create!(:name => "Samantha Firth", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 1)
+Contestant.create!(:name => "Billy Madison", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Richard Price", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Allison Andrews", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Burt Reynolds", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Samantha Firth", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+
+League.create!(:name => "Extraordinary Gentlemen", :confirmation_code => "code", :contestant_pool => {"Billy Madison" => 1, "Richard Price" => 1, "Allison Andrews" => 1, "Burt Reynolds" => 1, "Samantha Firth" => 1}, :scoring_system => {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1})
+
+User.create!(:username => 'brian', :password => 'pass', :league_id => 1, :team => ['Billy Madison', 'Samantha Firth'], :lc => 1)
+User.create!(:username => 'joey', :password => 'pass', :league_id => 1, :team => ['Burt Reynolds', 'Allison Andrews'], :lc => 0)
+User.create!(:username => 'peter', :password => 'pass', :league_id => 1, :team => ['Richard Price'], :lc => 0)
