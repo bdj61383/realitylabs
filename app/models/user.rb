@@ -7,16 +7,25 @@ class User < ActiveRecord::Base
 		# Here we iterate through each member of the user's team, placing the corresponding values from the league's 'scoring_system' in an empty array whenever our conditions are met.
 		@sys = self.league.scoring_system
 		@array = []
-		self.team.each do |member|
-			@con = Contestant.find_by_name(member)
-			if @con.survive; @array << @sys[:survive]; end
-			if @con.immunity; @array << @sys[:immunity]; end
-			if @con.merger; @array << @sys[:merger]; end
-			if @con.final_three; @array << @sys[:final_three]; end
-			if @con.winner; @array << @sys[:winner]; end
+		@round = Contestant.first.round
+		unless @round == 0
+			self.team.each do |member|
+				@con = Contestant.find_by_name(member)
+				if @con.survive; @array << @sys[:survive]; end
+				if @con.immunity; @array << @sys[:immunity]; end
+				if @con.merger; @array << @sys[:merger]; end
+				if @con.final_three; @array << @sys[:final_three]; end
+				if @con.winner; @array << @sys[:winner]; end
+			end
+			unless @array == []
+			# This adds all of the elements in the array
+				return @array.reduce(:+)
+			else 
+				return 0
+			end
+		else # This just handles the initial case, before the game has started.  The :survive attribute of Contestants has been set to '1', but I don't want that to count towards the score.  Everyone's initial score should be zero.
+			return 0
 		end
-		# This adds all of the elements in the array
-		return @array.reduce(:+)
 	end
 
 	def self.add_column

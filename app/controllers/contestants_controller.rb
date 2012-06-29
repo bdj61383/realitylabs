@@ -41,6 +41,10 @@ class ContestantsController < ApplicationController
 		redirect_to contestants_path
 	end
 
+	def reverse_round
+		
+	end
+
 	def new
     # default: render 'new' template
 	end

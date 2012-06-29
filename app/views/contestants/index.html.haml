@@ -16,10 +16,11 @@
   %tbody
     - @contestants.each do |contestant|
       %tr
-        %td= contestant.name 
-        %td= contestant.survive 
-        %td= contestant.immunity
-        %td= contestant.merger
-        %td= contestant.final_three
+        %td{:id => contestant.name.downcase.gsub(/ /, '')}= contestant.name 
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "survive"]}= contestant.survive 
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "immunity"]}= contestant.immunity
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "merger"]}= contestant.merger
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "final_three"]}= contestant.final_three
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "winner"]}= contestant.winner
 
-
+%h2= link_to 'Update Round', add_round_contestants_path
