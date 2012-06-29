@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   
   def index
     @users = User.all
+    @round = Contestant.find_by_id(1).round
   end
 
   def new
@@ -33,4 +34,5 @@ class UsersController < ApplicationController
       redirect_to users_path
     end
   end
+
 end

@@ -12,7 +12,7 @@ class ContestantsController < ApplicationController
 
 	def update_round
 		# @contestants = Contestant.all
-
+		
 		@con = Contestant.all
 		@next_round = @con[0].round + 1
 		@conditions = ['survive', 'immunity', 'merger', 'final_three', 'winner']
@@ -22,8 +22,20 @@ class ContestantsController < ApplicationController
 				x.update_attribute("#{y}", params[:contestant]["#{x.id}_#{y}"])
 				@array << params[:contestant]["#{x.id}_#{y}"]
 			end
+			
+			
 			x.update_attribute("round", @next_round)
 		end
+
+		User.add_column # This is what builds and runs the new migration file that will add a new column to the User model ActiveRecord.  It runs the migration, with no default value. 
+		@users = User.all
+		@users.each do |user|
+			@score = user.score
+			user.update_attribute("score_round#{@next_round}", @score)
+		end
+
+		
+
 		# @params = params[:contestant].inspect
 		Contestant.rake_db_copy
 		redirect_to contestants_path
