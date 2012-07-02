@@ -28,10 +28,10 @@ class ContestantsController < ApplicationController
 		end
 
 		User.add_column # This is what builds and runs the new migration file that will add a new column to the User model ActiveRecord.  It runs the migration, with no default value. 
+		# User.reload
 		@users = User.all
 		@users.each do |user|
-			@score = user.score
-			user.update_attribute("score_round#{@next_round}", @score)
+			user.update_attribute("score_round#{Contestant.first.round}", "#{user.score}")
 		end
 
 		
@@ -42,7 +42,14 @@ class ContestantsController < ApplicationController
 	end
 
 	def reverse_round
-		
+		# This loads the info from the last round.
+		@last_round = Contestant.first.round - 1
+		@dir = Dir.entries("db").select {|x| x =~ /^round#{@last_round}/}.to_s
+		system("rake db:data:load_dir dir=#{@dir}")
+
+		# This renames the dirname of the incorrect copy.  I'm leaving the filename of the migration alone, because it will need to be created anyway and doesn't seem to hurt anything being left in.
+		File.rename "db/#{@dir}", "db/reverse_#{@dir}"
+		redirect_to contestants_path
 	end
 
 	def new

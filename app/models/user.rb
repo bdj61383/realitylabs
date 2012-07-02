@@ -36,5 +36,6 @@ class User < ActiveRecord::Base
 		file.write("class AddUserColumnRound#{@round} < ActiveRecord::Migration\n  def up\n    add_column :users, :score_round#{@round}, :integer\n  end\n  def down\n    remove_column :users, :score_round#{@round}\n  end\nend")
 		file.close
 		system("rake db:migrate")
+		self.reset_column_information
 	end
 end

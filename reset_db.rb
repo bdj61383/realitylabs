@@ -1,5 +1,5 @@
 # This deletes any copies of the database that have been made by Contestant#rake_db_copy
-@dir = Dir.entries("db").select{|x| x =~ /^round#{@last_round}/}
+@dir = Dir.entries("db").select{|x| x =~ /^round/}
 @dir.each do |directory|
 	system("rm -rf db/#{directory.to_s}")
 end

@@ -24,3 +24,4 @@
         %td{:id => [contestant.name.downcase.gsub(/ /, ''), "winner"]}= contestant.winner
 
 %h2= link_to 'Update Round', add_round_contestants_path
+= link_to 'Oops - reset last round', reverse_round_contestants_path

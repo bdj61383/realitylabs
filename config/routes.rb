@@ -7,6 +7,7 @@ Realitylabs::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
   match 'contestants/add_round' => 'contestants#add_round'
   match 'contestants/update_round' => 'contestants#update_round'
+  match 'contestants/reverse_round' => 'contestants#reverse_round'
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
@@ -18,6 +19,7 @@ Realitylabs::Application.routes.draw do
     collection do
       get 'add_round'
       put 'update_round'
+      get 'reverse_round'
     end
   end
 
