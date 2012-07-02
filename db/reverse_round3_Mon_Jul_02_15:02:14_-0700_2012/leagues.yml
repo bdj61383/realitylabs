@@ -1,0 +1,50 @@
+
+--- 
+leagues: 
+  columns: 
+  - id
+  - name
+  - confirmation_code
+  - created_at
+  - updated_at
+  - contestant_pool
+  - scoring_system
+  records: 
+  - - 1
+    - Extraordinary Gentlemen
+    - code
+    - 2012-07-02 21:59:21.086481
+    - 2012-07-02 21:59:21.086481
+    - |
+      --- 
+      Samantha Firth: 1
+      Allison Andrews: 1
+      Burt Reynolds: 1
+      Richard Price: 1
+      Billy Madison: 1
+
+    - "--- \n\
+      :winner: 1\n\
+      :survive: 1\n\
+      :immunity: 1\n\
+      :merger: 1\n\
+      :final_three: 1\n"
+  - - 2
+    - wizards
+    - cod
+    - 2012-07-02 22:01:30.014972
+    - 2012-07-02 22:01:30.023363
+    - |
+      --- 
+      Burt Reynolds: true
+      Billy Madison: false
+      Samantha Firth: true
+      Richard Price: false
+      Allison Andrews: false
+
+    - "--- \n\
+      :merger: 1\n\
+      :immunity: 1\n\
+      :final_three: 1\n\
+      :winner: 1\n\
+      :survive: 1\n"

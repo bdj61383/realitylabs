@@ -5,8 +5,16 @@ class Contestant < ActiveRecord::Base
 	def self.rake_db_copy
 	    # load File.join(Rails.root, 'lib', 'tasks', 'tempfile.rake')
 	    # Rake::Task['db:data:dump_dir'].invoke
+
+	    # Looks to see if the database copy already exists.  If so, it deletes it and puts the new copy in.
 	    @round = Contestant.first.round
 	    @time = Time.now.to_s.gsub!(/ /, '_')
+	    @dir = Dir.entries("db").select {|x| x =~ /^round#{@round}/}.to_s
+	    	if @dir != nil
+	    		@dir.each do |directory|
+				system("rm -rf db/#{directory.to_s}")
+				end
+			end
 	    system("rake db:data:dump_dir dir=round#{@round}_#{@time}") #Apparently this isn't the most efficient way to do this, as it loads a new instance of rails or something like that.  It is working for the time being.
 	    # system("rake db:data:dump_dir dir=round#{@round}")
   	end

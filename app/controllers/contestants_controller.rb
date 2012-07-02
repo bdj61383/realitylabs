@@ -11,7 +11,8 @@ class ContestantsController < ApplicationController
 	end
 
 	def update_round
-		# @contestants = Contestant.all
+		# This creates a back-up file to replace the one that was created at the end of the last 'update_round' action.  It's in here so that if leagues and users are created in-between rounds and then we need to 'reverse_round', we don't lose all that data.  
+		Contestant.rake_db_copy
 		
 		@con = Contestant.all
 		@next_round = @con[0].round + 1
@@ -43,11 +44,13 @@ class ContestantsController < ApplicationController
 
 	def reverse_round
 		# This loads the info from the last round.
-		@last_round = Contestant.first.round - 1
+		@round = Contestant.first.round
+		@last_round = @round - 1
 		@dir = Dir.entries("db").select {|x| x =~ /^round#{@last_round}/}.to_s
 		system("rake db:data:load_dir dir=#{@dir}")
 
 		# This renames the dirname of the incorrect copy.  I'm leaving the filename of the migration alone, because it will need to be created anyway and doesn't seem to hurt anything being left in.
+		@dir = Dir.entries("db").select {|x| x =~ /^round#{@round}/}.to_s
 		File.rename "db/#{@dir}", "db/reverse_#{@dir}"
 		redirect_to contestants_path
 	end

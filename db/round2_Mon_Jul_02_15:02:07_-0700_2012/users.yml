@@ -1,0 +1,73 @@
+
+--- 
+users: 
+  columns: 
+  - id
+  - username
+  - password
+  - email
+  - league_id
+  - team
+  - created_at
+  - updated_at
+  - lc
+  - score_round1
+  - score_round2
+  records: 
+  - - 1
+    - brian
+    - pass
+    - 
+    - 1
+    - |
+      --- 
+      - Billy Madison
+      - Samantha Firth
+
+    - 2012-07-02 21:59:21.107447
+    - 2012-07-02 22:00:38.351514
+    - true
+    - 1
+    - 1
+  - - 2
+    - joey
+    - pass
+    - 
+    - 1
+    - |
+      --- 
+      - Burt Reynolds
+      - Allison Andrews
+
+    - 2012-07-02 21:59:21.112784
+    - 2012-07-02 22:00:38.367587
+    - false
+    - 2
+    - 1
+  - - 3
+    - peter
+    - pass
+    - 
+    - 1
+    - |
+      --- 
+      - Richard Price
+
+    - 2012-07-02 21:59:21.116737
+    - 2012-07-02 22:00:38.380489
+    - false
+    - 1
+    - 0
+  - - 4
+    - willow
+    - offgood
+    - 
+    - 2
+    - |+
+      --- []
+      
+    - 2012-07-02 22:01:30.007551
+    - 2012-07-02 22:01:30.018845
+    - true
+    - 
+    - 

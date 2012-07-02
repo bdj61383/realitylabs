@@ -1,0 +1,65 @@
+
+--- 
+contestants: 
+  columns: 
+  - id
+  - name
+  - round
+  - survive
+  - immunity
+  - merger
+  - final_three
+  - winner
+  - created_at
+  - updated_at
+  records: 
+  - - 1
+    - Billy Madison
+    - 2
+    - false
+    - false
+    - false
+    - false
+    - false
+    - 2012-07-02 21:59:21.049745
+    - 2012-07-02 22:00:33.005496
+  - - 2
+    - Richard Price
+    - 2
+    - false
+    - false
+    - false
+    - false
+    - false
+    - 2012-07-02 21:59:21.057285
+    - 2012-07-02 22:00:33.021733
+  - - 3
+    - Allison Andrews
+    - 2
+    - false
+    - false
+    - false
+    - false
+    - false
+    - 2012-07-02 21:59:21.060132
+    - 2012-07-02 22:00:33.036263
+  - - 4
+    - Burt Reynolds
+    - 2
+    - true
+    - false
+    - false
+    - false
+    - false
+    - 2012-07-02 21:59:21.062701
+    - 2012-07-02 22:00:33.046542
+  - - 5
+    - Samantha Firth
+    - 2
+    - true
+    - false
+    - false
+    - false
+    - false
+    - 2012-07-02 21:59:21.066139
+    - 2012-07-02 22:00:33.058041
