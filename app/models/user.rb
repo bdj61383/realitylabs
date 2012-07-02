@@ -28,6 +28,21 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	# This finds the score value for each of the user's rounds, puts them in an array and adds them together to create a total score that is up to date.
+	def total_score
+		@array = []
+		self.attributes.each do |key, value|
+			if key.to_s =~ /^score/
+				@array << value
+			end
+		end
+		unless @array ==[]
+			return @array.reduce(:+)
+		else
+			return 0
+		end
+	end
+
 	def self.add_column
 		@round = Contestant.find_by_id(1).round 
 		system("rails generate migration AddUserColumnRound#{@round}")

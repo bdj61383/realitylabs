@@ -10,4 +10,13 @@ class League < ActiveRecord::Base
 	serialize :contestant_pool, Hash 
 	serialize :scoring_system, Hash
 	
+	# This is the method by which we'll return a hash with each username as a key and their total_score as a value.
+	def scoreboard
+		@scoreboard = {}
+		self.users.each do |user|
+			# @hash = {user.username => user.total_score}
+			@scoreboard.merge!(user.username => user.total_score)
+		end
+		return @scoreboard
+	end
 end
