@@ -8,6 +8,7 @@ Realitylabs::Application.routes.draw do
   match 'contestants/add_round' => 'contestants#add_round'
   match 'contestants/update_round' => 'contestants#update_round'
   match 'contestants/reverse_round' => 'contestants#reverse_round'
+  match '/admin' => 'contestants#index'
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
   # This route can be invoked with purchase_url(:id => product.id)
