@@ -7,7 +7,16 @@ class UsersController < ApplicationController
     end
   end
     
-
+  def show
+    @user = current_user
+    @id = params[:id]
+    if @user == nil 
+      redirect_to log_in_path
+    elsif @user.id.to_i != params[:id].to_i
+      # @error = 'You are signed in to the wrong account'
+      redirect_to user_path(@user)
+    end
+  end
   
   def index
     @users = User.all

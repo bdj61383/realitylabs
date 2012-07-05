@@ -4,6 +4,17 @@ class LeaguesController < ApplicationController
     @leagues = League.all
   end
 
+  def show
+    @user = current_user
+    if @user == nil
+      redirect_to log_in_path
+    elsif @user.league_id.to_i != params[:id].to_i
+      redirect_to league_path(@user.league)
+    else
+      @league = @user.league
+    end
+  end
+
   def new
     # default: render 'new' template
     @league = League.new

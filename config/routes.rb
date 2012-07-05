@@ -1,4 +1,9 @@
 Realitylabs::Application.routes.draw do
+  get "log_out" => "sessions#destroy", :as => "log_out"
+  get "log_in" => "sessions#new", :as => "log_in"
+  get "sign_up" => "users#new", :as => "sign_up"
+  get "start_league" => 'leagues#new', :as => 'start_league'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -15,7 +20,7 @@ Realitylabs::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :leagues, :users, :contestants
+  resources :leagues, :users, :contestants, :sessions
   resources :contestants do
     collection do
       get 'add_round'

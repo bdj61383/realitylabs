@@ -1,17 +1,30 @@
 %h1 Create New User
 
-= form_tag users_path do
 
+
+/ Trying to display any possible error messages.  The code below is NOT working at present.
+/ = if @user.errors.any? 
+/   %div.error_messages
+/     %h2 Form is invalid
+/     %ul
+/       - for message in @user.errors.full_messages
+/       %li message
+
+= form_tag users_path do
+  %ul
   = label :user, :username, 'Username'
-  = text_field :user, 'username'
+  %li= text_field :user, 'username'
 
   = label :user, :password, 'Password'
-  = text_field :user, 'password'
+  %li= text_field :user, 'password'
+
+  = label :user, :password_confirmation, 'Confirm Password'
+  %li= text_field :user, 'password_confirmation'
 
   = label :league, :name, 'League Name'
-  = text_field :league, 'name'
+  %li= text_field :league, 'name'
 
   = label :league, :confirmation_code, 'League Confirmation Code'
-  = text_field :league, 'confirmation_code'
+  %li= text_field :league, 'confirmation_code'
 
-  = submit_tag 'Create New User'
+  %li= submit_tag 'Create New User'

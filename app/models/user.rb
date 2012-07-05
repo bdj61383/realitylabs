@@ -1,7 +1,11 @@
 class User < ActiveRecord::Base
-	attr_accessible :username, :password, :league_id, :lc, :team
+	attr_accessible :username, :password, :password_confirmation, :league_id, :lc, :team
 	belongs_to :league
 	serialize :team, Array
+
+	has_secure_password
+  	validates_presence_of :password, :on => :create
+
 
 	def score
 		# Here we iterate through each member of the user's team, placing the corresponding values from the league's 'scoring_system' in an empty array whenever our conditions are met.

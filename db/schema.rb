@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120627184358) do
+ActiveRecord::Schema.define(:version => 20120626202851) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name"
@@ -27,21 +27,21 @@ ActiveRecord::Schema.define(:version => 20120627184358) do
   create_table "leagues", :force => true do |t|
     t.string   "name"
     t.string   "confirmation_code"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
     t.text     "contestant_pool"
     t.text     "scoring_system"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "username"
-    t.string   "password"
+    t.string   "password_digest"
     t.string   "email"
     t.integer  "league_id"
     t.text     "team"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.boolean  "lc",         :default => false
+    t.boolean  "lc",              :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
 end
