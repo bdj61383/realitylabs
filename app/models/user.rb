@@ -6,6 +6,13 @@ class User < ActiveRecord::Base
 	has_secure_password
   	validates_presence_of :password, :on => :create
 
+  	def online
+  		if self.last_seen > DateTime.now - 10.minutes
+  	    	return true
+  		else
+  			return false	
+  		end
+  	end
 
 	def score
 		# Here we iterate through each member of the user's team, placing the corresponding values from the league's 'scoring_system' in an empty array whenever our conditions are met.
