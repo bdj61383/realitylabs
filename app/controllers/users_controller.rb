@@ -10,6 +10,9 @@ class UsersController < ApplicationController
   def show
     @user = current_user
     @id = params[:id]
+    @league = @user.league
+    @users = @league.users
+    @round = Contestant.find_by_id(1).round
     if @user == nil 
       redirect_to log_in_path
     elsif @user.id.to_i != params[:id].to_i
@@ -36,11 +39,16 @@ class UsersController < ApplicationController
     if @league == nil
       raise Exceptions::InvalidLeagueNameOrCode
     else
-      @user = User.create!(params[:user])
+      @user = User.new(params[:user])
       @league_id = @league.id
       @user.update_attribute('league_id', @league_id)
-      flash[:notice] = "#{@user.username} was successfully created."
-      redirect_to users_path
+      if @user.save 
+        session[:user_id] = @user.id
+        flash[:notice] = "#{@user.username} was successfully created."
+        redirect_to user_path(@user)
+      else
+        redirect_to sign_up
+      end
     end
   end
 

@@ -9,8 +9,8 @@ class ApplicationController < ActionController::Base
     helper_method :current_user
   
 	def update_last_seen
-      unless current_user == nil
-		current_user.last_seen = DateTime.now
+    unless current_user == nil
+		  current_user.last_seen = DateTime.now
      	current_user.save
 	  end
 	end

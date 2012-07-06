@@ -51,4 +51,18 @@ class LeaguesController < ApplicationController
     # redirect_to leagues_path
   end
 
+  def draft
+    @league = League.find_by_id(params[:id])
+    @users = @league.users
+    @user = current_user
+    if @user == nil
+      redirect_to log_in_path
+    else
+      unless @user.lc == true && @user.league_id == params[:id].to_i
+      # unless @user.league_id == @id
+        redirect_to user_path(@user)
+      end
+    end
+  end
+
 end
