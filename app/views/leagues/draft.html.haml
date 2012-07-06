@@ -1,0 +1,32 @@
+%h1 Draft Page
+= @params
+= current_user.league_id.class
+= params[:id].class
+%table
+  %thead
+    %tr
+      %th Signed In
+      %th Not Signed In
+
+  %tbody
+  - @users.each do |user|
+    %tr
+      =online(user)
+      =offline(user) 
+
+
+  / %table#users
+  / %thead
+  /   %tr
+  /     %th User ID
+  /     %th Username
+  /     %th Score
+  /     %th Round
+
+  / %tbody
+  /   - @users.each do |user|
+  /     %tr
+  /       %td= user.id
+  /       %td= user.username 
+  /       %td= user.score
+  /       %td= @round
