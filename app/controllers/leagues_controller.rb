@@ -53,8 +53,41 @@ class LeaguesController < ApplicationController
 
   def draft
     @league = League.find_by_id(params[:id])
+
+    # This is to update the :contestant_pool attribute for the draft
+    @hash = {}
+    @contestants = Contestant.all
+    @contestants.each do |x|
+      @hash.merge!(x.name => x.survive)
+    end
+    @league.update_attributes(:contestant_pool => @hash)
+    
     @users = @league.users
     @user = current_user
+    @ncontestants = @league.contestant_pool.length
+    @nusers = @users.count
+    @nrounds = (@ncontestants / @nusers).floor
+    @narray = @nusers * @nrounds
+
+    # This is how we will set up the array that basically is the draft pick-list.
+    @pick_list = []
+    for i in 1..@nrounds
+      if i.odd?
+        @array = @users.shuffle
+        n = @array.length
+        for i in 0...n
+          @pick_list << @array[i]
+        end
+      else
+        index = @pick_list.length - 1
+        for n in 0...@nusers
+          @pick_list << @pick_list[index-n]
+        end
+      end
+    end
+
+
+
     if @user == nil
       redirect_to log_in_path
     else

@@ -11,6 +11,16 @@ Contestant.create!(:name => "Richard Price", :survive => 1, :immunity => 0, :mer
 Contestant.create!(:name => "Allison Andrews", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
 Contestant.create!(:name => "Burt Reynolds", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
 Contestant.create!(:name => "Samantha Firth", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Tony Montana", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "James Vanderbeek", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Silvia Plath", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Alicia Silverstone", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Madame Bouvery", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Max Richards", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Sam Blunt", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Slim Pickens", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Lauren Bacall", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
+Contestant.create!(:name => "Candy Apple", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0)
 
 # League.create!(:name => "Extraordinary Gentlemen", :confirmation_code => "code", :contestant_pool => {"Billy Madison" => 1, "Richard Price" => 1, "Allison Andrews" => 1, "Burt Reynolds" => 1, "Samantha Firth" => 1}, :scoring_system => {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1})
 

@@ -14,19 +14,18 @@
       =online(user)
       =offline(user) 
 
+%div#draft_order
+  %h3= "# of Contestants: #{@ncontestants}"
+  %h3= "# of League Members: #{@nusers}"
+  %h3= "Max # of contestants per team (also # of rounds in draft): #{@nrounds}" 
+  %h3= "Length of draft pick array: #{@narray}"
+  - @pick_list.each do |user|
+    %p= user.username
 
-  / %table#users
-  / %thead
-  /   %tr
-  /     %th User ID
-  /     %th Username
-  /     %th Score
-  /     %th Round
 
-  / %tbody
-  /   - @users.each do |user|
-  /     %tr
-  /       %td= user.id
-  /       %td= user.username 
-  /       %td= user.score
-  /       %td= @round
+/ %table
+/   %thead
+/     %tr
+/       = draft_order_head
+/   %tbody
+/     = draft_order_body

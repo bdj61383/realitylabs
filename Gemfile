@@ -16,6 +16,8 @@ gem 'yaml_db' # For copying/loading database states
 
 gem "bcrypt-ruby", :require => "bcrypt" # For encrypting passwords.
 gem "cancan" # To handle user authentication 
+gem "faye"
+gem "thin"
 
 # Gems used only for assets and not required
 # in production environments by default.
