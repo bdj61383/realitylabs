@@ -69,7 +69,7 @@ class LeaguesController < ApplicationController
     @nrounds = (@ncontestants / @nusers).floor
     @narray = @nusers * @nrounds
 
-    # This is how we will set up the array that basically is the draft pick-list.
+    # This is how we will set up the array that basically is the draft pick-list.  
     @pick_list = []
     for i in 1..@nrounds
       if i.odd?
@@ -86,8 +86,12 @@ class LeaguesController < ApplicationController
       end
     end
 
+    @draft_order = []
+    @pick_list.each do |x|
+      @draft_order << x.id
+    end
 
-
+    # This is just used to redirect people if they try to access this page and they aren't the lc for this league.
     if @user == nil
       redirect_to log_in_path
     else
@@ -96,6 +100,9 @@ class LeaguesController < ApplicationController
         redirect_to user_path(@user)
       end
     end
+  end
+
+  def start_draft
   end
 
 end

@@ -21,11 +21,8 @@
   %h3= "Length of draft pick array: #{@narray}"
   - @pick_list.each do |user|
     %p= user.username
+  %p= @draft_order
 
-
-/ %table
-/   %thead
-/     %tr
-/       = draft_order_head
-/   %tbody
-/     = draft_order_body
+=form_tag draft_league_path do
+  =hidden_field_tag "draft_order", @draft_order
+  =submit_tag "Start Draft!"
