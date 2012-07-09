@@ -4,6 +4,7 @@ Realitylabs::Application.routes.draw do
   get "sign_up" => "users#new", :as => "sign_up"
   get "start_league" => 'leagues#new', :as => 'start_league'
   post "leagues/:id/draft" => 'leagues#start_draft', :as => 'start_draft'
+  get 'leagues/:id/draft_page' => 'leagues#start_draft', :as => 'draft_page'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

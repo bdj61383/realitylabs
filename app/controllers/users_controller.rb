@@ -13,6 +13,7 @@ class UsersController < ApplicationController
     @league = @user.league
     @users = @league.users
     @round = Contestant.find_by_id(1).round
+
     if @user == nil 
       redirect_to log_in_path
     elsif @user.id.to_i != params[:id].to_i

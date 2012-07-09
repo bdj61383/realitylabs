@@ -103,6 +103,17 @@ class LeaguesController < ApplicationController
   end
 
   def start_draft
+    @user = current_user
+    @league = @user.league
+    @users = @league.users
+    @draft_order = params[:draft_order]
+
+    @ncontestants = @league.contestant_pool.length
+    @nusers = @users.count
+    @nrounds = (@ncontestants / @nusers).floor
+    @narray = @nusers * @nrounds
+
+    
   end
 
 end
