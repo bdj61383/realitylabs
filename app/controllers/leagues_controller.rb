@@ -1,7 +1,30 @@
 class LeaguesController < ApplicationController
 	include ActiveModel::MassAssignmentSecurity
+  respond_to :html, :xml, :json
+
   def index
     @leagues = League.all
+  end
+
+  def edit
+  end
+
+  def update
+    # @movie = Movie.find params[:id]
+    # @movie.update_attributes!(params[:movie])
+    # flash[:notice] = "#{@movie.title} was successfully updated."
+    # redirect_to movie_path(@movie)
+  end
+
+  def add_to_team
+    @member = params[:member]
+    @user = current_user
+    @league = @user.league
+    @users = @league.users
+    @team = @user.team << @member
+    @user.update_attributes!(:team => @team)
+    @user.save
+    respond_with(@user)
   end
 
   def show
@@ -107,13 +130,13 @@ class LeaguesController < ApplicationController
     @league = @user.league
     @users = @league.users
     @draft_order = params[:draft_order]
-
+    @team = @user.team
     @ncontestants = @league.contestant_pool.length
     @nusers = @users.count
     @nrounds = (@ncontestants / @nusers).floor
     @narray = @nusers * @nrounds
 
-    
+
   end
 
 end

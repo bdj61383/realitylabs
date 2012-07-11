@@ -5,6 +5,7 @@ Realitylabs::Application.routes.draw do
   get "start_league" => 'leagues#new', :as => 'start_league'
   post "leagues/:id/draft" => 'leagues#start_draft', :as => 'start_draft'
   get 'leagues/:id/draft_page' => 'leagues#start_draft', :as => 'draft_page'
+  post "leagues/:id/add_to_team" => 'leagues#add_to_team', :as => 'add_to_team'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -16,6 +17,7 @@ Realitylabs::Application.routes.draw do
   match 'contestants/update_round' => 'contestants#update_round'
   match 'contestants/reverse_round' => 'contestants#reverse_round'
   match '/admin' => 'contestants#index'
+  match 'leagues/:id/add_to_team' => 'leagues#add_to_team'
 
   # Sample of named route:
   #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase

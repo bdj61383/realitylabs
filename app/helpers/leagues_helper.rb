@@ -71,7 +71,9 @@ module LeaguesHelper
 							end 
 							n = @nrounds
 							for x in 1..n
-								haml_tag :td, :id => "#{@users[i].username}_pick#{x}"
+								haml_tag :td, :id => "#{@users[i].username}_pick#{x}" do
+									haml_concat "#{@users[i].team[x-1]}"
+								end
 							end
 						end
 					end
@@ -79,6 +81,22 @@ module LeaguesHelper
 			end
 		end
 	end
+
+	# def contestant_pool
+	# 	capture_haml do
+	# 		haml_tag :ul do 
+	# 			@league.contestant_pool.each do |x|
+	# 				if x[1] == true
+	# 					haml_tag :li, x[0]
+	# 				else
+	# 					haml_tag :li do
+	# 						haml_tag :del, x[0]
+	# 					end
+	# 				end
+	# 			end
+	# 		end
+	# 	end
+	# end
 
 	def contestant_pool
 		capture_haml do
