@@ -85,11 +85,27 @@
 /     });
 /   });
 
+/ :javascript
+/   $(document).ready(function(){
+/     $("#add").on('click', function(){
+/       $.ajax({type: "POST", url: "add_to_team", data: 'member=Billy Madison', dataType: 'json', success: 
+/           function(data){
+/           $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1])}
+/       });
+/     });
+/   });
+
 :javascript
   $(document).ready(function(){
-    $("#add").on('click', function(){
-      $.ajax({type: "POST", url: "add_to_team", data: 'member=Billy Madison', dataType: 'json', success: 
-          function(data){
+    $("button").on('click', function(){
+      id = $(this).attr("id")
+      $.ajax({type: "POST", url: "add_to_team", data: "member="+id, dataType: 'json',
+        beforeSend:
+        function(){
+        return confirm("You sure you want to add this guy?")
+        },
+        success: 
+        function(data){
           $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1])}
       });
     });
