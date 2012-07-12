@@ -24,17 +24,6 @@ module LeaguesHelper
 	end
 
 	def draft_order_head
-		# capture_haml do
-		# 	haml_tag :table
-		# 	haml_tag :thead
-		# 	haml_tag :tr
-		# end
-		# n = @nrounds
-		# for i in 1..n  
-		# 	capture_haml do
-		# 		haml_tag :th, "Round #{i}"
-		# 	end
-		# end
 		capture_haml do
 			n = @nrounds
 			for i in 1..n
@@ -82,35 +71,21 @@ module LeaguesHelper
 		end
 	end
 
-	# def contestant_pool
-	# 	capture_haml do
-	# 		haml_tag :ul do 
-	# 			@league.contestant_pool.each do |x|
-	# 				if x[1] == true
-	# 					haml_tag :li, x[0]
-	# 				else
-	# 					haml_tag :li do
-	# 						haml_tag :del, x[0]
-	# 					end
-	# 				end
-	# 			end
-	# 		end
-	# 	end
-	# end
-
 	def contestant_pool
 		capture_haml do
 			haml_tag :ul do 
 				@league.contestant_pool.each do |x|
 					if x[1] == true
 						haml_tag :li do
-							haml_tag :button, :id => "#{x[0]}" do
+							haml_tag :button, :id => "#{x[0]}", :class => "available" do
 								haml_concat "#{x[0]}"
 							end
 						end
 					else
 						haml_tag :li do
-							haml_tag :del, x[0]
+							haml_tag :button, :id => "#{x[0]}", :class => "unavailable" do
+								haml_concat "#{x[0]}"
+							end
 						end
 					end
 				end

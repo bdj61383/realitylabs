@@ -1,95 +1,19 @@
-:javascript
-  function ajaxFunction(){
-    var ajaxRequest;
-    try{
-      ajaxRequest = new XMLHttpRequest();
-    } catch (e){
-        // Internet Explorer Browsers
-      try{
-        ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
-      } catch (e) {
-      try{
-        ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
-      } catch (e){
-      // Something went wrong
-      alert("Your browser broke!");
-      return false;
-      }
-    }
-    }
-    ajaxRequest.onreadystatechange = function(){
-    if(ajaxRequest.readyState == 4){
-      window.location.reload();
-    }
-  }
-  }
-
-/ :javascript 
-/   ajaxRequest.onreadystatechange = function(){
-/     if(ajaxRequest.readyState == 4){
-/       window.location.reload();
-/     }
-/   }
-
 %h1 Start Draft Page
 = draft_board
 
 =contestant_pool
 
-/ =form_for @league do |x|
-/   =x.label :contestant_pool
-/   =x.text_area :contestant_pool
-
-/   =x.submit
-
-/ =button_to "Add Allison Andrews", :action => "update", :remote => true, :form => { "data-type" => "json" }
-
-/ =link_to_remote "Add Allison Andrews", :url => edit_league_path(@league), :update => "contestant_pool"
-
-/ = link_to "Add Allison Andrews",
-/ 	:remote => "true",
-/     :url => { :action => "add_to_team", :id => @league.id, :member => "Allison Andrews" },
-/     :update => { :success => "team", :failure => "error" }
-
-/ = link_to "Add Allison Andrews",
-/ 	:remote => "true",
-/     :url => {:action => "add_to_team", :member => "Allison Andrews"},
-/     :update => { :success => "team", :failure => "error" }
-
-/ :javascript
-
-/     $("#select_box_id").change(function() {
-/       $.post('#{target_url}?param_one='+$(this).val());
-/     });
-
-/ :javascript
-
-/     $("#allison_andrews").change(function() {
-/       $.post('#{add_to_team_path}?member=Allison Andrews');
-/     });
-%button#add Add Allison Andrews
-
-/ The example immediately below is working javascript
 / :javascript
 /   $(document).ready(function(){
-/     $("#add").on('click', function(){
-/       $(this).css("color", "red");
-/     });
-/   });
-
-/ This works, but only because I am reloading the page via a 'success' callback after the AJAX request, which pretty much defeats the purpose of using AJAX...
-/ :javascript
-/   $(document).ready(function(){
-/     $("#add").on('click', function(){
-/       $.ajax({type: "POST", url: "add_to_team", data: 'member=Billy Madison', dataType: 'json', success: window.location.reload()});
-/     });
-/   });
-
-/ :javascript
-/   $(document).ready(function(){
-/     $("#add").on('click', function(){
-/       $.ajax({type: "POST", url: "add_to_team", data: 'member=Billy Madison', dataType: 'json', success: 
-/           function(data){
+/     $("button").on('click', function(){
+/       id = $(this).attr("id")
+/       $.ajax({type: "POST", url: "add_to_team", data: "member="+id, dataType: 'json',
+/         beforeSend:
+/         function(){
+/         return confirm("You sure you want to add this guy?")
+/         },
+/         success: 
+/         function(data){
 /           $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1])}
 /       });
 /     });
@@ -97,16 +21,49 @@
 
 :javascript
   $(document).ready(function(){
-    $("button").on('click', function(){
-      id = $(this).attr("id")
-      $.ajax({type: "POST", url: "add_to_team", data: "member="+id, dataType: 'json',
+    var faye = new Faye.Client('http://localhost:9292/faye');
+    faye.subscribe("/messages/new", function(data) {
+      alert(data);
+    });
+    $("button.available").live('click', function(){
+      $this = $(this)
+      id = $this.attr("id")
+      $.ajax({type: "POST", url: "add_to_team", 
+        data: {member: id, turn: #{@turn}},
+        dataType: 'json',
         beforeSend:
         function(){
         return confirm("You sure you want to add this guy?")
         },
         success: 
         function(data){
-          $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1])}
+          $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1]);
+          $this.addClass('unavailable').removeClass('available');          
+          var current = parseInt($("#turn").text(),10); 
+          var newval = current + 1; 
+          $('#turn').text(newval);
+          var draft_order = #{@draft_order.to_json}
+          $('#up').text(draft_order[newval - 1])
+          }
       });
     });
   });
+
+
+%div#order
+  =@draft_order
+  %p#turn=@turn
+  %p#up brian
+
+/ :javascript 
+/   $(document).ready(function(){
+
+/     var turn = $('#up').text();
+/     if ("#{@user.username}" == turn)
+/       {alert ("working")}
+   
+/   });  
+
+
+/           $('#turn').replaceWith('<p id="turn">#{@turn + 1}</p>');
+/ $('#up').replaceWith('<p id="up">#{@draft_order[newval]}</p>');

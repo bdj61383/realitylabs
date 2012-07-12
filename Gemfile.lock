@@ -114,6 +114,8 @@ GEM
     nokogiri (1.5.5)
     pg (0.14.0)
     polyglot (0.3.3)
+    private_pub (1.0.1)
+      faye
     rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -214,6 +216,7 @@ DEPENDENCIES
   json
   launchy
   pg
+  private_pub
   rails (= 3.2.3)
   rspec-rails
   ruby-debug

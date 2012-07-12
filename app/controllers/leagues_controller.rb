@@ -18,13 +18,21 @@ class LeaguesController < ApplicationController
 
   def add_to_team
     @member = params[:member]
+    @turn = params[:turn].to_i
+    @turn = @turn + 1
     @user = current_user
     @league = @user.league
     @users = @league.users
+
+    # This is what updates the member to the user's team.
     @team = @user.team << @member
     @user.update_attributes!(:team => @team)
     @user.save
-    respond_with(@user)
+
+    # This is what changes the member's status to 'false' in :contestant_pool
+    @league.contestant_pool[@member] = false
+    @league.save
+    respond_with @user
   end
 
   def show
@@ -111,7 +119,7 @@ class LeaguesController < ApplicationController
 
     @draft_order = []
     @pick_list.each do |x|
-      @draft_order << x.id
+      @draft_order << x.username
     end
 
     # This is just used to redirect people if they try to access this page and they aren't the lc for this league.
@@ -129,13 +137,21 @@ class LeaguesController < ApplicationController
     @user = current_user
     @league = @user.league
     @users = @league.users
-    @draft_order = params[:draft_order]
+    @draft_order = params[:draft_order].split
     @team = @user.team
     @ncontestants = @league.contestant_pool.length
     @nusers = @users.count
     @nrounds = (@ncontestants / @nusers).floor
     @narray = @nusers * @nrounds
 
+    @pool = @league.contestant_pool
+    @turn = 0
+    @pool.each_value do |value|
+      if value == false
+        @turn += 1
+      end
+    end
+    
 
   end
 

@@ -18,6 +18,7 @@ gem "bcrypt-ruby", :require => "bcrypt" # For encrypting passwords.
 gem "cancan" # To handle user authentication 
 gem "faye"
 gem "thin"
+gem 'private_pub'
 
 # Gems used only for assets and not required
 # in production environments by default.
