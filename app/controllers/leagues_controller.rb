@@ -100,7 +100,7 @@ class LeaguesController < ApplicationController
     @nrounds = (@ncontestants / @nusers).floor
     @narray = @nusers * @nrounds
 
-    # This is how we will set up the array that basically is the draft pick-list.  
+    # This is how we will set up the array that basically is the draft pick-list and assign it to the league's :draft_pick attribute.  
     @pick_list = []
     for i in 1..@nrounds
       if i.odd?
@@ -121,6 +121,7 @@ class LeaguesController < ApplicationController
     @pick_list.each do |x|
       @draft_order << x.username
     end
+    @league.update_attributes(:draft_order => @draft_order)
 
     # This is just used to redirect people if they try to access this page and they aren't the lc for this league.
     if @user == nil
@@ -137,7 +138,7 @@ class LeaguesController < ApplicationController
     @user = current_user
     @league = @user.league
     @users = @league.users
-    @draft_order = params[:draft_order].split
+    @draft_order = @league.draft_order
     @team = @user.team
     @ncontestants = @league.contestant_pool.length
     @nusers = @users.count
@@ -145,7 +146,7 @@ class LeaguesController < ApplicationController
     @narray = @nusers * @nrounds
 
     @pool = @league.contestant_pool
-    @turn = 0
+    @turn = 1
     @pool.each_value do |value|
       if value == false
         @turn += 1

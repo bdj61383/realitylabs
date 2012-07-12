@@ -1,8 +1,16 @@
+
 %h1 Start Draft Page
 = draft_board
 
 =contestant_pool
 
+:javascript
+  $(document).ready(function(){
+  var faye = new Faye.Client('http://localhost:9292/faye');
+  faye.subscribe("/messages/new", function(data) {
+    alert(data);
+  });
+  });
 / :javascript
 /   $(document).ready(function(){
 /     $("button").on('click', function(){
@@ -19,12 +27,11 @@
 /     });
 /   });
 
+
+
 :javascript
   $(document).ready(function(){
-    var faye = new Faye.Client('http://localhost:9292/faye');
-    faye.subscribe("/messages/new", function(data) {
-      alert(data);
-    });
+    
     $("button.available").live('click', function(){
       $this = $(this)
       id = $this.attr("id")
@@ -53,7 +60,7 @@
 %div#order
   =@draft_order
   %p#turn=@turn
-  %p#up brian
+  %p#up=@draft_order[0]
 
 / :javascript 
 /   $(document).ready(function(){
@@ -67,3 +74,4 @@
 
 /           $('#turn').replaceWith('<p id="turn">#{@turn + 1}</p>');
 / $('#up').replaceWith('<p id="up">#{@draft_order[newval]}</p>');
+    

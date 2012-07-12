@@ -1,5 +1,5 @@
 class League < ActiveRecord::Base
-	attr_accessible :name, :confirmation_code, :username, :password, :league_id, :contestant_pool, :scoring_system
+	attr_accessible :name, :confirmation_code, :username, :password, :league_id, :contestant_pool, :scoring_system, :draft_order
 	has_many :users
 	# @hash = {}
 	# @contestants = Contestant.all
@@ -9,6 +9,7 @@ class League < ActiveRecord::Base
 	
 	serialize :contestant_pool, Hash 
 	serialize :scoring_system, Hash
+	serialize :draft_order, Array
 	
 	# This is the method by which we'll return a hash with each username as a key and their total_score as a value.
 	def scoreboard
