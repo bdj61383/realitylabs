@@ -54,15 +54,13 @@ module LeaguesHelper
 				haml_tag :tbody, :id => "draft_table_body" do
 					n = @nusers
 					for i in 0...n
-						haml_tag :tr, :id => "user#{@users[i].id}" do
+						haml_tag :tr, :id => "#{@users[i].username}_pick" do
 							haml_tag :td do
 								haml_concat "#{@users[i].username}" 
 							end 
 							n = @nrounds
 							for x in 1..n
-								haml_tag :td, :id => "#{@users[i].username}_pick#{x}" do
-									haml_concat "#{@users[i].team[x-1]}"
-								end
+								haml_tag :td
 							end
 						end
 					end
@@ -77,13 +75,13 @@ module LeaguesHelper
 				@league.contestant_pool.each do |x|
 					if x[1] == true
 						haml_tag :li do
-							haml_tag :button, :id => "#{x[0]}", :class => "available" do
+							haml_tag :button, :id => "#{x[0].gsub(/ /, "_")}", :class => "available" do
 								haml_concat "#{x[0]}"
 							end
 						end
 					else
 						haml_tag :li do
-							haml_tag :button, :id => "#{x[0]}", :class => "unavailable" do
+							haml_tag :button, :id => "#{x[0].gsub(/ /, "_")}", :class => "unavailable" do
 								haml_concat "#{x[0]}"
 							end
 						end

@@ -8,9 +8,18 @@
   $(document).ready(function(){
   var faye = new Faye.Client('http://localhost:9292/faye');
   faye.subscribe("/messages/new", function(data) {
-    alert(data);
+      
+      $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
+      $('button#' + data.member).addClass('unavailable').removeClass('available');          
+      var current = parseInt($("#turn").text(),10); 
+      var newval = current + 1; 
+      $('#turn').text(newval);
+      var draft_order = #{@draft_order.to_json}
+      $('#up').text(draft_order[newval - 1]);
+    });
+    
   });
-  });
+ 
 / :javascript
 /   $(document).ready(function(){
 /     $("button").on('click', function(){
@@ -44,14 +53,14 @@
         },
         success: 
         function(data){
-          $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1]);
-          $this.addClass('unavailable').removeClass('available');          
-          var current = parseInt($("#turn").text(),10); 
-          var newval = current + 1; 
-          $('#turn').text(newval);
-          var draft_order = #{@draft_order.to_json}
-          $('#up').text(draft_order[newval - 1])
-          }
+          var member = $this.attr('id')
+          var string = 'message={"channel":"/messages/new", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
+          $.ajax({
+          type: 'POST',
+          url: "http://localhost:9292/faye",
+          data: string
+          });
+        }
       });
     });
   });
@@ -61,6 +70,52 @@
   =@draft_order
   %p#turn=@turn
   %p#up=@draft_order[0]
+
+%button#alert Press Me
+
+/ :javascript
+/   $("#alert").on('click', function() {
+/     document.body.innerHTML += '<form id="dynForm" action="http://localhost:9292/faye" method="post"><input type="hidden" name="channel" value="/messages/new"></form>';
+/     var myForm = $(document.myform);
+/     var json_form = JSON.stringify(myForm.serializeArray());
+/     $.post(
+/       myForm.attr("action"),
+/       json_form)
+/     });
+
+:javascript
+  $("#alert").on('click', function() {
+    var user = #{@user.to_json}
+    var member = $("#alert").text()
+    var string = 'message={"channel":"/messages/new", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
+    $.ajax({
+    type: 'POST',
+    url: "http://localhost:9292/faye",
+    
+    data: string
+    });
+  });
+
+
+  
+
+/ :javascript
+/   $("#alert").on('click', function() {
+/       var frm = $(document.myform);
+/       var dat = JSON.stringify(frm.serializeArray());
+
+/       alert("I am about to POST this:\n\n" + dat);
+
+/       $.post(
+/         frm.attr("action"),
+/         dat,
+/         function(data) {
+/           alert("Response: " + data);
+/         }
+/       );
+/     });
+
+
 
 / :javascript 
 /   $(document).ready(function(){
@@ -74,4 +129,14 @@
 
 /           $('#turn').replaceWith('<p id="turn">#{@turn + 1}</p>');
 / $('#up').replaceWith('<p id="up">#{@draft_order[newval]}</p>');
-    
+
+/ This is the code that works to update everything.    
+/ $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1]);
+/       $(data.member).addClass('unavailable').removeClass('available');          
+/       var current = parseInt($("#turn").text(),10); 
+/       var newval = current + 1; 
+/       $('#turn').text(newval);
+/       var draft_order = #{@draft_order.to_json}
+/       $('#up').text(draft_order[newval - 1]);
+
+/ data: 'message={"channel":"/messages/new", "data":#{@user.to_json}}'

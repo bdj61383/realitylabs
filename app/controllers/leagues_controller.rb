@@ -17,7 +17,7 @@ class LeaguesController < ApplicationController
   end
 
   def add_to_team
-    @member = params[:member]
+    @member = params[:member].gsub("_", " ")
     @turn = params[:turn].to_i
     @turn = @turn + 1
     @user = current_user
