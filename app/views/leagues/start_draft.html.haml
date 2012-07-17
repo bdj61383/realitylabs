@@ -4,8 +4,24 @@
 
 =contestant_pool
 
+%div#order
+  =@draft_order
+  %p#turn=@turn
+  %p#up=@draft_order[0]
+
+%button#alert Press Me
+
 :javascript
   $(document).ready(function(){
+  var up = $('#up').text()
+  if (up === "#{@user.username}") {
+        alert("It's your turn!");
+        $('button').removeClass('temp_block')
+      }
+      else {
+        $('button').addClass('temp_block')
+      }
+
   var faye = new Faye.Client('http://localhost:9292/faye');
   faye.subscribe("/messages/new", function(data) {
       
@@ -16,6 +32,15 @@
       $('#turn').text(newval);
       var draft_order = #{@draft_order.to_json}
       $('#up').text(draft_order[newval - 1]);
+
+      var up = $('#up').text()
+      if (up === "#{@user.username}") {
+        alert("It's your turn!");
+        $('button').removeClass('temp_block')
+      }
+      else {
+        $('button').addClass('temp_block')
+      }
     });
     
   });
@@ -65,13 +90,6 @@
     });
   });
 
-
-%div#order
-  =@draft_order
-  %p#turn=@turn
-  %p#up=@draft_order[0]
-
-%button#alert Press Me
 
 / :javascript
 /   $("#alert").on('click', function() {

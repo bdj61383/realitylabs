@@ -19,3 +19,7 @@
 .unavailable {
 	background-color: red
 }
+
+.temp_block {
+	opacity: .5
+}
