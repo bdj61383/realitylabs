@@ -25,4 +25,13 @@
 
 =form_tag draft_league_path do
   / =hidden_field_tag "draft_order", @draft_order
-  =submit_tag "Start Draft!"
+  =submit_tag "Start Draft!", :id => "start_draft"
+
+/ :javascript
+/   $("#start_draft").on('click', function() {
+/     $.ajax({
+/     type: 'POST',
+/     url: "http://localhost:9292/faye",
+/     data: 'message={"channel":"/draft/start", "data":"data"}'
+/     });
+/   });

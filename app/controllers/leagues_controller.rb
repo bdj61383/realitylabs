@@ -135,25 +135,48 @@ class LeaguesController < ApplicationController
   end
 
   def start_draft
-    @user = current_user
-    @league = @user.league
-    @users = @league.users
-    @draft_order = @league.draft_order
-    @team = @user.team
-    @ncontestants = @league.contestant_pool.length
-    @nusers = @users.count
-    @nrounds = (@ncontestants / @nusers).floor
-    @narray = @nusers * @nrounds
+    # This redirects users who are not logged in
+    unless current_user == nil
+      @user = current_user
+      @league = @user.league
 
-    @pool = @league.contestant_pool
-    @turn = 1
-    @pool.each_value do |value|
-      if value == false
-        @turn += 1
+      # This sets the league's 'draft_active' attribute to 'true' so that the page can be accessed by other users.
+      if @user.lc == true 
+        @league.update_attribute("draft_active", "true")
       end
-    end
-    
 
+      # This redirects users who try to access another league's draft
+      if @user.league_id != params[:id].to_i
+        redirect_to user_path(@user)
+        flash[:notice] = "The draft can only be started by the League Commissioner.  The LC can start the draft by accessing the LC Control Box in the toolbar to the bottom right."
+
+      # This redirects users who try to access the draft page when the draft is unavailable. 
+      elsif @league.draft_active == false
+        redirect_to user_path(@user)
+        flash[:notice] = "#{@user.username}, your draft hasn't started yet!"
+        
+      end
+
+      
+
+      @users = @league.users
+      @draft_order = @league.draft_order
+      @team = @user.team
+      @ncontestants = @league.contestant_pool.length
+      @nusers = @users.count
+      @nrounds = (@ncontestants / @nusers).floor
+      @narray = @nusers * @nrounds
+
+      @pool = @league.contestant_pool
+      @turn = 1
+      @pool.each_value do |value|
+        if value == false
+          @turn += 1
+        end
+      end
+    else
+      redirect_to log_in_path
+    end
   end
 
 end

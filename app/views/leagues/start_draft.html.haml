@@ -9,13 +9,14 @@
   %p#turn=@turn
   %p#up=@draft_order[0]
 
+
 %button#alert Press Me
 
 :javascript
   $(document).ready(function(){
   var up = $('#up').text()
   if (up === "#{@user.username}") {
-        alert("It's your turn!");
+        alert("It's your turn! You have 2 minutes to make your selection.");
         $('button').removeClass('temp_block')
       }
       else {
@@ -23,7 +24,7 @@
       }
 
   var faye = new Faye.Client('http://localhost:9292/faye');
-  faye.subscribe("/messages/new", function(data) {
+  faye.subscribe("/draft/pick", function(data) {
       
       $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
       $('button#' + data.member).addClass('unavailable').removeClass('available');          
@@ -41,71 +42,51 @@
       else {
         $('button').addClass('temp_block')
       }
+
+      if (newval > #{@draft_order.length}) {
+        alert("The draft has ended!")
+        window.location.href = "http://localhost:3000/users/#{@user.id}";
+      }
+
     });
     
   });
- 
-/ :javascript
-/   $(document).ready(function(){
-/     $("button").on('click', function(){
-/       id = $(this).attr("id")
-/       $.ajax({type: "POST", url: "add_to_team", data: "member="+id, dataType: 'json',
-/         beforeSend:
-/         function(){
-/         return confirm("You sure you want to add this guy?")
-/         },
-/         success: 
-/         function(data){
-/           $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1])}
-/       });
-/     });
-/   });
 
 
 
 :javascript
   $(document).ready(function(){
-    
-    $("button.available").live('click', function(){
-      $this = $(this)
-      id = $this.attr("id")
-      $.ajax({type: "POST", url: "add_to_team", 
-        data: {member: id, turn: #{@turn}},
-        dataType: 'json',
-        beforeSend:
-        function(){
-        return confirm("You sure you want to add this guy?")
-        },
-        success: 
-        function(data){
-          var member = $this.attr('id')
-          var string = 'message={"channel":"/messages/new", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
-          $.ajax({
-          type: 'POST',
-          url: "http://localhost:9292/faye",
-          data: string
-          });
-        }
+      $("button.available:not(.temp_block)").live('click', function(){
+        $this = $(this)
+        id = $this.attr("id")
+        $.ajax({type: "POST", url: "add_to_team", 
+          data: {member: id, turn: #{@turn}},
+          dataType: 'json',
+          beforeSend:
+          function(){
+          return confirm("You sure you want to add this guy?")
+          },
+          success: 
+          function(data){
+            var member = $this.attr('id')
+            var string = 'message={"channel":"/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
+            $.ajax({
+            type: 'POST',
+            url: "http://localhost:9292/faye",
+            data: string
+            });
+          }
+        });
       });
-    });
+    
   });
 
-
-/ :javascript
-/   $("#alert").on('click', function() {
-/     document.body.innerHTML += '<form id="dynForm" action="http://localhost:9292/faye" method="post"><input type="hidden" name="channel" value="/messages/new"></form>';
-/     var myForm = $(document.myform);
-/     var json_form = JSON.stringify(myForm.serializeArray());
-/     $.post(
-/       myForm.attr("action"),
-/       json_form)
-/     });
-
+/ This is just a practice trigger I have built in for testing purposes.
 :javascript
   $("#alert").on('click', function() {
     var user = #{@user.to_json}
     var member = $("#alert").text()
-    var string = 'message={"channel":"/messages/new", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
+    var string = 'message={"channel":"/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
     $.ajax({
     type: 'POST',
     url: "http://localhost:9292/faye",
@@ -114,47 +95,70 @@
     });
   });
 
+/ This is how the LC triggers the 'Your draft is starting!' dialog box on the other users' 'show' pages.
+:javascript
+  if (#{@user.lc} === true) {
+    $.ajax({
+      type: 'POST',
+      url: "http://localhost:9292/faye",
+      data: 'message={"channel":"/draft/start", "data":"data"}'
+    });
+  }
 
-  
+/ This is the timer.
+:javascript
+  var mins,secs,TimerRunning,TimerID;
+  TimerRunning=false;
+ 
+  function Init() //call the Init function when u need to start the timer
+  {
+    mins=15;
+    secs=0;
+    StopTimer();
+    StartTimer();
+  }
+ 
+  function StopTimer()
+  {
+    if(TimerRunning)
+       clearTimeout(TimerID);
+    TimerRunning=false;
+  }
+ 
+  function StartTimer()
+  {
+    TimerRunning=true;
+    window.status="Time Remaining "+Pad(mins)+":"+Pad(secs);
+    TimerID=self.setTimeout("StartTimer()",1000);
+ 
+    Check();
+    
+    if(mins==0 && secs==0)
+       StopTimer();
+    
+    if(secs==0)
+    {
+       mins--;
+       secs=60;
+    }
+    secs--;
+ 
+  }
+ 
+  function Check()
+  {
+    if(mins==5 && secs==0)
+       alert("You have only five minutes remaining");
+    else if(mins==0 && secs==0)
+    {
+       alert("Your alloted time is over.");
+    }
+  }
+ 
+  function Pad(number) //pads the mins/secs with a 0 if its less than 10
+  {
+    if(number<10)
+       number=0+""+number;
+    return number;
+  }
 
-/ :javascript
-/   $("#alert").on('click', function() {
-/       var frm = $(document.myform);
-/       var dat = JSON.stringify(frm.serializeArray());
-
-/       alert("I am about to POST this:\n\n" + dat);
-
-/       $.post(
-/         frm.attr("action"),
-/         dat,
-/         function(data) {
-/           alert("Response: " + data);
-/         }
-/       );
-/     });
-
-
-
-/ :javascript 
-/   $(document).ready(function(){
-
-/     var turn = $('#up').text();
-/     if ("#{@user.username}" == turn)
-/       {alert ("working")}
-   
-/   });  
-
-
-/           $('#turn').replaceWith('<p id="turn">#{@turn + 1}</p>');
-/ $('#up').replaceWith('<p id="up">#{@draft_order[newval]}</p>');
-
-/ This is the code that works to update everything.    
-/ $('td#'+ data.username + "_pick" + data.team.length).html(data.team[data.team.length -1]);
-/       $(data.member).addClass('unavailable').removeClass('available');          
-/       var current = parseInt($("#turn").text(),10); 
-/       var newval = current + 1; 
-/       $('#turn').text(newval);
-/       var draft_order = #{@draft_order.to_json}
-/       $('#up').text(draft_order[newval - 1]);
-
-/ data: 'message={"channel":"/messages/new", "data":#{@user.to_json}}'

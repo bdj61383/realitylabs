@@ -24,5 +24,18 @@
     = lc
     =link_to "Draft Page", draft_page_path(@user.league_id)
     / %li= @user.lc == true ? "LC Control Box" : nil
+  
+:javascript
+  $(document).ready(function(){
+    var faye = new Faye.Client('http://localhost:9292/faye');
+    faye.subscribe("/draft/start", function(data){
+      alert("Your draft is starting!");
+      window.location.href = "http://localhost:3000/leagues/#{@league.id}/draft_page";
+    });  
+  });
 
+
+/ if (confirm("Your draft is starting!")) {
+/   window.location.href("http://localhost:3000/leagues/#{@league.id}/draft");
+/ }
 
