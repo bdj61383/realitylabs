@@ -91,6 +91,7 @@ class LeaguesController < ApplicationController
     @contestants.each do |x|
       @hash.merge!(x.name => x.survive)
     end
+    @hash = @hash.delete_if{|key, value| value == false}
     @league.update_attributes(:contestant_pool => @hash)
     
     @users = @league.users
@@ -166,14 +167,17 @@ class LeaguesController < ApplicationController
       @nusers = @users.count
       @nrounds = (@ncontestants / @nusers).floor
       @narray = @nusers * @nrounds
+      @turn = @league.draft_round
 
-      @pool = @league.contestant_pool
-      @turn = 1
-      @pool.each_value do |value|
-        if value == false
-          @turn += 1
+
+      # This gives us an array of users who are logged-in.
+      @online = []
+      @league.users.each do |user|
+        if user.online == true
+          @online << user.username
         end
       end
+
     else
       redirect_to log_in_path
     end

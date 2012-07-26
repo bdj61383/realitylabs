@@ -59,8 +59,10 @@ module LeaguesHelper
 								haml_concat "#{@users[i].username}" 
 							end 
 							n = @nrounds
-							for x in 1..n
-								haml_tag :td
+							for x in 0...n
+								haml_tag :td do 
+									haml_concat "#{@users[i].team[x]}"
+								end
 							end
 						end
 					end
