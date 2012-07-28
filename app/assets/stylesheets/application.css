@@ -23,3 +23,7 @@
 .temp_block {
 	opacity: .5
 }
+
+#start_draft {
+	opacity: .5;
+}

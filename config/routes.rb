@@ -6,6 +6,8 @@ Realitylabs::Application.routes.draw do
   post "leagues/:id/draft" => 'leagues#start_draft', :as => 'start_draft'
   get 'leagues/:id/draft_page' => 'leagues#start_draft', :as => 'draft_page'
   post "leagues/:id/add_to_team" => 'leagues#add_to_team', :as => 'add_to_team'
+  post "leagues/:id/set_draft" => 'leagues#set_draft', :as => 'set_draft'
+  post "leagues/:id/begin_draft" => 'leagues#begin_draft', :as => 'begin_draft'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

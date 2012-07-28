@@ -10,10 +10,6 @@ class LeaguesController < ApplicationController
   end
 
   def update
-    # @movie = Movie.find params[:id]
-    # @movie.update_attributes!(params[:movie])
-    # flash[:notice] = "#{@movie.title} was successfully updated."
-    # redirect_to movie_path(@movie)
   end
 
   def add_to_team
@@ -29,9 +25,10 @@ class LeaguesController < ApplicationController
     @user.update_attributes!(:team => @team)
     @user.save
 
-    # This is what changes the member's status to 'false' in :contestant_pool
+    # This is what changes the member's status to 'false' in :contestant_pool and update the round number.
     @league.contestant_pool[@member] = false
-    @league.save
+    next_round = @league.draft_round + 1
+    @league.update_attribute("draft_round", next_round)
     respond_with @user
   end
 
@@ -135,16 +132,38 @@ class LeaguesController < ApplicationController
     end
   end
 
+  def set_draft
+    
+    League.find_by_id(params[:id]).update_attributes(:draft_active => true, :draft_start => true)
+    redirect_to draft_page_path
+    # sleep(2)
+    # redirect_to log_in_path
+    
+  end
+
+  def begin_draft
+    @league = League.find_by_id(params[:id])
+    @league.draft
+    respond_with @league
+  end
+
+
   def start_draft
+    # This begins the draft
+    # if League.find_by_id(params[:id]).draft_start == true
+    #   sleep(2)
+    #   League.find_by_id(params[:id]).draft
+    # end
+
     # This redirects users who are not logged in
     unless current_user == nil
       @user = current_user
       @league = @user.league
 
       # This sets the league's 'draft_active' attribute to 'true' so that the page can be accessed by other users.
-      if @user.lc == true 
-        @league.update_attribute("draft_active", "true")
-      end
+      # if @user.lc == true 
+      #   @league.update_attribute("draft_active", "true")
+      # end
 
       # This redirects users who try to access another league's draft
       if @user.league_id != params[:id].to_i
@@ -168,14 +187,29 @@ class LeaguesController < ApplicationController
       @nrounds = (@ncontestants / @nusers).floor
       @narray = @nusers * @nrounds
       @turn = @league.draft_round
+      @up = @draft_order[@turn]
 
+      # This is what ends the draft when everyone has picked
+      unless (@turn + 1) >= @draft_order.length
 
-      # This gives us an array of users who are logged-in.
-      @online = []
-      @league.users.each do |user|
-        if user.online == true
-          @online << user.username
+        # This will run the 'draft' method if the current user is the LC, meaning it will only get run once per turn and not by every user per turn.  The redirect is in there to handle the edge case where the first person who is 'up' is not online, in which case the auto_draft method runs too quickly for the LC's browser to catch the Faye signal and refresh.
+        if @user.lc == true
+          @league.auto_draft(@draft_order[@turn])
+          if User.find_by_username(@draft_order[@turn]).online == false
+            redirect_to draft_page_path
+          end
         end
+
+        # This gives us an array of users who are logged-in.
+        @online = []
+        @league.users.each do |user|
+          if user.online == true
+            @online << user.username
+          end
+        end
+
+      else
+        redirect_to user_path(@user)
       end
 
     else
