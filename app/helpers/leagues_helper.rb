@@ -60,9 +60,14 @@ module LeaguesHelper
 							end 
 							n = @nrounds
 							for x in 0...n
-								haml_tag :td do 
-									haml_concat "#{@users[i].team[x]}"
+								if "#{@users[i].team[x]}" == ''
+									haml_tag :td 
+								else 
+									haml_tag :td do
+										haml_concat "#{@users[i].team[x]}"
+									end
 								end
+								# haml_tag :td
 							end
 						end
 					end

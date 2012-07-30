@@ -16,7 +16,7 @@ class LeaguesController < ApplicationController
     @member = params[:member].gsub("_", " ")
     @turn = params[:turn].to_i
     @turn = @turn + 1
-    @user = current_user
+    @user = User.find_by_username(params[:user])
     @league = @user.league
     @users = @league.users
 
@@ -169,12 +169,13 @@ class LeaguesController < ApplicationController
       if @user.league_id != params[:id].to_i
         redirect_to user_path(@user)
         flash[:notice] = "The draft can only be started by the League Commissioner.  The LC can start the draft by accessing the LC Control Box in the toolbar to the bottom right."
+        return
 
       # This redirects users who try to access the draft page when the draft is unavailable. 
       elsif @league.draft_active == false
-        redirect_to user_path(@user)
+        redirect_to user_path(@user) 
         flash[:notice] = "#{@user.username}, your draft hasn't started yet!"
-        
+        return
       end
 
       
@@ -202,10 +203,14 @@ class LeaguesController < ApplicationController
 
         # This gives us an array of users who are logged-in.
         @online = []
+        @offline = []
         @league.users.each do |user|
           if user.online == true
             @online << user.username
+          else
+            @offline << user.username
           end
+
         end
 
       else
