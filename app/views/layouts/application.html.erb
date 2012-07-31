@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
+<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
+       chromium.org/developers/how-tos/chrome-frame-getting-started -->
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 <head>
   <title>Realitylabs</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application", "http://localhost:9292/faye.js" %> 
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class="bg_gradient">
 <div id="user_nav">
   <% if current_user %>
     Logged in as <%= current_user.username %>.
     <%= link_to "Log out", log_out_path %>
-  <% else %>
-    <%= link_to "Sign up", sign_up_path %> or
-    <%= link_to "log in", log_in_path %>
   <% end %>
 </div>
 

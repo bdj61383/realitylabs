@@ -1,4 +1,35 @@
-%h1 This is my homepage.  
-= link_to 'Add new league', new_league_path
-= link_to 'Add new user', new_user_path
-= link_to 'Log in', log_in_path
+%div.bg_elements
+  %header.main_header
+    %div.rl_logo= image_tag('rl_logo.png', :alt => "Reality Labs")
+    %div.surv_logo= image_tag('surv_logo.png', :alt => "Survivor Fantasy League")
+    %div.signin= link_to 'Sign In', log_in_path
+    %div.clear
+  %div.main
+    %div.hero
+      =image_tag('left-scroll.png', :class => 'left_scroll', :id => 'left_scroll')
+      =image_tag('right-scroll.png', :class => 'right_scroll', :id => 'right_scroll')
+      %div#hero.pics
+        =image_tag('hero_1.jpg')
+        =image_tag('hero_2.jpg')
+        =image_tag('hero_3.jpg')
+    %div.play_button Start the Fantasy
+    / %div.bottom_content
+    / %div.sidebar
+%div.start_game
+  %h3
+    = link_to 'Start new league', new_league_path
+    %span Become the League Commissioner and Invite Your Friends
+  %h3
+    = link_to 'Create new user', new_user_path
+    %span Join a League That's Already Been Created Using Your Confirmation Code
+:javascript 
+  $('.play_button').on("click", function(){
+    $('.start_game').css("display", "block")
+  })
+  $('#hero').cycle({ 
+    fx:     'fade', 
+    speed:  'slow', 
+    timeout: 5000, 
+    next:   '#right_scroll', 
+    prev:   '#left_scroll' 
+  });

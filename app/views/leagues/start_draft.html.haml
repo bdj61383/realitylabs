@@ -1,5 +1,4 @@
 %h1 Start Draft Page
-%button#start_draft Start Draft
 %div#flash_notice
 = draft_board
 
@@ -20,25 +19,6 @@
 :javascript
   $(document).ready(function(){
 
-
-  if (#{@turn} === 0) {
-    var string = 'message={"channel":"/#{@league.id}/draft/start", "data":"data"}'
-    $.ajax({
-    type: 'POST',
-    url: "http://localhost:9292/faye",    
-    data: string
-    });
-  }
-
-  if (#{@league.draft_start} === true) {
-    $('#start_draft').css('opacity', 1);
-    $('#start_draft').on('click', function(){
-      $.ajax({type: "POST", url: "begin_draft"});
-    })
-    }
-  
-
-
   var up = $('#up').text()
   if (up === "#{@user.username}") {
         $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection.</span>");
@@ -51,11 +31,11 @@
         var rand = Math.floor(Math.random() * count)
         var choice = array[rand].id
         $.ajax({type: "POST", url: "add_to_team", 
-          data: {member: choice, turn: #{@turn}},
+          data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
           dataType: 'json',
           success: 
           function(data){
-            var string = 'message={"channel":"/#{@league.id}/draft/auto_pick", "data":"data"}'
+            var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
             $.ajax({
               type: 'POST',
               url: "http://localhost:9292/faye",
@@ -105,11 +85,11 @@
         var rand = Math.floor(Math.random() * count)
         var choice = array[rand].id
         $.ajax({type: "POST", url: "add_to_team", 
-          data: {member: choice, turn: #{@turn}},
+          data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
           dataType: 'json',
           success: 
           function(data){
-            var string = 'message={"channel":"/#{@league.id}/draft/auto_pick", "data":"data"}'
+            var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
             $.ajax({
               type: 'POST',
               url: "http://localhost:9292/faye",
@@ -164,12 +144,6 @@
   faye.subscribe("/#{@league.id}/draft/stop", function(data) {
       setTimeout('alert("The draft has ended!"); window.location.href = "http://localhost:3000/users/#{@user.id}";', 500)
     });
-  faye.subscribe("/#{@league.id}/draft/auto", function(data) {
-      $('#flash_notice').text(data.member + " was auto-picked for " + data.username +".")
-    });
-  faye.subscribe("/#{@league.id}/draft/flash", function(data) {
-      $('#flash_notice').text(data.message)
-    });
   });
 
 
@@ -202,21 +176,7 @@
     
   });
 
-/ This is just a practice trigger I have built in for testing purposes.
-:javascript
-  $("#alert").on('click', function() {
-    var user = #{@user.to_json}
-    var member = $("#alert").text()
-    var string = 'message={"channel":"/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
-    $.ajax({
-    type: 'POST',
-    url: "http://localhost:9292/faye",
-    
-    data: string
-    });
-  });
-
-/ This is how the LC triggers the 'Your draft is starting!' dialog box on the other users' 'show' pages.
+/ This is how the LC triggers the 'Your draft is starting!' dialog box on the other users' 'show' pages.  This is redundant, as the Faye message should have been sent when the LC set the draft, but this has not been consistent.
 :javascript
   if (#{@user.lc} === true) {
     $.ajax({

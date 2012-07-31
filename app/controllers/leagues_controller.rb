@@ -215,6 +215,7 @@ class LeaguesController < ApplicationController
 
       else
         redirect_to user_path(@user)
+        flash[:notice] = "Your draft has ended."
       end
 
     else
