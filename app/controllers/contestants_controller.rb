@@ -6,6 +6,11 @@ class ContestantsController < ApplicationController
 		@round = @contestants[0].round
 	end
 
+	def admin 
+		@contestants = Contestant.all
+		@round = @contestants[0].round
+	end
+
 	def add_round
 		@contestants = Contestant.all
 		@round = @contestants[0].round

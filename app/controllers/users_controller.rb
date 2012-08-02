@@ -10,15 +10,19 @@ class UsersController < ApplicationController
   def show
     @user = current_user
     @id = params[:id]
-    @league = @user.league
-    @users = @league.users
-    @round = Contestant.find_by_id(1).round
+    
 
     if @user == nil 
       redirect_to log_in_path
+      flash[:notice] = "Please log in to continue."
     elsif @user.id.to_i != params[:id].to_i
       # @error = 'You are signed in to the wrong account'
       redirect_to user_path(@user)
+    else 
+      @league = @user.league
+      @users = @league.users
+      @round = Contestant.find_by_id(1).round
+      
     end
   end
   
@@ -48,7 +52,7 @@ class UsersController < ApplicationController
         flash[:notice] = "#{@user.username} was successfully created."
         redirect_to user_path(@user)
       else
-        redirect_to sign_up
+        redirect_to sign_up_path
       end
     end
   end

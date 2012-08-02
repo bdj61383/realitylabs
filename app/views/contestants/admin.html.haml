@@ -1,0 +1,27 @@
+%h1 Hello World!!!
+%p 
+  This is just some rando text I'm throwing up to illustrate that everything's working as it should.  Holla!  This page should appear in /contestants as the index page.
+
+
+%h1 Round #{@round}
+%table#leagues
+  %thead
+    %tr
+      %th Contestant Name
+      %th Survive
+      %th Immunity
+      %th Merger
+      %th Final Three
+      %th Winner
+  %tbody
+    - @contestants.each do |contestant|
+      %tr
+        %td{:id => contestant.name.downcase.gsub(/ /, '')}= contestant.name 
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "survive"]}= contestant.survive 
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "immunity"]}= contestant.immunity
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "merger"]}= contestant.merger
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "final_three"]}= contestant.final_three
+        %td{:id => [contestant.name.downcase.gsub(/ /, ''), "winner"]}= contestant.winner
+
+%h2= link_to 'Update Round', add_round_contestants_path
+= link_to 'Oops - reset last round', reverse_round_contestants_path

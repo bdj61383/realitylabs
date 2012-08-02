@@ -1,0 +1,17 @@
+/* These are all of the custom fonts for the project.*/
+
+@font-face {
+  font-family: 'ThrowMyHandsUpintheAirRegular';
+  src: url(font-path('throwmyhandsupintheair-webfont.eot') + "?#iefix") format('embedded-opentype'),
+       url(font-path('throwmyhandsupintheair-webfont.woff')) format('woff'),
+       url(font-path('throwmyhandsupintheair-webfont.ttf'))  format('truetype'),
+       url(font-path('throwmyhandsupintheair-webfont.svg') + "#ThrowMyHandsUpintheAirRegular") format('svg');
+}
+
+@font-face {
+  font-family: 'ThrowMyHandsUpintheAirBold';
+  src: url(font-path('throwmyhandsupintheairbold-webfont.eot') + "?#iefix") format('embedded-opentype'),
+       url(font-path('throwmyhandsupintheairbold-webfont.woff')) format('woff'),
+       url(font-path('throwmyhandsupintheairbold-webfont.ttf'))  format('truetype'),
+       url(font-path('throwmyhandsupintheairbold-webfont.svg') + "#ThrowMyHandsUpintheAirBold") format('svg');
+}

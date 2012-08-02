@@ -54,6 +54,9 @@ module Realitylabs
     # Enable the asset pipeline
     config.assets.enabled = true
 
+    # Adding the 'fonts' subdirectory to the asset pipeline
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
   end
