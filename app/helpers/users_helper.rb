@@ -1,14 +1,14 @@
 module UsersHelper
 	def lc
-		if @user.lc == true
-			capture_haml do
-				haml_tag :li do
-					haml_concat link_to ("LC Control Box", draft_league_path(@league))
-				end
-			end
-		else
-			nil
-		end
+		# if @user.lc == true
+		# 	capture_haml do
+		# 		haml_tag :li do
+		# 			haml_concat link_to ("LC Control Box", draft_league_path(@league))
+		# 		end
+		# 	end
+		# else
+		# 	nil
+		# end
 	end
 	def team
 		capture_haml do
