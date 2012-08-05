@@ -2,7 +2,9 @@ module UsersHelper
 	def lc
 		if @user.lc == true
 			capture_haml do
-				haml_tag :li, link_to ("LC Control Box", draft_league_path(@league))
+				haml_tag :li do
+					haml_concat link_to ("LC Control Box", draft_league_path(@league))
+				end
 			end
 		else
 			nil
@@ -27,7 +29,10 @@ module UsersHelper
 				# 		haml_tag :td do
 				# 			haml_concat
 				# end
-
+			end
+		end
+	end
+end
 
 
 					# n = @nusers
@@ -50,7 +55,4 @@ module UsersHelper
 					# 	end
 					# end
 				
-			end
-		end
-	end
-end
+
