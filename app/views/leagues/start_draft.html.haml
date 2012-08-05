@@ -38,7 +38,7 @@
             var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
             $.ajax({
               type: 'POST',
-              url: "http://realitylabs-server.herokuapp.com/faye",
+              url: "http://localhost:9292/faye",
               data: string
               });
             }
@@ -55,7 +55,7 @@
         $('button').addClass('temp_block')
       }
 
-  var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
+  var faye = new Faye.Client('http://localhost:9292/faye');
   faye.subscribe("/#{@league.id}/draft/pick", function(data) {
       
       $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
@@ -92,7 +92,7 @@
             var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
             $.ajax({
               type: 'POST',
-              url: "http://realitylabs-server.herokuapp.com/faye",
+              url: "http://localhost:9292/faye",
               data: string
               });
             }
@@ -128,7 +128,7 @@
                 var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"' + up + '", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
                 $.ajax({
                   type: 'POST',
-                  url: "http://realitylabs-server.herokuapp.com/faye",
+                  url: "http://localhost:9292/faye",
                   data: string
                 });
               }
@@ -167,7 +167,7 @@
             var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
             $.ajax({
             type: 'POST',
-            url: "http://realitylabs-server.herokuapp.com/faye",
+            url: "http://localhost:9292/faye",
             data: string
             });
           }
@@ -181,7 +181,7 @@
   if (#{@user.lc} === true) {
     $.ajax({
       type: 'POST',
-      url: "http://realitylabs-server.herokuapp.com/faye",
+      url: "http://localhost:9292/faye",
       data: 'message={"channel":"/#{@league.id}/draft/start", "data":"data"}'
     });
   }
