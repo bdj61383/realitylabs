@@ -32,7 +32,7 @@ class League < ActiveRecord::Base
 			next_round = self.draft_round + 1
 			self.update_attribute("draft_round", next_round)				
     		choice = choice.gsub(" ", "_")
-    		system(%Q[curl http://localhost:9292/faye -d 'message={"channel":"/#{self.id}/draft/auto_pick", "data":"data"}'])
+    		system(%Q[curl http://realitylabs-server.herokuapp.com/faye -d 'message={"channel":"/#{self.id}/draft/auto_pick", "data":"data"}'])
 		end
 	end
 

@@ -33,7 +33,7 @@
   
 :javascript
   $(document).ready(function(){
-    var faye = new Faye.Client('http://localhost:9292/faye');
+    var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
     faye.subscribe("/#{@user.league_id}/draft/start", function(data){
       alert("Your draft is starting!");
       window.location.href = "http://localhost:3000/leagues/#{@league.id}/draft_page";
