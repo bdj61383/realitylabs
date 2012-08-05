@@ -1,0 +1,98 @@
+%div.bg_elements
+  %header.main_header
+    %div.rl_logo= image_tag('rl_logo.png', :alt => "Reality Labs")
+    %div.surv_logo= image_tag('surv_logo.png', :alt => "Survivor Fantasy League")
+    %div.signin= link_to 'Sign In', log_in_path
+    %div.signout
+      Logged in as #{@username}
+      %p= link_to "Log out", log_out_path
+    %div.clear
+  %div.main
+    %div.hero
+      =image_tag('left-scroll.png', :class => 'left_scroll', :id => 'left_scroll')
+      =image_tag('right-scroll.png', :class => 'right_scroll', :id => 'right_scroll')
+      %div#hero.pics
+        =image_tag('hero_4.jpg')
+        =image_tag('hero_5.jpg')
+        =image_tag('hero_6.jpg')
+      =image_tag('whitearrow.png', :class => 'arrow', :id => 'arrow')
+      %div.handwriting Click Here to Begin...
+    / %div.play_button Start the Fantasy
+    %button.hero_button Start Now!
+    %div.bottom_content 
+      %div.about
+        %h1 Outwit - Outplay - Outlast
+        %p Welcome to Reality Lab's Survivor Fantasy Game!  The game takes all the aspects of fantasy sports leagues that you love and brings them to the world of reality tv.  Start a league and invite your friends.  Pick Survivor contenders to be on your team through a realtime draft with other folks in your league.  Earn points based on how your team members perform each week.  Whoever has the most points at the end of the season wins!  
+      %div.rules
+        %h1 Gameplay
+        %h2 Setting Up
+        %p This is a description of how the user either creates a league and invites friends or joins a league that's already been created. 
+        %h2 The Draft
+        %p This describes the intricacies of the draft.
+        %h2 Regular Gameplay
+        %p This describes how scoring works during regular gameplay and how a winner is determined.
+      %div.cast  
+        %h1 Meet the Cast
+        %p 
+          This is where the content for Meet the Cast will go.  It will look just like this: 
+          =link_to 'CBS Cast Bios', 'http://www.cbs.com/shows/survivor/cast/'
+    %div.sidebar 
+      %ul
+        %li#about About
+        %li#rules How to Play
+        %li#cast Meet the Cast
+        %li#my_survivor My Survivor
+
+    %div.clear
+%div.start_game
+  %div.new_league
+    %button#new_league Start a league
+    %p Become the League Commissioner and Invite Your Friends
+  %div.new_user
+    %button#new_user Join a League
+    %p Click Here if You Have a Confirmation Code from a Friend
+  %div.clear
+:javascript 
+  if ("#{@id}" !== "log_in") {
+    $('.signin').css('display', 'none')
+    $('.signout').css('display', 'block')
+  }
+
+  $('.hero_button').on("click", function(){
+    $('.start_game').css("display", "block")
+  })
+
+  $('#hero').cycle({ 
+    fx:     'fade', 
+    speed:  'slow', 
+    timeout: 5000, 
+    next:   '#right_scroll', 
+    prev:   '#left_scroll' 
+  });
+
+  $('#new_league').on('click', function() {
+    window.location.href = "/leagues/new"
+  })
+
+  $('#new_user').on('click', function() {
+    window.location.href = "/users/new"
+  })
+
+  $('#about').on('click', function() {
+    $('div.bottom_content > div').css('display', 'none')
+    $('.about').css('display', 'block')
+  })
+
+  $('#rules').on('click', function() {
+    $('div.bottom_content > div').css('display', 'none')
+    $('.rules').css('display', 'block')
+  })
+
+  $('#cast').on('click', function() {
+    $('div.bottom_content > div').css('display', 'none')
+    $('.cast').css('display', 'block')
+  })
+
+  $('#my_survivor').on('click', function() {
+    window.location.href = "/users/#{@id}"
+  })

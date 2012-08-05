@@ -5,6 +5,20 @@ class UsersController < ApplicationController
     end
     class InvalidLeagueNameOrCode < AuthenticationError 
     end
+    class InvalidUsernameOrPassword < AuthenticationError 
+    end
+  end
+  rescue_from Exceptions::InvalidLeagueNameOrCode, :with => :invalid_league
+  rescue_from Exceptions::InvalidUsernameOrPassword, :with => :invalid_password
+
+  def invalid_league
+    redirect_to sign_up_path
+    flash[:notice] = "Invalid league name or confirmation code"
+  end
+
+  def invalid_password
+    redirect_to sign_up_path
+    flash[:notice] = "Invalid username or password"
   end
     
   def show
@@ -43,6 +57,8 @@ class UsersController < ApplicationController
     @league = League.find_by_name_and_confirmation_code(@name, @code)
     if @league == nil
       raise Exceptions::InvalidLeagueNameOrCode
+    elsif params[:user][:password] == nil || params[:user][:username] == nil
+      raise Exceptions::InvalidUsernameOrPassword        
     else
       @user = User.new(params[:user])
       @league_id = @league.id

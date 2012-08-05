@@ -294,6 +294,8 @@ td { vertical-align: top; }
 
 
 /* This is style added by Brian*/
+* { margin: 0; padding: 0px; }
+
 .clear {
   clear: both;
 }
@@ -314,6 +316,18 @@ body {
   background: linear-gradient(left, #204764 0%,#9ac6e7 50%,#204764 100%); /* W3C */
   min-height: 768px; /* Placeholder until I stick some content in here. */
 }
+
+.main_header {
+  position: relative;
+  .flash {
+    position: absolute;
+    top: 61px;
+    left: 66px;
+    color: #eaeaea;
+  }
+}
+
+
 
 /*This is the styling for the header and includes the Reality Lab logo, the Survivor logo and the Sign In link in the upper right*/
 .rl_logo {
@@ -338,7 +352,6 @@ body {
 }
 
 .signout {
-  display: none;
   float: right;
   margin-right: 50px;
   margin-top: 25px;
@@ -352,10 +365,15 @@ body {
 
 /*This is the styling for the main hero section.*/
 .hero {
-  width: 860px;
-  height: 420px;
+  position: relative;
+  top: -65px;
+  /*width: 860px;*/
+  width: 830px;
+  /*height: 420px;*/
+  min-height: 394px;
   margin: 0 auto;
-  margin-top: -65px;
+  padding: 12px;
+  position: relative;
   background-color: #b6c7d4;
   -webkit-border-radius: 3px; /* Saf3-4, iOS 1-3.2, Android ≤1.6 */
           border-radius: 3px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
@@ -395,12 +413,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   }
 }
 
-.pics {
+.hero_inset {
   position: relative;
-  height: 394px;
+  min-height: 394px;
   width: 830px;
   margin: 0 auto;
-  top: 12px;
+  /*top: 12px;*/
   /*margin-top: 30px;
   margin-right: auto;
   margin-left: auto;*/
@@ -419,13 +437,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
     width: 798px;
     height:360px;
   }
+  ul {
+    margin: 0;
+  }
 }
 
 .arrow {
   position: absolute;
   z-index: 10;
-  padding-left: 617px;
-  margin-top: -71px;
+  left:620px;
+  top: 322px;
 }
 
 .handwriting {
@@ -434,8 +455,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   color: white;
   position: absolute;
   z-index: 10;
-  margin-top: -100px;
-  padding-left: 499px;
+  left:500px;
+  top: 300px;
+}
+
+.scroll {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .left_scroll {
@@ -452,10 +479,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
 }
 
 .hero_button {
-  position: relative;
+  position: absolute;
   z-index: 10;
-  left: -274px;
-  top: -86px;
+  left: 432px;
+  top: 338px;
+  height: 42px;
+  width: 200px;
   -moz-box-shadow:inset 0px 1px 0px 0px #fff6af;
   -webkit-box-shadow:inset 0px 1px 0px 0px #fff6af;
   box-shadow:inset 0px 1px 0px 0px #fff6af;
@@ -485,18 +514,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
 }
 
 .hero_button:active {
-  position:relative;
-  top:-85px;
+  position:absolute;
+  top: 339px;
 }
 
 .start_game {
   display: none;
-  position: relative;
+  position: absolute;
+  top: 62px;
+  left: 236px;
   z-index: 10;
   width: 402px;
   height: 225px;
-  margin: 0 auto;
-  margin-top: -588px;
   background-color: #eaeaea;
   -webkit-border-radius: 3px; /* Saf3-4, iOS 1-3.2, Android ≤1.6 */
           border-radius: 3px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
@@ -585,7 +614,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
 .bottom_content{  
   position: relative;
   left: 50px;
-  top: 15px;
+  top: -50px;
   width: 630px;
   min-height: 230px;
   margin-bottom: 40px;
@@ -622,7 +651,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   height: 230px;
   float: left;
   left: 80px;
-  top: 15px;
+  top: -50px;
   background-color: #244B68;  
   -webkit-border-radius: 3px; /* Saf3-4, iOS 1-3.2, Android ≤1.6 */
           border-radius: 3px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
@@ -641,4 +670,70 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
       color: #97C3E4;
     }
   }
+}
+
+
+
+/* The stylings below are for the log_in page (i.e. /sessions/new)*/
+.log_in {
+  width: 192px;
+  position: absolute;
+  left: 319px;
+  top: 100px;
+  input.text_field {
+    width: 215px;
+  }
+}
+
+
+
+/* The stylings below are for the each user's individual page (i.e. /users/#{user.id})*/
+.league_name {
+  text-align: center;
+  padding-top: 60px;
+}
+
+.round_number {
+  text-align: center;
+}
+
+.hero_left {
+  width: 415px;
+  position: relative;
+  float: left;
+  text-align: center;
+  h3.scoreboard_title {
+
+  }
+  table.scoreboard {
+    border-width: 1px;
+    border-spacing: 2px;
+    border-style: outset;
+    border-color: gray;
+    border-collapse: separate;
+    background-color: white;
+    margin: 0 auto;
+    th {
+      border-width: 2px;
+      padding: 1px;
+      border-style: inset;
+      border-color: gray;
+      background-color: white;
+      -moz-border-radius: 0;
+    }
+    td {
+      border-width: 2px;
+      padding: 1px;
+      border-style: inset;
+      border-color: gray;
+      background-color: white;
+      -moz-border-radius: 0;
+    }
+  }
+}
+
+.hero_right {
+  width: 415px;
+  position: relative;
+  float: left;
 }

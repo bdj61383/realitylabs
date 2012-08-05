@@ -1,29 +1,35 @@
-%h1= @league.name
-%h2= "Round #{@round}"
-%table#scoreboard
-  %thead
-    %tr
-      %th Username
-      %th Score
+%div.hero
+  %div.hero_inset
+    %h1.league_name= @league.name
+    %h2.round_number= "Round #{@round}"
+    %div.hero_left
+      %h3.scoreboard_title Scoreboard
+      %table#scoreboard.scoreboard
+        %thead
+          %tr
+            %th Username
+            %th Score
 
-  %tbody
-    - @users.each do |user|
-      %tr
-        %td= user.username 
-        %td= user.score
-%div#user_info
-  %p= "Your score from last round is #{@user.score}"
-  %p= "Your current score is #{@user.total_score}"
-  %ul 
-    Here are the folks on your team:
-    - @user.team.each do |member|
-      %li= member
-%div#toolbar
-  %ul
-    %li My profile
-    = lc
-    =link_to "Draft Page", draft_page_path(@user.league_id)
-    / %li= @user.lc == true ? "LC Control Box" : nil
+        %tbody
+          - @users.each do |user|
+            %tr
+              %td= user.username 
+              %td= user.score
+      %div#user_score        
+        %p= "Current score: #{@user.total_score}"
+        %p= "Score from last round: #{@user.score}"
+    %div.hero_right
+      %ul 
+        Here are the folks on your team:
+        - @user.team.each do |member|
+          %li= member
+    %div.clear
+    %div#toolbar
+      %ul
+        %li My profile
+        = lc
+        =link_to "Draft Page", draft_page_path(@user.league_id)
+        / %li= @user.lc == true ? "LC Control Box" : nil
   
 :javascript
   $(document).ready(function(){

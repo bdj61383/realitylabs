@@ -71,7 +71,9 @@ class LeaguesController < ApplicationController
     @league.update_attributes(:contestant_pool => @hash, :scoring_system => @score)
 
     if @league.save
-      redirect_to :action => 'index'
+      # Here is where we log the user in by creating a new Session instance.
+      session[:user_id] = @user.id
+      redirect_to user_path(@user), :notice => "#{@league.name} successfully created!"
     else
       render :action => 'new'
     end
