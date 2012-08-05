@@ -42,7 +42,11 @@ class UsersController < ApplicationController
   
   def index
     @users = User.all
-    @round = Contestant.find_by_id(1).round
+    unless @users = nil
+      @round = Contestant.find_by_id(1).round
+    else
+      @round = "No users have signed up yet"
+    end
   end
 
   def new
