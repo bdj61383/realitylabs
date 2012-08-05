@@ -42,7 +42,8 @@ class UsersController < ApplicationController
   
   def index
     @users = User.all
-    unless Contestant.all == nil
+    @contestants = Contestant.all
+    unless @contestants == nil
       @round = Contestant.find_by_id(1).round
     else
       @round = "No Contestants have been added"
