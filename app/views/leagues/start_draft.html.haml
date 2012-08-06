@@ -67,7 +67,7 @@
 
       if (newval >= #{@draft_order.length}) {
         alert("The draft has ended!");
-        window.location.href = "http://realitylabs.herokuapp.com//users/#{@user.id}";
+        window.location.href = "http://localhost:3000/users/#{@user.id}";
         
       }
 
@@ -142,7 +142,7 @@
       setTimeout('window.location.href = "/leagues/#{@league.id}/draft_page"', 500)
     });
   faye.subscribe("/#{@league.id}/draft/stop", function(data) {
-      setTimeout('alert("The draft has ended!"); window.location.href = "http://realitylabs.herokuapp.com//users/#{@user.id}";', 500)
+      setTimeout('alert("The draft has ended!"); window.location.href = "http://localhost:3000/users/#{@user.id}";', 500)
     });
   });
 

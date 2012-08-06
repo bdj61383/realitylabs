@@ -23,12 +23,29 @@ module UsersHelper
 				# haml_tag :tbody, :id => "draft_table_body" do
 				user = @user
 				team = user.team
-				rows = (team.length.to_f / 2).ceil
-				# for i in 1..rows
-				# 	haml_tag :tr do
-				# 		haml_tag :td do
-				# 			haml_concat
-				# end
+				rows = (team.length.to_f / 3).ceil
+				for i in 0...rows
+					haml_tag :tr do
+						haml_tag :td do
+							name = "#{team[(i*3)]}"
+							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
+							haml_concat image_tag filename
+							haml_tag :h4, name
+						end
+						haml_tag :td do
+							name = "#{team[(i*3)+1]}"
+							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
+							haml_concat image_tag filename
+							haml_tag :h4, name
+						end
+						haml_tag :td do
+							name = "#{team[(i*3)+2]}"
+							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
+							haml_concat image_tag filename
+							haml_tag :h4, name
+						end
+					end
+				end
 			end
 		end
 	end
