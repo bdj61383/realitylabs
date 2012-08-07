@@ -62,23 +62,30 @@
   
 :javascript
   var broadcast_server = "#{broadcast_server}"
-  var faye;
+  var client;
   $(function() {
-    faye = new Faye.Client(broadcast_server);
-    faye.connect();
+    client = new Faye.Client(broadcast_server);
+    client.connect();
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
-    var subscription = faye.subscribe("/15/draft/start", function(data){
-      alert(data)
-    }); 
+    var subscription = client.subscribe('/foo', function(message) {
+      // handle message
+      alert(message)
+    });
     subscription.callback(function() {
       alert('Subscription is now active!');
-    }); 
+    });
 
     $('#pushme').on('click', function() {
-      var publication = faye.publish("/15/draft/start", {data:"data"});
-      faye.publish('/15/draft/start', {text: 'Hi there'});
-      alert(publication);
-    })
+      var publication = client.publish('/foo', {text: 'Hi there'});
+
+      publication.callback(function() {
+        alert('Message received by server!');
+      });
+
+      publication.errback(function(error) {
+        alert('There was a problem: ' + error.message);
+      });
+    });
       // spin off your subscriptions here
   });
 
