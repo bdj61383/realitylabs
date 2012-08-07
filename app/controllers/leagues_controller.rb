@@ -191,6 +191,13 @@ class LeaguesController < ApplicationController
       @narray = @nusers * @nrounds
       @turn = @league.draft_round
       @up = @draft_order[@turn]
+      @pool = []
+      @league.contestant_pool.each_key do |key|
+        @pool << key
+      end
+      @pool = @pool.sort!  #This is a quick-fix sort by first name until I write the regex to sort by last name
+
+
 
       # This is what ends the draft when everyone has picked
       unless (@turn + 1) >= @draft_order.length

@@ -3,7 +3,7 @@ module UsersHelper
 		if @user.lc == true
 			capture_haml do
 				haml_tag :li do
-					haml_concat link_to "LC Control Box", draft_league_path(@league)
+					haml_concat link_to "Draft Setup", draft_league_path(@league)
 				end
 			end
 		else
@@ -33,16 +33,20 @@ module UsersHelper
 							haml_tag :h4, name
 						end
 						haml_tag :td do
-							name = "#{team[(i*3)+1]}"
-							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-							haml_concat image_tag filename
-							haml_tag :h4, name
+							if team[(i*3)+1] != nil
+								name = "#{team[(i*3)+1]}"
+								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
+								haml_concat image_tag filename
+								haml_tag :h4, name
+							end
 						end
 						haml_tag :td do
-							name = "#{team[(i*3)+2]}"
-							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-							haml_concat image_tag filename
-							haml_tag :h4, name
+							if team[(i*3)+2] != nil
+								name = "#{team[(i*3)+2]}"
+								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
+								haml_concat image_tag filename
+								haml_tag :h4, name
+							end
 						end
 					end
 				end

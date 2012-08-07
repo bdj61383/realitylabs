@@ -22,21 +22,42 @@
           %tr
             %td Score from Last Round:
             %td= "#{@user.score}"
-      / %div#user_score.user_score        
-      /   %p= "Current score: #{@user.total_score}"
-      /   %p= "Score from last round: #{@user.score}"
     %div.hero_right
       %h3.team_table_title My Team
       / - @user.team.each do |member|
       /   %li= member
       =team
     %div.clear
-%div#toolbar
+%div.bottom_content 
+  %div.about
+    %h1 Outwit - Outplay - Outlast
+    %p Welcome to Reality Lab's Survivor Fantasy Game!  The game takes all the aspects of fantasy sports leagues that you love and brings them to the world of reality tv.  Start a league and invite your friends.  Pick Survivor contenders to be on your team through a realtime draft with other folks in your league.  Earn points based on how your team members perform each week.  Whoever has the most points at the end of the season wins!  
+  %div.rules
+    %h1 Gameplay
+    %h2 Setting Up
+    %p This is a description of how the user either creates a league and invites friends or joins a league that's already been created. 
+    %h2 The Draft
+    %p This describes the intricacies of the draft.
+    %h2 Regular Gameplay
+    %p This describes how scoring works during regular gameplay and how a winner is determined.
+  %div.cast  
+    %h1 Meet the Cast
+    %p 
+      This is where the content for Meet the Cast will go.  It will look just like this: 
+      =link_to 'CBS Cast Bios', 'http://www.cbs.com/shows/survivor/cast/'
+%div.sidebar 
   %ul
-    %li My profile
-    = lc
-    =link_to "Draft Page", draft_page_path(@user.league_id)
-    / %li= @user.lc == true ? "LC Control Box" : nil
+    %li#about About
+    %li#rules How to Play
+    %li#cast Meet the Cast
+    %li#lc= lc
+%div.clear
+/ %div#toolbar
+/   %ul
+/     %li My profile
+/     = lc
+/     =link_to "Draft Page", draft_page_path(@user.league_id)
+/     / %li= @user.lc == true ? "LC Control Box" : nil
   
 :javascript
   $(document).ready(function(){
@@ -48,6 +69,21 @@
     faye.subscribe("/#{@user.league_id}/draft/stop", function(data){
       alert("Your draft has ended!")
     }); 
+
+    $('#about').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.about').css('display', 'block')
+    })
+
+    $('#rules').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.rules').css('display', 'block')
+    })
+
+    $('#cast').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.cast').css('display', 'block')
+    })
   });
 
 

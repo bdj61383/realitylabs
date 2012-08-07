@@ -1,27 +1,43 @@
-%h1 Start Draft Page
-%div#flash_notice
-= draft_board
-
-=contestant_pool
+%div.hero
+  %div.hero_inset
+    %h1.league_name
+      = @league.name + ":"
+      %span The Draft Has Begun!
+    %div#flash_notice
+    =draft_order
+    / %div.draft_order
+    /   %h2 Draft Order
+    /   = draft_order
+    /   %div.clear
+    /   %div.placeholder
+    = draft_board
+%div.draft_bottom_content
+  %h2 Contestant Pool 
+  =contestant_pool
+  %div.clear
 
 %div#order
-  =@draft_order
+  / =@draft_order
   %p#turn=@turn
   %p#up=@up
 
 %div#timer
 
 
-%button#alert Press Me
 
 
 
 :javascript
   $(document).ready(function(){
 
+
+    $('li').eq($('#turn').val()).css('background-color', '#EAEAEA')
+
+
+
   var up = $('#up').text()
   if (up === "#{@user.username}") {
-        $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection.</span>");
+        $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection from the contestant pool below.</span>");
         $('button:not(#start_draft)').removeClass('temp_block');
         CreateTimer('timer', 120);
         setTimeout(function(){
@@ -63,6 +79,10 @@
       var current = parseInt($("#turn").text(),10); 
       var newval = current + 1; 
       $('#turn').text(newval);
+
+      $('li').eq(current).css('background-color', '#99C5E6')
+      $('li').eq(newval).css('background-color', '#EAEAEA')
+
       var draft_order = #{@draft_order.to_json}
 
       if (newval >= #{@draft_order.length}) {
@@ -158,7 +178,7 @@
           dataType: 'json',
           beforeSend:
             function(){
-              return confirm("You sure you want to add this guy?")
+              return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
             },
           success: 
           function(data){
@@ -185,6 +205,3 @@
       data: 'message={"channel":"/#{@league.id}/draft/start", "data":"data"}'
     });
   }
-
-
-
