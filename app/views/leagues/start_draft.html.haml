@@ -56,6 +56,11 @@
               type: 'POST',
               url: "http://realitylabs-server.herokuapp.com/faye",
               data: string
+              dataType: "json",
+              xhrFields: {
+                withCredentials: true
+              },
+              crossDomain: true
               });
             }
           });
@@ -115,6 +120,11 @@
               type: 'POST',
               url: "http://realitylabs-server.herokuapp.com/faye",
               data: string
+              dataType: "json",
+              xhrFields: {
+                withCredentials: true
+              },
+              crossDomain: true
               });
             }
           });
@@ -151,6 +161,11 @@
                   type: 'POST',
                   url: "http://realitylabs-server.herokuapp.com/faye",
                   data: string
+                  dataType: "json",
+                  xhrFields: {
+                    withCredentials: true
+                  },
+                  crossDomain: true
                 });
               }
             });
@@ -190,6 +205,11 @@
             type: 'POST',
             url: "http://realitylabs-server.herokuapp.com/faye",
             data: string
+            dataType: "json",
+            xhrFields: {
+              withCredentials: true
+            },
+            crossDomain: true
             });
           }
         });
@@ -204,7 +224,7 @@
       type: 'POST',
       url: "http://realitylabs-server.herokuapp.com/faye",
       data: 'message={"channel":"/#{@league.id}/draft/start", "data":"data"}'
-      dataType: dataType,
+      dataType: "json",
       xhrFields: {
         withCredentials: true
       },
