@@ -77,6 +77,7 @@
     $('#pushme').on('click', function() {
       var publication = faye.publish("/15/draft/start", {data:"data"});
       alert(publication);
+    })
       // spin off your subscriptions here
   });
 
