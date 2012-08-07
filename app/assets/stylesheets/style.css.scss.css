@@ -863,6 +863,87 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
 
 
 
+/*The following styling is specific to the /leagues/#{league.id}/draft, otherwise known as the LC Control Panel*/
+h1.lc_page_heading {
+  text-align: center;
+  padding-top: 60px;
+}
+
+table.online_table {
+  /*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+  font-family: "Helvetica", Sans-Serif;
+  font-size: 12px;
+  width: 355px;
+  text-align: left;
+  border-collapse: collapse;
+  margin: 15px auto 15px auto;
+  thead th {
+    font-size: 16px;
+    font-weight: normal;
+    background: #739DBD;
+    border-top: 4px solid #4C7593;
+    border-bottom: 1px solid white;
+    color: #244B68;
+    padding: 8px 8px 8px 40px;
+  }
+  tbody tr td {
+    background: #99C5E6;
+    border-bottom: 1px solid white;
+    color: #669;
+    border-top: 1px solid transparent;
+    padding: 8px 8px 8px 55px;
+    font-size: 14px;
+  }
+  tfoot tr td {
+    background: #99C5E6;
+    border-bottom: 1px solid white;
+    color: #244B68;
+    border-top: 1px solid transparent;
+    padding: 8px 8px 8px 40px;
+    font-size: 16px;
+    &:last-child {
+      padding: 8px 8px 8px 55px;
+    }
+  }
+}
+
+table.draft_setup_table {
+  /*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+  font-family: "Helvetica", Sans-Serif;
+  font-size: 12px;
+  width: 355px;
+  text-align: left;
+  border-collapse: collapse;
+  margin: 15px auto 15px auto;
+  thead th {
+    font-size: 16px;
+    font-weight: normal;
+    background: #739DBD;
+    border-top: 4px solid #4C7593;
+    border-bottom: 1px solid white;
+    color: #244B68;
+    padding: 8px 8px 8px 40px;
+  }
+  tbody tr td {
+    background: #99C5E6;
+    border-bottom: 1px solid white;
+    color: #669;
+    border-top: 1px solid transparent;
+    padding: 8px 8px 8px 55px;
+    font-size: 14px;
+  }
+  tfoot tr td {
+    background: #99C5E6;
+    border-bottom: 1px solid white;
+    color: #244B68;
+    border-top: 1px solid transparent;
+    padding: 8px 8px 8px 40px;
+    font-size: 16px;
+    &:last-child {
+      padding: 8px 8px 8px 55px;
+    }
+  }
+}
 
 
 /*The following styling is specific to the /leagues/#{league.id}/draft_page */

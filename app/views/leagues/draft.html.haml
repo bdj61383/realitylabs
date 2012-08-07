@@ -1,31 +1,38 @@
-%h1 LC Page
-= @params
-= current_user.league_id.class
-= params[:id].class
-%table
-  %thead
-    %tr
-      %th Signed In
-      %th Not Signed In
+%div.hero
+  %div.hero_inset
+    %h1.lc_page_heading  Draft Setup
+    %div.hero_left
+      %table.online_table 
+        %thead
+          %tr
+            %th Signed In
+            %th Not Signed In
+        %tbody
+        - @users.each do |user|
+          %tr
+            =online(user)
+            =offline(user) 
+    %div.hero_right
+      %table.draft_setup_table
+        %thead
+          %tr
+            %th{:colspan => "2"} Draft Details
+        %tbody
+          %tr
+            %td Available Contestants
+            %td= "#{@ncontestants}" 
+          %tr
+            %td League Members
+            %td= "#{@nusers}"
+          %tr
+            %td Team Size 
+            %td= "#{@nrounds}"
+    %div.clear
+    =draft_order
 
-  %tbody
-  - @users.each do |user|
-    %tr
-      =online(user)
-      =offline(user) 
-
-%div#draft_order
-  %h3= "# of Available Contestants: #{@ncontestants}"
-  %h3= "# of League Members: #{@nusers}"
-  %h3= "Max # of contestants per team (also # of rounds in draft): #{@nrounds}" 
-  %h3= "Length of draft pick array: #{@narray}"
-  - @pick_list.each do |user|
-    %p= user.username
-  %p= @draft_order
-
-=form_tag set_draft_path do
-  / =hidden_field_tag "draft_order", @draft_order
-  =submit_tag "Set Draft!", :id => "set_draft"
+    =form_tag set_draft_path do
+      / =hidden_field_tag "draft_order", @draft_order
+      =submit_tag "Start Draft!", :id => "set_draft"
 
 / :javascript
 /   $("#start_draft").on('click', function() {

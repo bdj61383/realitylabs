@@ -81,6 +81,7 @@ class LeaguesController < ApplicationController
     # redirect_to leagues_path
   end
 
+# This is the LC Control Panel
   def draft
     @league = League.find_by_id(params[:id])
 
@@ -143,11 +144,11 @@ class LeaguesController < ApplicationController
     
   end
 
-  def begin_draft
-    @league = League.find_by_id(params[:id])
-    @league.draft
-    respond_with @league
-  end
+  # def begin_draft
+  #   @league = League.find_by_id(params[:id])
+  #   @league.draft
+  #   respond_with @league
+  # end
 
 
   def start_draft
@@ -203,12 +204,12 @@ class LeaguesController < ApplicationController
       unless (@turn + 1) >= @draft_order.length
 
         # This will run the 'draft' method if the current user is the LC, meaning it will only get run once per turn and not by every user per turn.  The redirect is in there to handle the edge case where the first person who is 'up' is not online, in which case the auto_draft method runs too quickly for the LC's browser to catch the Faye signal and refresh.
-        if @user.lc == true
-          @league.auto_draft(@draft_order[@turn])
-          if User.find_by_username(@draft_order[@turn]).online == false
-            redirect_to draft_page_path
-          end
-        end
+        # if @user.lc == true
+        #   @league.auto_draft(@draft_order[@turn])
+        #   if User.find_by_username(@draft_order[@turn]).online == false
+        #     redirect_to draft_page_path
+        #   end
+        # end
 
         # This gives us an array of users who are logged-in.
         @online = []
