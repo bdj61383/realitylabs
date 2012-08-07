@@ -76,14 +76,7 @@
 
     $('#pushme').on('click', function() {
       var publication = faye.publish("/15/draft/start", {data:"data"});
-      publication.callback(function() {
-        alert('Message received by server!');
-      });
-
-      publication.errback(function(error) {
-        alert('There was a problem: ' + error.message);
-      });
-    })
+      alert(publication);
       // spin off your subscriptions here
   });
 
