@@ -66,9 +66,11 @@
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
 
     faye.subscribe("/15/draft/start", function(data){
-      alert("Your draft is starting!");
-      window.location.href = "/leagues/#{@league.id}/draft_page";
-    });  
+      alert(data)
+    }); 
+    subscription.callback(function() {
+      alert('Subscription is now active!');
+    }); 
     faye.subscribe("/#{@user.league_id}/draft/stop", function(data){
       alert("Your draft has ended!")
     }); 
@@ -88,7 +90,14 @@
       $('.cast').css('display', 'block')
     })
     $('#pushme').on('click', function() {
-      faye.publish("/15/draft/start", {data:"data"})
+      faye.publish("/15/draft/start", {data:"data"});
+      publication.callback(function() {
+        alert('Message received by server!');
+      });
+
+      publication.errback(function(error) {
+        alert('There was a problem: ' + error.message);
+      });
     })
 
   });
@@ -97,4 +106,5 @@
 / if (confirm("Your draft is starting!")) {
 /   window.location.href("http://localhost:3000/leagues/#{@league.id}/draft");
 / }
-
+/ alert("Your draft is starting!");
+/ window.location.href = "/leagues/#{@league.id}/draft_page";
