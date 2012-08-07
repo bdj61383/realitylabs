@@ -62,10 +62,10 @@
   
 :javascript
   $(document).ready(function(){
-    var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
+    var client = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
 
-    faye.subscribe("/15/draft/start", function(data){
+    var subscription = client.subscribe("/15/draft/start", function(data){
       alert(data)
     }); 
     subscription.callback(function() {
@@ -90,7 +90,7 @@
       $('.cast').css('display', 'block')
     })
     $('#pushme').on('click', function() {
-      faye.publish("/15/draft/start", {data:"data"});
+      var publication = client.publish("/15/draft/start", {data:"data"});
       publication.callback(function() {
         alert('Message received by server!');
       });
