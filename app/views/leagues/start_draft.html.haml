@@ -54,7 +54,7 @@
             var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
             $.ajax({
               type: 'POST',
-              url: "http://localhost:9292/faye",
+              url: "http://realitylabs-server.herokuapp.com/faye",
               data: string
               });
             }
@@ -204,5 +204,10 @@
       type: 'POST',
       url: "http://realitylabs-server.herokuapp.com/faye",
       data: 'message={"channel":"/#{@league.id}/draft/start", "data":"data"}'
+      dataType: dataType,
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true
     });
   }
