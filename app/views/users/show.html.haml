@@ -61,11 +61,10 @@
 /     / %li= @user.lc == true ? "LC Control Box" : nil
   
 :javascript
-  var broadcast_server = "<%= broadcast_server %>"
+  var broadcast_server = "#{broadcast_server}"
   var faye;
   $(function() {
       faye = new Faye.Client(broadcast_server);
-      faye.setHeader('Access-Control-Allow-Origin', '*');
       faye.connect();
       Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
 
