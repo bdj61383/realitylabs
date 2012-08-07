@@ -76,6 +76,7 @@
 
     $('#pushme').on('click', function() {
       var publication = faye.publish("/15/draft/start", {data:"data"});
+      faye.publish('/15/draft/start', {text: 'Hi there'});
       alert(publication);
     })
       // spin off your subscriptions here
