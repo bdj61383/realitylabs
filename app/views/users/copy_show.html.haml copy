@@ -61,16 +61,46 @@
 /     / %li= @user.lc == true ? "LC Control Box" : nil
   
 :javascript
-  var broadcast_server = "<%= broadcast_server %>"
-  var faye;
-  $(function() {
-      faye = new Faye.Client(broadcast_server);
-      faye.setHeader('Access-Control-Allow-Origin', '*');
-      faye.connect();
-      Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
+  $(document).ready(function(){
+    var client = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
+    Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
 
-        // spin off your subscriptions here
-    });
+    var subscription = client.subscribe("/15/draft/start", function(data){
+      alert(data)
+    }); 
+    subscription.callback(function() {
+      alert('Subscription is now active!');
+    }); 
+    client.subscribe("/#{@user.league_id}/draft/stop", function(data){
+      alert("Your draft has ended!")
+    }); 
+
+    $('#about').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.about').css('display', 'block')
+    })
+
+    $('#rules').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.rules').css('display', 'block')
+    })
+
+    $('#cast').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.cast').css('display', 'block')
+    })
+    $('#pushme').on('click', function() {
+      var publication = client.publish("/15/draft/start", {data:"data"});
+      publication.callback(function() {
+        alert('Message received by server!');
+      });
+
+      publication.errback(function(error) {
+        alert('There was a problem: ' + error.message);
+      });
+    })
+
+  });
 
 
 / if (confirm("Your draft is starting!")) {

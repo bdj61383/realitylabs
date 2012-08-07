@@ -26,6 +26,21 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def broadcast_server
+      if request.port.to_i != 80
+        "http://my-faye-server.herokuapp.com:80/faye"
+      else
+        "http://my-faye-server.herokuapp.com/faye"
+      end            
+  end
+  helper_method :broadcast_server
+
+  def broadcast_message(channel, data)
+    message = { :ext => {:auth_token => FAYE_TOKEN}, :channel => channel, :data => data}
+    uri = URI.parse(broadcast_server)
+    Net::HTTP.post_form(uri, :message => message.to_json)
+  end
+
   private
     def current_user
       @current_user ||= User.find(session[:user_id]) if session[:user_id]
