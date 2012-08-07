@@ -64,12 +64,28 @@
   var broadcast_server = "#{broadcast_server}"
   var faye;
   $(function() {
-      faye = new Faye.Client(broadcast_server);
-      faye.connect();
-      Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
+    faye = new Faye.Client(broadcast_server);
+    faye.connect();
+    Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
+    var subscription = faye.subscribe("/15/draft/start", function(data){
+      alert(data)
+    }); 
+    subscription.callback(function() {
+      alert('Subscription is now active!');
+    }); 
 
-        // spin off your subscriptions here
-    });
+    $('#pushme').on('click', function() {
+      var publication = faye.publish("/15/draft/start", {data:"data"});
+      publication.callback(function() {
+        alert('Message received by server!');
+      });
+
+      publication.errback(function(error) {
+        alert('There was a problem: ' + error.message);
+      });
+    })
+      // spin off your subscriptions here
+  });
 
 
 / if (confirm("Your draft is starting!")) {
