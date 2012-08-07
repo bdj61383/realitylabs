@@ -61,7 +61,9 @@
   
 :javascript
   $(document).ready(function(){
-    var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
+    var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye', {
+      client.disable('websocket');
+    });
     faye.subscribe("/#{@user.league_id}/draft/start", function(data){
       alert("Your draft is starting!");
       window.location.href = "/leagues/#{@league.id}/draft_page";
