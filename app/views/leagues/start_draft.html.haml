@@ -71,9 +71,8 @@
         $('button').addClass('temp_block')
       }
 
-  var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye', {
-    client.disable('websocket');
-  });
+  var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
+  Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
   faye.subscribe("/#{@league.id}/draft/pick", function(data) {
       
       $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
