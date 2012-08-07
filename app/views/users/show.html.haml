@@ -71,7 +71,7 @@
     subscription.callback(function() {
       alert('Subscription is now active!');
     }); 
-    faye.subscribe("/#{@user.league_id}/draft/stop", function(data){
+    client.subscribe("/#{@user.league_id}/draft/stop", function(data){
       alert("Your draft has ended!")
     }); 
 
