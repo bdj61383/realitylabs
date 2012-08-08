@@ -69,7 +69,7 @@
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
     var subscription = client.subscribe('/foo', function(message) {
       // handle message
-      alert(message)
+      alert(message.ext)
     });
     subscription.callback(function() {
       alert('Subscription is now active!');
