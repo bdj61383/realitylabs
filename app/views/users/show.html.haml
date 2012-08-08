@@ -52,7 +52,7 @@
     %li#cast Meet the Cast
     %li#lc= lc
 %div.clear
-%button#pushme Faye Test
+
 / %div#toolbar
 /   %ul
 /     %li My profile
@@ -76,8 +76,13 @@
     //  alert('Subscription is now active!');
     //});
 
-    $('#pushme').on('click', function() {
-      var publication = faye.publish("/#{@league.id}/draft/start", {text: 'Hi there'});
+    //$('#pushme').on('click', function() {
+      //var publication = faye.publish("/test", {
+        //text: 'Hi there',
+        //username: "#{@user.username}",
+        //league: "#{@user.league}",
+        //userid: "#{@user.id}"
+        //});
 
       //publication.callback(function() {
       //  alert('Message received by server!');
@@ -86,7 +91,7 @@
       //publication.errback(function(error) {
       //  alert('There was a problem: ' + error.message);
       //});
-    });
+    //});
 
       // These are to control the behavior of the different links
   $('#about').on('click', function() {
