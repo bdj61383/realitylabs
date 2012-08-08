@@ -64,7 +64,7 @@
   var broadcast_server = "#{broadcast_server}"
   var faye;
   $(function() {
-    faye = new Faye.faye(broadcast_server);
+    faye = new Faye.Client(broadcast_server);
     faye.connect();
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
     var subscription = faye.subscribe("/#{@league.id}/draft/start", function(message) {
