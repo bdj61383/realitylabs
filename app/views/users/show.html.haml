@@ -62,31 +62,47 @@
   
 :javascript
   var broadcast_server = "#{broadcast_server}"
-  var client;
+  var faye;
   $(function() {
-    client = new Faye.Client(broadcast_server);
-    client.connect();
+    faye = new Faye.faye(broadcast_server);
+    faye.connect();
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
-    var subscription = client.subscribe('/foo', function(message) {
+    var subscription = faye.subscribe("/#{@league.id}/draft/start", function(message) {
       // handle message
-      alert(message.ext)
+      alert("Your draft is starting!");
+      window.location.href = "/leagues/#{@league.id}/draft_page";
     });
-    subscription.callback(function() {
-      alert('Subscription is now active!');
-    });
+    //subscription.callback(function() {
+    //  alert('Subscription is now active!');
+    //});
 
     $('#pushme').on('click', function() {
-      var publication = client.publish('/foo', {ext: 'Hi there'});
+      var publication = faye.publish("/#{@league.id}/draft/start", {text: 'Hi there'});
 
-      publication.callback(function() {
-        alert('Message received by server!');
-      });
+      //publication.callback(function() {
+      //  alert('Message received by server!');
+      //});
 
-      publication.errback(function(error) {
-        alert('There was a problem: ' + error.message);
-      });
+      //publication.errback(function(error) {
+      //  alert('There was a problem: ' + error.message);
+      //});
     });
-      // spin off your subscriptions here
+
+      // These are to control the behavior of the different links
+  $('#about').on('click', function() {
+    $('div.bottom_content > div').css('display', 'none')
+    $('.about').css('display', 'block')
+  })
+
+  $('#rules').on('click', function() {
+    $('div.bottom_content > div').css('display', 'none')
+    $('.rules').css('display', 'block')
+  })
+
+  $('#cast').on('click', function() {
+    $('div.bottom_content > div').css('display', 'none')
+    $('.cast').css('display', 'block')
+  })
   });
 
 
