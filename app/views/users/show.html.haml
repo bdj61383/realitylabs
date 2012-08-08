@@ -76,7 +76,7 @@
     });
 
     $('#pushme').on('click', function() {
-      var publication = client.publish('/foo', {text: 'Hi there'});
+      var publication = client.publish('/foo', {ext: 'Hi there'});
 
       publication.callback(function() {
         alert('Message received by server!');
