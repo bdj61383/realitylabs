@@ -4,7 +4,8 @@
 
     = form_tag users_path do
       %div.hero_left
-        %h2.league_subheader User Info
+        %h2.league_subheader#user_subheader User Info
+        %p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
         %p.league_field
           = label :user, :username, 'Username', :class => "league_label"
           = text_field :user, :username, :class => "league_input"
@@ -22,7 +23,8 @@
           = email_field :user, :email, :class => "league_input" 
 
       %div.hero_right
-        %h2.league_subheader League Info
+        %h2.league_subheader#league_subheader League Info
+        %p.description#league_description Please enter the name and confirmation code of the league you are joining.  This info can be found in the email you received or from your friend who created the league.  
         %p.league_field
           = label :league, :name, 'League Name', :class => "league_label"
           = text_field :league, :name, :class => "league_input"
@@ -33,3 +35,20 @@
       %div.clear
 
       = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"
+
+:javascript
+  $(document).ready(function(){
+    $('#league_subheader').on('mouseover', function(){
+      $('#league_description').css('display', 'block')
+    });
+    $('#league_subheader').on('mouseout', function(){
+      $('#league_description').css('display', 'none')
+    });
+
+    $('#user_subheader').on('mouseover', function(){
+      $('#user_description').css('display', 'block')
+    });
+    $('#user_subheader').on('mouseout', function(){
+      $('#user_description').css('display', 'none')
+    });
+  });

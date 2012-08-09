@@ -22,13 +22,37 @@
     %h1 Outwit - Outplay - Outlast
     %p Welcome to Reality Lab's Survivor Fantasy Game!  The game takes all the aspects of fantasy sports leagues that you love and brings them to the world of reality tv.  Start a league and invite your friends.  Pick Survivor contenders to be on your team through a realtime draft with other folks in your league.  Earn points based on how your team members perform each week.  Whoever has the most points at the end of the season wins!  
   %div.rules
-    %h1 Gameplay
-    %h2 Setting Up
-    %p This is a description of how the user either creates a league and invites friends or joins a league that's already been created. 
-    %h2 The Draft
-    %p This describes the intricacies of the draft.
-    %h2 Regular Gameplay
-    %p This describes how scoring works during regular gameplay and how a winner is determined.
+    %h1 How to Play
+    %h2#setup_head.rules_header Setting Up
+    %div#setup_body.hide
+      %p 
+        This game works pretty much like other fantasy sports games you may have played, including a realtime draft.  New users have one of two options.  You can either 
+        =link_to 'start a new league', new_league_path
+        and become its League Commissioner or you can 
+        =link_to 'join a league', new_user_path 
+        that has been started by one of your friends.
+        %h3.rules_header#start_league_head Starting a League
+        %p.hide#start_league_body Starting a league from scratch and becomming its League Commissioner gives you the AWESOME responsibility of inviting your friends to join and setting up the rules your league will play by.  You will also be responsible for starting the draft and letting the members of your league know when the draft will take place.
+        %h3.rules_header#join_league_head Joining a League
+        %p.hide#join_league_body If you were invited to join a league by a friend and given the league's name and confirmation code, this option is for you.  Your League Commissioner will let you know when the draft for your league will take place and then you can pick the members of your team!
+    %h2#draft_head.rules_header The Draft
+    %div#draft_body.hide
+      %p The draft is a turn-based system to allow league members to choose Survivor contestants to be on their team.  The League Commissioner (LC) is responsible for letting other league members know when the draft will take place, making sure they are all logged in at that time, setting up and starting the draft.  Before starting the draft, the LC will be prompted to establish certain rules of the league, such as how many Survivor contestants league members will have on their team and how the scoring system will work (see below).  Other things, like the order of the draft, are determined randomly.  <b>A draft can only take place once per league, is non-reversible and cannot be abandoned midway through, so it is very important that the LC sets everything up correctly!</b>
+      %p Once the LC begins the draft, all league members who are currently signed-in will get a pop-up message on their browser letting them know that the draft is starting.  This will automatically direct them to the draft page.  From there, the order by which members will pick contestants for their team is visible.  You will see a message at the top of the screen when it is your turn, as well as a timer letting you know how much time is left for your turn.  Every member has 2 minutes to make a selection each turn.  
+      %p After you make a selection, your pick will appear in a chart showing the status of the draft.  The draft will then continue to the next person in the draft order and that league member will make their selection.  This continues until everyone has formed their teams.  League members who are not signed-in or who take longer than 2 minutes to make a selection will have a Survivor contestant randomly assigned to their team.  At the end of the draft, everyone will be redirected back to their member page.  
+    %h2#score_head.rules_header Regular Gameplay
+    %div#score_body.hide
+      %p Once the draft is complete and everyone has their team, regular gameplay commences.  After every elimination round on the show Survivor, the results will be automatically used to give every league member a score for that week, based on the scoring system devised by the League Commissioner.  An elimination round is defined as every time someone gets voted off, to handle those rare cases where more than one person is voted off during a single episode.  
+      %h3.rules_header#score_sys_head Scoring System
+      %div.hide#score_sys_body 
+        %p Each member of a user's team is assigned points based on the following criteria:
+        %ul
+          %li <b>Survival (1-5 points):</b>  Did this contestant survive through the episode?  
+          %li <b>Immunity (1-5 points):</b>  Did this contestant win an immunith challenge this episode?  
+          %li <b>Merger (1-5 points):</b>  Did this contestant survive through the merger of the tribes into one tribe?  
+          %li <b>Final Three (1-5 points):</b>  Did this contestant survive to become one of the final 3 contestants?  
+          %li <b>Winner (1-10 points):</b>  Did this contestant win the show?  
+        %p The number of points given for each criteria is determined by the League Commissioner, with the default value for each being 1 point. Survival and Immunity points will be awarded whenever applicable, whereas the points for Merger, Final Three, and Winner will only be awarded once per season of Survivor.    
   %div.cast  
     %h1 Meet the Cast
     %p 
@@ -44,46 +68,117 @@
 %div.clear
 
 :javascript 
-  if ("#{@id}" !== "log_in") {
-    $('.signin').css('display', 'none')
-    $('.signout').css('display', 'block')
-  }
+  $(document).ready(function(){
+    // This handles the display of both the 'logged-in' and 'logged-out' versions of the homepage.
+    if ("#{@id}" !== "log_in") {
+      $('.signin').css('display', 'none')
+      $('.signout').css('display', 'block')
+    }
 
-  $('.hero_button').on("click", function(){
-    $('.start_game').css("display", "block")
-  })
+    // This handles the behavior of the rotating hero images
+    $('#hero').cycle({ 
+      fx:     'fade', 
+      speed:  'slow', 
+      timeout: 5000, 
+      next:   '#right_scroll', 
+      prev:   '#left_scroll' 
+    });
 
-  $('#hero').cycle({ 
-    fx:     'fade', 
-    speed:  'slow', 
-    timeout: 5000, 
-    next:   '#right_scroll', 
-    prev:   '#left_scroll' 
+    // This handles the behavior of clicking on the hero button and getting the display:none div containing 'new league' and 'new user' to appear, as well as their own behavior.  The last function sets display back to none if you click outside of the div.
+    $('.hero_button').on("click", function(){
+      $('.start_game').css("display", "block")
+    })
+
+    $('#new_league').on('click', function() {
+      window.location.href = "/leagues/new"
+    })
+
+    $('#new_user').on('click', function() {
+      window.location.href = "/users/new"
+    })
+
+    $(document).mouseup(function(e) {
+      var container = $('.start_game');
+      if (container.has(e.target).length === 0) {
+          container.hide();
+      }
+    });
+
+    // This handles the behavior of links in the sidebar.
+    $('#about').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.about').css('display', 'block')
+    })
+
+    $('#rules').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.rules').css('display', 'block')
+    })
+
+    $('#cast').on('click', function() {
+      $('div.bottom_content > div').css('display', 'none')
+      $('.cast').css('display', 'block')
+    })
+
+    $('#my_survivor').on('click', function() {
+      window.location.href = "/users/#{@id}"
+    })
+
+    // If you wind up with time on your hands, refactor this code to be more succinct.  This handles all of the accordian behavior in the 'How to Play' section.
+    $('#setup_head').on('click', function(){
+      if ($('#setup_body').css('display') == "none") {
+        $('#setup_body').slideDown()
+      }
+      else {
+        $('#setup_body').slideUp()
+      }
+    })
+
+    $('#draft_head').on('click', function(){
+      if ($('#draft_body').css('display') == "none") {
+        $('#draft_body').slideDown()
+      }
+      else {
+        $('#draft_body').slideUp()
+      }
+    })
+
+    $('#score_head').on('click', function(){
+      if ($('#score_body').css('display') == "none") {
+        $('#score_body').slideDown()
+      }
+      else {
+        $('#score_body').slideUp()
+      }
+    })
+
+    $('#start_league_head').on('click', function(){
+      if ($('#start_league_body').css('display') == "none") {
+        $('#start_league_body').slideDown()
+      }
+      else {
+        $('#start_league_body').slideUp()
+      }
+    })
+
+    $('#join_league_head').on('click', function(){
+      if ($('#join_league_body').css('display') == "none") {
+        $('#join_league_body').slideDown()
+      }
+      else {
+        $('#join_league_body').slideUp()
+      }
+    })
+
+    $('#score_sys_head').on('click', function(){
+      if ($('#score_sys_body').css('display') == "none") {
+        $('#score_sys_body').slideDown()
+      }
+      else {
+        $('#score_sys_body').slideUp()
+      }
+    })
+
+
+
   });
-
-  $('#new_league').on('click', function() {
-    window.location.href = "/leagues/new"
-  })
-
-  $('#new_user').on('click', function() {
-    window.location.href = "/users/new"
-  })
-
-  $('#about').on('click', function() {
-    $('div.bottom_content > div').css('display', 'none')
-    $('.about').css('display', 'block')
-  })
-
-  $('#rules').on('click', function() {
-    $('div.bottom_content > div').css('display', 'none')
-    $('.rules').css('display', 'block')
-  })
-
-  $('#cast').on('click', function() {
-    $('div.bottom_content > div').css('display', 'none')
-    $('.cast').css('display', 'block')
-  })
-
-  $('#my_survivor').on('click', function() {
-    window.location.href = "/users/#{@id}"
-  })

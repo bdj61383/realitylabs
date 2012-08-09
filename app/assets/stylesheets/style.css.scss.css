@@ -294,6 +294,8 @@ td { vertical-align: top; }
 
 
 /* This is style added by Brian*/
+
+/*This is the univeral styling for the apph*/
 * { margin: 0; padding: 0px; }
 
 .clear {
@@ -363,6 +365,9 @@ body {
   }
 }
 
+
+
+/* This is the styling for the homepage*/
 /*This is the styling for the main hero section.*/
 .hero {
   position: relative;
@@ -418,7 +423,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   min-height: 394px;
   width: 830px;
   margin: 0 auto;
-  padding-bottom: 15px;
+  /*padding-bottom: 15px;*/
   /*top: 12px;*/
   /*margin-top: 30px;
   margin-right: auto;
@@ -601,11 +606,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
     margin-right: 20px;
     padding: 10px;    
   } 
-  
-  /*h3:first-child {
-    padding-top: 12px;
-  }*/
-
 }
 
 /*.start_game h3 {
@@ -640,6 +640,28 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   }
   .rules {
     display: none;
+    h2, h3{
+      margin: 20px
+    }
+    p {
+      margin: 0px 35px 10px 35px;
+      text-align: justify;
+    }
+    .hide {
+      display: none;
+    }
+    .rules_header {
+      &:hover {
+      cursor:pointer;cursor:hand;
+      color: #97C3E4;
+      }
+    }
+    ul {
+      list-style: none;
+    }
+    li {
+      margin: 0 35px 0 0;
+    }
   }
   .cast {
     display: none;
@@ -966,6 +988,7 @@ p.description {
   position: absolute;
   display: none;
   z-index: 1;
+  text-align: left;
 }
 
 .league_field {
