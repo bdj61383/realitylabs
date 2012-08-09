@@ -1,30 +1,35 @@
-%h1 Create New User
+%div.hero
+  %div.hero_inset
+    %h1.league_header Create New User
 
+    = form_tag users_path do
+      %div.hero_left
+        %h2.league_subheader User Info
+        %p.league_field
+          = label :user, :username, 'Username', :class => "league_label"
+          = text_field :user, :username, :class => "league_input"
 
+        %p.league_field
+          = label :user, :password, 'Password', :class => "league_label"
+          = text_field :user, :password, :class => "league_input"
 
-/ Trying to display any possible error messages.  The code below is NOT working at present.
-/ = if @user.errors.any? 
-/   %div.error_messages
-/     %h2 Form is invalid
-/     %ul
-/       - for message in @user.errors.full_messages
-/       %li message
+        %p.league_field
+          = label :user, :password_confirmation, 'Confirm Password', :class => "league_label"
+          = text_field :user, :password_confirmation, :class => "league_input"
 
-= form_tag users_path do
-  %ul
-  = label :user, :username, 'Username'
-  %li= text_field :user, 'username'
+        %p.league_field
+          = label :user, :email, 'Email', :class => "league_label"
+          = email_field :user, :email, :class => "league_input" 
 
-  = label :user, :password, 'Password'
-  %li= text_field :user, 'password'
+      %div.hero_right
+        %h2.league_subheader League Info
+        %p.league_field
+          = label :league, :name, 'League Name', :class => "league_label"
+          = text_field :league, :name, :class => "league_input"
 
-  = label :user, :password_confirmation, 'Confirm Password'
-  %li= text_field :user, 'password_confirmation'
+        %p.league_field
+          = label :league, :confirmation_code, 'League Confirmation Code', :class => "league_label"
+          = text_field :league, :confirmation_code, :class => "league_input"
+      %div.clear
 
-  = label :league, :name, 'League Name'
-  %li= text_field :league, 'name'
-
-  = label :league, :confirmation_code, 'League Confirmation Code'
-  %li= text_field :league, 'confirmation_code'
-
-  %li= submit_tag 'Create New User'
+      = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"

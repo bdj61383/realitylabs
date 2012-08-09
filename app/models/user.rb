@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-	attr_accessible :username, :password, :password_confirmation, :league_id, :lc, :team, :last_seen
+	attr_accessible :username, :password, :password_confirmation, :league_id, :lc, :team, :last_seen, :email
 	belongs_to :league
 	serialize :team, Array
 

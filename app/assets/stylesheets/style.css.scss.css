@@ -946,6 +946,101 @@ table.draft_setup_table {
 }
 
 
+
+/* The following styling is specific to the /leagues/new page*/
+.league_header {
+  text-align: center;
+  padding-top: 60px;
+}
+
+.league_subheader {
+  text-align: left;
+  margin-top: 24px;
+  padding-left: 30px;
+}
+
+p.description {
+  margin-left: 30px;
+  font-size: 12px;
+  background-color: #B6C7D4;
+  position: absolute;
+  display: none;
+  z-index: 1;
+}
+
+.league_field {
+  padding-left: 30px;
+}
+
+.league_input {
+  display: block;
+  width: 250px;
+}
+
+textarea {
+  display: block;
+  width:355px;
+}
+
+.league_label {
+  display: block;
+  text-align: left;
+}
+
+.league_invite {
+  width: 157px;
+  position: relative;
+  float: left;
+  margin-bottom: 20px;
+  margin-left: 30px;
+  &.top_row {
+    margin-top: 24px;
+  }
+}
+
+.new_league_submit {
+  -moz-box-shadow:inset 0px 1px 0px 0px #fff6af;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #fff6af;
+  box-shadow:inset 0px 1px 0px 0px #fff6af;
+  background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffec64), color-stop(1, #ffab23) );
+  background:-moz-linear-gradient( center top, #ffec64 5%, #ffab23 100% );
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffec64', endColorstr='#ffab23');
+  background-color:#ffec64;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  border:1px solid #ffaa22;
+  display:inline-block;
+  color:#333333;
+  font-family:helvetica, sans-serif;
+  font-size:24px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:1px 1px 0px #ffee66;
+  margin-top: 30px;
+
+  &:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffab23), color-stop(1, #ffec64) );
+    background:-moz-linear-gradient( center top, #ffab23 5%, #ffec64 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab23', endColorstr='#ffec64');
+    background-color:#ffab23;
+  }
+
+  &:active {
+    margin-top: 31px;
+  }
+
+  &.new_user_submit {
+    position: relative;
+    left: 445px;
+    top: -70px;
+  }
+}
+
+
+
+
 /*The following styling is specific to the /leagues/#{league.id}/draft_page */
 span {
   font-size: 24px;
