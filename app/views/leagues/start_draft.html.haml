@@ -102,7 +102,7 @@
 
     // This is how users subscribe to the /draft/pick channel and handle the incoming data
     var subscription = faye.subscribe("/#{@league.id}/draft/pick", function(data) {
-      clearTimeout(autopick)
+      //clearTimeout(autopick)
       $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
       $('button#' + data.member).addClass('unavailable').removeClass('available');          
       var current = parseInt($("#turn").text(),10); 
