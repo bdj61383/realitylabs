@@ -49,7 +49,7 @@
       });
     }
 
-
+    // This handles the case where the user is the first one up or has refreshed their page.  Otherwise, the function below is triggered by incoming messages on /draft/pick.  See below.
     var up = $('#up').text()
     if (up === "#{@user.username}") {
       $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection from the contestant pool below.</span>");
@@ -71,8 +71,7 @@
             // Broadcasts the results of the autopic to the Faye channel "/#{@league.id}/draft/pick"
             var publication = faye.publish("/#{@league.id}/draft/pick", {
               username: "#{@user.username}",
-              team: "#{@user.team.to_json}",
-              member: "' + choice + '"
+              member: choice
             });
 
             //var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
@@ -98,11 +97,8 @@
       $('button').addClass('temp_block')
     }
 
-
-  //var faye = new Faye.Client('http://realitylabs-server.herokuapp.com/faye');
-  //Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
-  faye.subscribe("/#{@league.id}/draft/pick", function(data) {
-      
+    // This is how users subscribe to the /draft/pick channel and handle the incoming data
+    var subscription = faye.subscribe("/#{@league.id}/draft/pick", function(data) {
       $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
       $('button#' + data.member).addClass('unavailable').removeClass('available');          
       var current = parseInt($("#turn").text(),10); 
@@ -120,6 +116,7 @@
         
       }
 
+      // This is the same as the function above and handles the majority of cases, where the user who is up receives that message after the draft has started, as a result of updates to #turn made by subscription to /draft/pick
       $('#up').text(draft_order[newval]);
 
       var up = $('#up').text()
@@ -129,40 +126,41 @@
         CreateTimer('timer', 120);
         setTimeout(function(){
 
-        var array = $('.available')
-        var count = array.length
-        var rand = Math.floor(Math.random() * count)
-        var choice = array[rand].id
-        $.ajax({type: "POST", url: "add_to_team", 
-          data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
-          dataType: 'json',
-          success: 
-          function(data){
-            var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
-            $.ajax({
-              type: 'POST',
-              url: "http://realitylabs-server.herokuapp.com/faye",
-              data: string,
-              dataType: "json",
-              xhrFields: {
-                withCredentials: true
-              },
-              crossDomain: true
+          var array = $('.available')
+          var count = array.length
+          var rand = Math.floor(Math.random() * count)
+          var choice = array[rand].id
+          $.ajax({type: "POST", url: "add_to_team", 
+            data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
+            dataType: 'json',
+            success: 
+            function(data){
+              var publication = faye.publish("/#{@league.id}/draft/pick", {
+                username: "#{@user.username}",
+                member: choice
               });
+              //var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
+              //$.ajax({
+                //type: 'POST',
+                //url: "http://realitylabs-server.herokuapp.com/faye",
+                //data: string,
+                //dataType: "json",
+                //xhrFields: {
+                  //withCredentials: true
+                //},
+                //crossDomain: true
+                //});
+
             }
           });
-        
-
-
-
-
         }, 120000)
-
       }
+
       else {
         $('button').addClass('temp_block')
       }
 
+      // This is how the lc makes autopics for people who are not logged in
       if (#{@user.lc == true}) {
         var offline = #{@offline.to_json}
         for (var i=0; i<offline.length; i++) {
@@ -179,17 +177,22 @@
               function(data){
                 $('#flash_notice').html('')
                 var up = $('#up').text()
-                var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"' + up + '", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
-                $.ajax({
-                  type: 'POST',
-                  url: "http://realitylabs-server.herokuapp.com/faye",
-                  data: string,
-                  dataType: "json",
-                  xhrFields: {
-                    withCredentials: true
-                  },
-                  crossDomain: true
+                var publication = faye.publish("/test", {
+                  username: "' + up + '",
+                  member: choice
                 });
+                //var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"' + up + '", "team":#{@user.team.to_json}, "member":"' + choice + '"}'
+                //$.ajax({
+                  //type: 'POST',
+                  //url: "http://realitylabs-server.herokuapp.com/faye",
+                  //data: string,
+                  //dataType: "json",
+                  //xhrFields: {
+                    //withCredentials: true
+                  //},
+                  //crossDomain: true
+                //});
+
               }
             });
           }
@@ -197,67 +200,50 @@
       }
 
     });
-  faye.subscribe("/#{@league.id}/draft/auto_pick", function(data) {
+
+    var autopick_subscription = faye.subscribe("/#{@league.id}/draft/auto_pick", function(data) {
       setTimeout('window.location.href = "/leagues/#{@league.id}/draft_page"', 500)
     });
-  faye.subscribe("/#{@league.id}/draft/stop", function(data) {
+
+    var draft_stop_subscription = faye.subscribe("/#{@league.id}/draft/stop", function(data) {
       setTimeout('alert("The draft has ended!"); window.location.href = "/users/#{@user.id}";', 500)
     });
-  });
 
+    // This is the regular button by which users make their selection.
 
-// This is the regular button by which users make their selection.
-:javascript
-  $(document).ready(function(){
-      $("button.available:not(.temp_block)").live('click', function(){
-        $this = $(this)
-        id = $this.attr("id")
-        $.ajax({type: "POST", url: "add_to_team", 
-          data: {user: "#{@user.username}", member: id, turn: #{@turn}},
-          dataType: 'json',
-          beforeSend:
-            function(){
-              return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
-            },
-          success: 
-          function(data){
-            $('#flash_notice').html('')
-            var member = $this.attr('id')
-            var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
-            $.ajax({
-            type: 'POST',
-            url: "http://realitylabs-server.herokuapp.com/faye",
-            data: string,
-            dataType: "json",
-            xhrFields: {
-              withCredentials: true
-            },
-            crossDomain: true
-            });
-          }
-        });
+    $("button.available:not(.temp_block)").live('click', function(){
+      $this = $(this)
+      id = $this.attr("id")
+      $.ajax({type: "POST", url: "add_to_team", 
+        data: {user: "#{@user.username}", member: id, turn: #{@turn}},
+        dataType: 'json',
+        beforeSend:
+          function(){
+            return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
+          },
+        success: 
+        function(data){
+          $('#flash_notice').html('')
+          var member = $this.attr('id')
+          var publication = faye.publish("/#{@league.id}/draft/pick", {
+            username: "#{@user.username}",
+            member: member
+          });
+
+          //var member = $this.attr('id')
+          //var string = 'message={"channel":"/#{@league.id}/draft/pick", "data":{"username":"#{@user.username}", "team":#{@user.team.to_json}, "member":"' + member + '"}'
+          //$.ajax({
+          //type: 'POST',
+          //url: "http://realitylabs-server.herokuapp.com/faye",
+          //data: string,
+          //dataType: "json",
+          //xhrFields: {
+            //withCredentials: true
+          //},
+          //crossDomain: true
+          //});
+
+        }
       });
-    
+    });
   });
-
-// This is how the LC triggers the 'Your draft is starting!' dialog box on the other users' 'show' pages.  This is redundant, as the Faye message should have been sent when the LC set the draft, but this has not been consistent.
-//:javascript
-  //$(document).ready(function(){
-    //if (#{@user.lc} === true) {
-      //var publication = faye.publish("/#{@league.id}/draft/start", {
-        //data: "data"
-      //});
-
-      //$.ajax({
-        //type: 'POST',
-        //url: "http://realitylabs-server.herokuapp.com/faye",
-        //data: 'message={"channel":"/#{@league.id}/draft/start", "data":"data"}',
-        //dataType: "json",
-        //xhrFields: {
-          //withCredentials: true
-        //},
-        //crossDomain: true
-      //});
-
-    //}
-  //});

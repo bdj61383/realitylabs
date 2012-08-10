@@ -21,9 +21,11 @@ class LeaguesController < ApplicationController
     @users = @league.users
 
     # This is what updates the member to the user's team.
-    @team = @user.team << @member
-    @user.update_attributes!(:team => @team)
-    @user.save
+    if @league.contestant_pool[@member] == true
+      @team = @user.team << @member
+      @user.update_attributes!(:team => @team)
+      @user.save
+    end
 
     # This is what changes the member's status to 'false' in :contestant_pool and update the round number.
     @league.contestant_pool[@member] = false

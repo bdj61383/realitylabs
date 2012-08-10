@@ -1041,7 +1041,7 @@ textarea {
   padding:6px 24px;
   text-decoration:none;
   text-shadow:1px 1px 0px #ffee66;
-  margin-top: 30px;
+  margin: 30px 0px 30px 0px;
 
   &:hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffab23), color-stop(1, #ffec64) );

@@ -1,4 +1,4 @@
-league = League.first
+league = League.last
 league.contestant_pool.each_key do |key|
 	league.contestant_pool[key] = true
 end
