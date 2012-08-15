@@ -122,9 +122,9 @@ class LeaguesController < ApplicationController
         @hash.merge!(x.name => x.survive)
       end
       
-      # This is to email an invitation to the people specified by the LC
-      @email = params[:invite][:email1]
-      Invite.invite_email(@email, @league.name, @league.confirmation_code).deliver
+      # This is to email an invitation to the people specified by the LC.  The code below works.
+      # @email = params[:invite][:email1]
+      # Invite.invite_email(@email, @league.name, @league.confirmation_code).deliver
 
       #this is for creating the :scoring_system default hash where 'survive'=>'1', etc.
       @score = {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1}
@@ -132,13 +132,13 @@ class LeaguesController < ApplicationController
 
       if @league.save
         # Here is where we send out email invites to the people listed by the LC.  I've put this code here so that invites are only sent if the league creation is successful.
-        # for i in 1..8
-        #   name = "email#{i}"
-        #   unless params[:invite][name.to_sym] == ""
-        #     email = params[:invite][name.to_sym]
-        #     Invite.invite_email(email, @league.name, @league.confirmation_code)
-        #   end
-        # end
+        for i in 1..8
+          @name = "email#{i}"
+          unless params[:invite][@name.to_sym] == ""
+            @email = params[:invite][@name.to_sym]
+            Invite.invite_email(@email, @league.name, @league.confirmation_code).deliver
+          end
+        end
         
         # Here is where we log the user in by creating a new Session instance.
         session[:user_id] = @user.id
