@@ -36,14 +36,14 @@
 					%p.description#invite_description Invite up to 8 friends you'd like to have in your league.  Just enter their email addresses below and they will receive an invitation with your league name and confirmation code.  That's the ONLY email they'll ever receive from us, we promise!
 					%p.league_field
 						= label :invite, :email, 'Email Address', :class => "league_label"
-						= email_field :invite, :email, :class => "league_invite"
-						= email_field :invite, :email, :class => "league_invite"
-						= email_field :invite, :email, :class => "league_invite"
-						= email_field :invite, :email, :class => "league_invite"
-						= email_field :invite, :email, :class => "league_invite"
-						= email_field :invite, :email, :class => "league_invite"
-						= email_field :invite, :email, :class => "league_invite bottom_row"
-						= email_field :invite, :email, :class => "league_invite bottom_row"
+						= email_field :invite, :email1, :class => "league_invite"
+						= email_field :invite, :email2, :class => "league_invite"
+						= email_field :invite, :email3, :class => "league_invite"
+						= email_field :invite, :email4, :class => "league_invite"
+						= email_field :invite, :email5, :class => "league_invite"
+						= email_field :invite, :email6, :class => "league_invite"
+						= email_field :invite, :email7, :class => "league_invite bottom_row"
+						= email_field :invite, :email8, :class => "league_invite bottom_row"
 						%div.clear
 				= submit_tag 'Create New League!', :class => "new_league_submit"
 				
