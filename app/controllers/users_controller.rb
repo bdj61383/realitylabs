@@ -68,7 +68,7 @@ class UsersController < ApplicationController
       # @narray = @nusers * @nrounds
       
       # This handles an edge case where the LC has set teamsize to the maximum allowed and then another user joins the league.  In that instance, the teamsize would be greater than the maximum allowed or even possible, so we have to reset it manually to the maximum possible.
-      if @league.teamsize > @nrounds
+      if @league.teamsize.to_i > @nrounds
         @league.teamsize = @nrounds
         @league.save
       end
