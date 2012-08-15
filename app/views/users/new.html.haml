@@ -29,13 +29,14 @@
           %p.description#league_description Please enter the name and confirmation code of the league you are joining.  This info can be found in the email you received or from your friend who created the league.  
           %p.league_field
             = label :league, :name, 'League Name', :class => "league_label"
-            = text_field :league, :name, :class => "league_input"
+            = text_field :league, :name, :class => "league_input", :value => @league_name
 
           %p.league_field
             = label :league, :confirmation_code, 'League Code', :class => "league_label"
-            = text_field :league, :confirmation_code, :class => "league_input"
+            = text_field :league, :confirmation_code, :class => "league_input", :value => @league_code
           = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"
       %div.clear
+      %div= @params
 
       / = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"
 

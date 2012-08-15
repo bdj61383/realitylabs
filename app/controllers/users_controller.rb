@@ -92,6 +92,8 @@ class UsersController < ApplicationController
     # default: render 'new' template
     @league = League.new
     @user = User.new
+    @league_name = params[:league_name]
+    @league_code = params[:league_code]
   end
 
   def create

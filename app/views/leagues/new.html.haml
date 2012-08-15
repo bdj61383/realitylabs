@@ -1,7 +1,6 @@
 %div.hero
 	%div.hero_inset_image
 		%h1.league_header Create New League
-
 		= form_tag leagues_path do
 			%div.hero_left.new_user_hero_div
 				%div.opacity
@@ -10,6 +9,7 @@
 					%p.league_field
 						= label :league, :name, 'Name', :class => "league_label"
 						= text_field :league, :name, :class => "league_input"
+
 
 					%p.league_field
 						= label :league, :confirmation_code, 'Code', :class => "league_label"

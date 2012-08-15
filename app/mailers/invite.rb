@@ -5,7 +5,7 @@ class Invite < ActionMailer::Base
     @email = email
     @league_name = league_name
     @league_code = league_code
-    @url  = "http://realitylabs.herokuapp.com/users/new"
+    @url  = "http://realitylabs.herokuapp.com/users/new?league_name=#{@league_name}&league_code=#{@league_code}"
     mail(:to => @email, :subject => "You've been invited to join a Survivor Fantasy League!")
   end
 end

@@ -121,10 +121,6 @@ class LeaguesController < ApplicationController
       @contestants.each do |x|
         @hash.merge!(x.name => x.survive)
       end
-      
-      # This is to email an invitation to the people specified by the LC.  The code below works.
-      # @email = params[:invite][:email1]
-      # Invite.invite_email(@email, @league.name, @league.confirmation_code).deliver
 
       #this is for creating the :scoring_system default hash where 'survive'=>'1', etc.
       @score = {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1}
