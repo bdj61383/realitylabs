@@ -128,6 +128,11 @@ class LeaguesController < ApplicationController
       @league.update_attributes(:contestant_pool => @hash, :scoring_system => @score)
 
       if @league.save
+        # Here is where we send out email invites to the people listed by the LC.  I've put this code here so that invites are only sent if the league creation is successful.
+        emails = params[:invite][:email]
+        emails.each do |email|
+          Invite.invite_email(email, @league.name, @league.confirmation_code)
+        end
         # Here is where we log the user in by creating a new Session instance.
         session[:user_id] = @user.id
         redirect_to user_path(@user), :notice => "#{@league.name} successfully created!"
