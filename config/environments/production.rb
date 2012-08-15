@@ -49,7 +49,11 @@ Realitylabs::Application.configure do
   # config.assets.precompile += %w( search.js )
 
   # Disable delivery errors, bad email addresses will be ignored
-  # config.action_mailer.raise_delivery_errors = false
+  # I am setting this to 'true' as per the instructions on Heroku's site: https://devcenter.heroku.com/articles/smtp#2-configure-your-smtp-connection
+  config.action_mailer.raise_delivery_errors = false
+
+  # Configuring actionMailer for smtp as outlined on Heroku's website
+  config.action_mailer.delivery_method = :smtp
 
   # Enable threaded mode
   # config.threadsafe!
