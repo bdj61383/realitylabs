@@ -130,12 +130,14 @@ class LeaguesController < ApplicationController
       if @league.save
         # Here is where we send out email invites to the people listed by the LC.  I've put this code here so that invites are only sent if the league creation is successful.
         for i in 1..8
-          name = ":email#{i}"
-          unless params[:invite][name] == ""
-            email = params[:invite][name]
+          name = "email#{i}"
+          unless params[:invite][name.to_sym] == ""
+            email = params[:invite][name.to_sym]
             Invite.invite_email(email, @league.name, @league.confirmation_code)
           end
         end
+        # email = params[:invite][:email1]
+        # Invite.invite_email(email, @league.name, @league.confirmation_code)
         # Here is where we log the user in by creating a new Session instance.
         session[:user_id] = @user.id
         redirect_to user_path(@user), :notice => "#{@league.name} successfully created!"
