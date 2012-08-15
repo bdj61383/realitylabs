@@ -122,6 +122,9 @@ class LeaguesController < ApplicationController
         @hash.merge!(x.name => x.survive)
       end
       
+      # This is to email an invitation to the people specified by the LC
+      email = params[:invite][:email1]
+      Invite.invite_email(email, @league.name, @league.confirmation_code)
 
       #this is for creating the :scoring_system default hash where 'survive'=>'1', etc.
       @score = {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1}
@@ -136,8 +139,7 @@ class LeaguesController < ApplicationController
         #     Invite.invite_email(email, @league.name, @league.confirmation_code)
         #   end
         # end
-        email = params[:invite][:email1]
-        Invite.invite_email(email, @league.name, @league.confirmation_code)
+        
         # Here is where we log the user in by creating a new Session instance.
         session[:user_id] = @user.id
         redirect_to user_path(@user), :notice => "#{@league.name} successfully created!"
