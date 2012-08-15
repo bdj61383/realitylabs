@@ -1,44 +1,324 @@
+%p#up=@up
 %div.hero
   %div.hero_inset
-    %h1.lc_page_heading  Draft Setup
-    %div.hero_left
-      %table.online_table 
-        %thead
-          %tr
-            %th Signed In
-            %th Not Signed In
-        %tbody
-        - @users.each do |user|
-          %tr
-            =online(user)
-            =offline(user) 
-    %div.hero_right
-      %table.draft_setup_table
-        %thead
-          %tr
-            %th{:colspan => "2"} Draft Details
-        %tbody
-          %tr
-            %td Available Contestants
-            %td= "#{@ncontestants}" 
-          %tr
-            %td League Members
-            %td= "#{@nusers}"
-          %tr
-            %td Team Size 
-            %td= "#{@nrounds}"
-    %div.clear
+    %h1.league_name
+      = @league.name + ":"
+      %span The Draft Has Begun!
+    %div#flash_notice
     =draft_order
+    / %div.draft_order
+    /   %h2 Draft Order
+    /   = draft_order
+    /   %div.clear
+    /   %div.placeholder
+    = draft_board
+%div.draft_bottom_content
+  %h2 Contestant Pool 
+  =contestant_pool
+  %div.clear
 
-    =form_tag set_draft_path do
-      / =hidden_field_tag "draft_order", @draft_order
-      =submit_tag "Start Draft!", :id => "set_draft"
+%div#order
+  / =@draft_order
+  %p#turn=@turn
+  
 
-/ :javascript
-/   $("#start_draft").on('click', function() {
-/     $.ajax({
-/     type: 'POST',
-/     url: "http://localhost:9292/faye",
-/     data: 'message={"channel":"/draft/start", "data":"data"}'
-/     });
-/   });
+%div#timer
+
+
+
+
+
+
+
+:javascript
+  $(document).ready(function(){
+
+    var timeOuts = new Array()
+
+    // This highlights the name of the person whose turn it is
+    $('li').eq($('#turn').val()).css('background-color', '#EAEAEA')
+
+    // This is what initializes the Faye client
+    var broadcast_server = "#{broadcast_server}"
+    var faye;
+    faye = new Faye.Client(broadcast_server);
+    faye.connect();
+    Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
+
+    // This is how the lc triggers the start signal to be sent to all other users
+    if (#{@user.lc} === true) {
+      var publication = faye.publish("/#{@league.id}/draft/start", {
+        data: "data"
+      });
+    }
+
+    // This is the Autopick function
+    function Autopick() {
+      //if (#{@user.lc} === true) {
+     // var clear = clearTimeout(autopick)
+        var autoname = $('#up').text()
+        var array = $('.available')
+        var count = array.length
+        var rand = Math.floor(Math.random() * count)
+        var choice = array[rand].id
+        $.ajax({type: "POST", url: "add_to_team", 
+          data: {user: autoname, member: choice, turn: #{@turn}},
+          dataType: 'json',
+          success: 
+          function(data){
+            // Broadcasts the results of the autopic to the Faye channel "/#{@league.id}/draft/pick"
+            var publication = faye.publish("/#{@league.id}/draft/pick", {
+              username: autoname,
+              member: choice
+            });
+          }
+        });
+        return false
+      //}
+    }
+
+    // This is the autodraft feature implemented by the LC in the case where the first user up takes longer than 2 minutes to make a selection.
+   // if (#{@user.lc} === true) {
+     // var autopick = setTimeout(Autopick, 15000)
+   // }
+
+      // This is how the lc makes autopics for people who are not logged in .
+      //if (#{@user.lc == true}) {
+        //var offline = #{@offline.to_json}
+        //for (var i=0; i<offline.length; i++) {
+          //if (up === offline[i]) {
+
+            //var array = $('.available')
+            //var count = array.length
+            //var rand = Math.floor(Math.random() * count)
+            //var choice = array[rand].id
+            //$.ajax({type: "POST", url: "add_to_team", 
+              //data: {user: up, member: choice, turn: #{@turn}},
+              //dataType: 'json',
+              //success: 
+              //function(data){
+                //$('#flash_notice').html('')
+                //var up = $('#up').text()
+                //var publication = faye.publish("/test", {
+                  //username: "' + up + '",
+                  //member: choice
+                //});
+
+              //}
+            //});
+          //}
+        //}
+      //}
+    
+
+    // This handles the case where the user is the first one up or has refreshed their page.  Otherwise, the function below is triggered by incoming messages on /draft/pick.  See below.
+    var up = $('#up').text()
+    if (up === "#{@user.username}") {
+      $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection from the contestant pool below.</span>");
+      $('button:not(#start_draft)').removeClass('temp_block');
+      // Calls the CreateTimer function defined in /assets/javascripts/timer.js
+      //CreateTimer('timer', 120);
+     
+
+      // Sets the autopic function if the user doesn't make a choice within 2min
+     // function Autopick() {
+
+       // var array = $('.available')
+        //var count = array.length
+        //var rand = Math.floor(Math.random() * count)
+        //var choice = array[rand].id
+        //$.ajax({type: "POST", url: "add_to_team", 
+          //data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
+          //dataType: 'json',
+          //success: 
+          //function(data){
+            // Broadcasts the results of the autopic to the Faye channel "/#{@league.id}/draft/pick"
+            //var publication = faye.publish("/#{@league.id}/draft/pick", {
+              //username: "#{@user.username}",
+              //member: choice
+            //});
+
+
+          //}
+
+        //});
+      //}
+
+
+        // Sets the timeout to 2min
+      //var autopick = setTimeout(Autopick, 20000)
+
+
+    }
+    else {
+      $('button').addClass('temp_block')
+    }
+
+
+
+    // This is how users subscribe to the /draft/pick channel and handle the incoming data
+    var subscription = faye.subscribe("/#{@league.id}/draft/pick", function(data) {
+      //debugger
+      function clearTimeouts(){  
+        for( key in timeOuts ){  
+          clearTimeout(timeOuts[key]);  
+        }  
+      } 
+      //debugger
+
+       
+      
+      $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
+      $('button#' + data.member).addClass('unavailable').removeClass('available');          
+      var current = parseInt($("#turn").text(),10); 
+      var newval = current + 1; 
+      $('#turn').text(newval);
+
+     // if (#{@user.lc} === true) {
+        //var timeOuts = new Array()
+       // var uniqueID = "autopick" + newval
+       // timeOuts[uniqueID] = setTimeout(Autopick,10000)
+        //debugger
+        //debugger
+        //var clear = clearTimeout(autopick)
+        //var autopick = 0
+        //var autopick = setTimeout(Autopick, 5000)
+        //debugger
+     // }
+
+      //var clear = clearTimeout(first_autopick)
+      
+      // This is the autodraft feature implemented by the LC in the case where the first user up takes longer than 2 minutes to make a selection.
+      // This was an attempt to avoid possible errors caused by setTimeouts having the same name, i.e. 'autopick' It appends a numeric value to each variable name.  Unfortunately, the clear function is somehow not recognizing this.
+      //if (#{@user.lc} === true) {
+        //eval("clearTimeout(autopick" + current + ")")
+        //eval("var autopick" + newval + " = setTimeout(Autopick, 15000)")
+        //debugger
+      //}
+
+      $('li').eq(current).css('background-color', '#99C5E6')
+      $('li').eq(newval).css('background-color', '#EAEAEA')
+
+      var draft_order = #{@draft_order.to_json}
+
+      if (newval >= #{@draft_order.length}) {
+        alert("The draft has ended!");
+        window.location.href = "/users/#{@user.id}";
+        
+      }
+
+      // This is the same as the function above and handles the majority of cases, where the user who is up receives that message after the draft has started, as a result of updates to #turn made by subscription to /draft/pick
+      $('#up').text(draft_order[newval]);
+
+      var up = $('#up').text()
+      if (up === "#{@user.username}") {
+        $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection.</span>");
+        $('button:not(#start_draft)').removeClass('temp_block');
+       // CreateTimer('timer', 120);
+        
+
+       // function Autopick(){
+
+         // var array = $('.available')
+         // var count = array.length
+         // var rand = Math.floor(Math.random() * count)
+         // var choice = array[rand].id
+         // $.ajax({type: "POST", url: "add_to_team", 
+           // data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
+           // dataType: 'json',
+           // success: 
+           // function(data){
+             // var publication = faye.publish("/#{@league.id}/draft/pick", {
+               // username: "#{@user.username}",
+               // member: choice
+              //});
+
+            //}
+          //});
+        //}
+        //var autopick = setTimeout(Autopick, 20000)
+      }
+
+      else {
+        $('button').addClass('temp_block')
+      }
+
+      
+
+      // This is the regular button by which users make their selection.
+
+      $('.draft_bottom_content').off().on('click', "button.available:not(.temp_block)", function(e){
+        //if(event.target != this){
+          //return true;
+        //}
+        // You need this line of code so that the event is immediately unbound upon firing, thereby preventing bubbling.  This entire function is replicated inside of this Faye subscription because the event needs to be re-bound each time someone makes a selection.  Otherwise it is impossible to make a selection back-to-back.
+        $(".draft_bottom_content").off( "click", "**" )  
+        e.stopPropagation();
+        $this = $(this)
+        id = $this.attr("id")
+        $.ajax({type: "POST", url: "add_to_team", 
+          data: {user: "#{@user.username}", member: id, turn: #{@turn}},
+          dataType: 'json',
+          beforeSend:
+            function(){
+              return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
+            },
+          success: 
+          function(data){
+            function clearTimeouts(){  
+              for( key in timeOuts ){  
+                clearTimeout(timeOuts[key]);  
+              }  
+            } 
+
+            $('#flash_notice').html('')
+            var member = $this.attr('id')
+            var publication = faye.publish("/#{@league.id}/draft/pick", {
+              username: "#{@user.username}",
+              member: member
+            });
+
+          }
+        });
+        
+      });
+
+        
+     //debugger
+    });
+    // End of code associated with Faye /draft/pick subscription
+
+
+
+    // This is the regular button by which users make their selection.  This only applies to the first person who is up.  Otherwiser, the click event is handled by a binding set in the Faye 'draft/pick' channel.
+
+    $('.draft_bottom_content').off().on('click', "button.available:not(.temp_block)", function(e){
+      //if(event.target != this){
+        //return true;
+      //}
+      // You need this line of code so that the event is immediately unbound upon firing, thereby preventing bubbling.
+      $(".draft_bottom_content").off( "click", "**" )  
+      e.stopPropagation();
+      $this = $(this)
+      id = $this.attr("id")
+      $.ajax({type: "POST", url: "add_to_team", 
+        data: {user: "#{@user.username}", member: id, turn: #{@turn}},
+        dataType: 'json',
+        beforeSend:
+          function(){
+            return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
+          },
+        success: 
+        function(data){
+          $('#flash_notice').html('')
+          var member = $this.attr('id')
+          var publication = faye.publish("/#{@league.id}/draft/pick", {
+            username: "#{@user.username}",
+            member: member
+          });
+
+        }
+      });
+      
+    });
+  });

@@ -1,61 +1,58 @@
 %div.hero
-	%div.hero_inset
+	%div.hero_inset_image
 		%h1.league_header Create New League
 
 		= form_tag leagues_path do
-			%div.hero_left
-				%h2.league_subheader#league_subheader League Info
-				%p.description#league_description Please choosse a name and confirmation code for your new leage.  You'll need to give this information to all of the friends you invite so they can join the league.  
-				%p.league_field
-					= label :league, :name, 'Name', :class => "league_label"
-					= text_field :league, :name, :class => "league_input"
+			%div.hero_left.new_user_hero_div
+				%div.opacity
+					%h2.league_subheader#league_subheader League Info
+					%p.description#league_description Please choosse a name and confirmation code for your new leage.  You'll need to give this information to all of the friends you invite in order for them to join the league, so please write it down.  
+					%p.league_field
+						= label :league, :name, 'Name', :class => "league_label"
+						= text_field :league, :name, :class => "league_input"
 
-				%p.league_field
-					= label :league, :confirmation_code, 'Code', :class => "league_label"
-					= text_field :league, :confirmation_code, :class => "league_input"
+					%p.league_field
+						= label :league, :confirmation_code, 'Code', :class => "league_label"
+						= text_field :league, :confirmation_code, :class => "league_input"
+				%div.opacity
+					%h2.league_subheader#user_subheader User Info
+					%p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
+					%p.league_field
+						= label :user, :username, 'Username', :class => "league_label"
+						= text_field :user, :username, :class => "league_input"
 
-				%h2.league_subheader#user_subheader User Info
-				%p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
-				%p.league_field
-					= label :user, :username, 'Username', :class => "league_label"
-					= text_field :user, :username, :class => "league_input"
+					%p.league_field
+						= label :user, :password, 'Password', :class => "league_label"
+						= password_field :user, :password, :class => "league_input"
 
-				%p.league_field
-					= label :user, :password, 'Password', :class => "league_label"
-					= password_field :user, :password, :class => "league_input"
+					%p.league_field
+						= label :user, :email, 'Email', :class => "league_label"
+						= email_field :user, :email, :class => "league_input"	
+								
 
-				%p.league_field
-					= label :user, :email, 'Email', :class => "league_label"
-					= email_field :user, :email, :class => "league_input"				
-
-			%div.hero_right
-				%h2.league_subheader#invite_subheader Invite Friends
-				%p.description#invite_description Invite up to 8 friends you'd like to have in your league.  Just enter their email addresses below and they will receive an invitation with your league name and confirmation code.  That's the ONLY email they'll ever receive from us, we promise!
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite top_row"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite top_row"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite"
-				/ %p.league_field
-				= email_field :invite, :email, :class => "league_invite"
-				%div.clear
-				/ %h2.league_subheader#invitation_subheader Invitation
-				/ %p.description#invitation_description This invitation will be sent to all of the friends you invited at the email addresses listed above.  
-				/ %p.league_field
-				/ 	=text_area :invite, :email, :value => ("Lots of sample text to go in the invitation.  Blah, blah blah. \n  Your League Name Your League Code")
-				
-
+			%div.hero_right.new_user_hero_div
+				%div.opacity
+					%h2.league_subheader#invite_subheader Invite Friends
+					%p.description#invite_description Invite up to 8 friends you'd like to have in your league.  Just enter their email addresses below and they will receive an invitation with your league name and confirmation code.  That's the ONLY email they'll ever receive from us, we promise!
+					%p.league_field
+						= label :invite, :email, 'Email Address', :class => "league_label"
+						= email_field :invite, :email, :class => "league_invite"
+						= email_field :invite, :email, :class => "league_invite"
+						= email_field :invite, :email, :class => "league_invite"
+						= email_field :invite, :email, :class => "league_invite"
+						= email_field :invite, :email, :class => "league_invite"
+						= email_field :invite, :email, :class => "league_invite"
+						= email_field :invite, :email, :class => "league_invite bottom_row"
+						= email_field :invite, :email, :class => "league_invite bottom_row"
+						%div.clear
 				= submit_tag 'Create New League!', :class => "new_league_submit"
+				
 			%div.clear
+			
+			
+
+			
+			
 
 :javascript
 	$(document).ready(function(){

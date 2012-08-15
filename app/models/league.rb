@@ -1,5 +1,5 @@
 class League < ActiveRecord::Base
-	attr_accessible :name, :confirmation_code, :username, :password, :league_id, :contestant_pool, :scoring_system, :draft_order, :draft_active, :draft_round, :draft_start
+	attr_accessible :name, :confirmation_code, :username, :password, :league_id, :contestant_pool, :scoring_system, :draft_order, :draft_active, :draft_round, :draft_start, :team_size
 	has_many :users
 	# @hash = {}
 	# @contestants = Contestant.all

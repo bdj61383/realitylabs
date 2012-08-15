@@ -2,6 +2,28 @@ class LeaguesController < ApplicationController
 	include ActiveModel::MassAssignmentSecurity
   respond_to :html, :xml, :json
 
+  include ActiveModel::MassAssignmentSecurity
+  module Exceptions
+    class AuthenticationError < StandardError 
+    end
+    class BlankLeagueNameOrCode < AuthenticationError 
+    end
+    class BlankUsernameOrPassword < AuthenticationError 
+    end
+  end
+  rescue_from Exceptions::BlankLeagueNameOrCode, :with => :blank_league
+  rescue_from Exceptions::BlankUsernameOrPassword, :with => :blank_password
+
+  def blank_league
+    redirect_to start_league_path
+    flash[:notice] = "Blank league name or confirmation code"
+  end
+
+  def blank_password
+    redirect_to start_league_path
+    flash[:notice] = "Blank username or password"
+  end
+
   def index
     @leagues = League.all
   end
@@ -10,6 +32,32 @@ class LeaguesController < ApplicationController
   end
 
   def update
+    @league = League.find_by_id(params[:id])
+
+    if params[:league_update_type] == 'league_update_score_sys'
+      @league.scoring_system[:survive] = params[:survive]
+      @league.scoring_system[:immunity] = params[:immunity]
+      @league.scoring_system[:merger] = params[:merger]
+      @league.scoring_system[:final_three] = params[:final_three]
+      @league.scoring_system[:winner] = params[:winner]
+
+      if @league.save
+        render :js => "$('#score_sys_response').text('Update successful!')" 
+      else
+        render :js => "$('#score_sys_response').text('Oops, that didn't work.')"
+      end
+    end
+
+    if params[:league_update_type] == 'league_update_teamsize'
+      @league.teamsize = params[:teamsize]
+
+      if @league.save
+        render :js => "$('#teamsize_response').text('Update successful!')" 
+      else
+        render :js => "$('#teamsize_response').text('Oops, that didn't work.')"
+      end
+    end
+
   end
 
   def add_to_team
@@ -53,57 +101,65 @@ class LeaguesController < ApplicationController
   end
 
   def create
-    @league = League.new(params[:league])
-    @user = @league.users.build(params[:user])
-    @league_id = @league.id
+
+    
     # @user.update_attribute('league_id', @league_id)
     # @user.update_attribute('lc', 1)
-    @user.update_attributes(:league_id => @league_id, :lc => 1)
-
-    #this is for creating the :contestant_pool default hash where 'name'=>'survive'
-    @hash = {}
-    @contestants = Contestant.all
-    @contestants.each do |x|
-      @hash.merge!(x.name => x.survive)
-    end
-    
-
-    #this is for creating the :scoring_system default hash where 'survive'=>'1', etc.
-    @score = {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1}
-    @league.update_attributes(:contestant_pool => @hash, :scoring_system => @score)
-
-    if @league.save
-      # Here is where we log the user in by creating a new Session instance.
-      session[:user_id] = @user.id
-      redirect_to user_path(@user), :notice => "#{@league.name} successfully created!"
+    if params[:league][:name] == "" || params[:league][:confirmation_code] == ""
+      raise Exceptions::BlankLeagueNameOrCode
+    elsif params[:user][:username] == "" || params[:user][:password] == "" 
+      raise Exceptions::BlankUsernameOrPassword        
     else
-      render :action => 'new'
+      @league = League.new(params[:league])
+      @user = @league.users.build(params[:user])
+      @league_id = @league.id
+      @user.update_attributes(:league_id => @league_id, :lc => 1)
+
+      #this is for creating the :contestant_pool default hash where 'name'=>'survive'
+      @hash = {}
+      @contestants = Contestant.all
+      @contestants.each do |x|
+        @hash.merge!(x.name => x.survive)
+      end
+      
+
+      #this is for creating the :scoring_system default hash where 'survive'=>'1', etc.
+      @score = {:survive => 1, :immunity => 1, :merger => 1, :final_three => 1, :winner => 1}
+      @league.update_attributes(:contestant_pool => @hash, :scoring_system => @score)
+
+      if @league.save
+        # Here is where we log the user in by creating a new Session instance.
+        session[:user_id] = @user.id
+        redirect_to user_path(@user), :notice => "#{@league.name} successfully created!"
+      else
+        render :action => 'new'
+      end
+      flash[:notice] = "#{@league.name} was successfully created." # Had to comment this out to get my tests working correctly.  Worrisome.
+      # redirect_to leagues_path
     end
-    flash[:notice] = "#{@league.name} was successfully created." # Had to comment this out to get my tests working correctly.  Worrisome.
-    # redirect_to leagues_path
   end
 
 # This is the LC Control Panel
-  def draft
+  def draft_preview
     @league = League.find_by_id(params[:id])
 
-    # This is to update the :contestant_pool attribute for the draft
-    @hash = {}
-    @contestants = Contestant.all
-    @contestants.each do |x|
-      @hash.merge!(x.name => x.survive)
-    end
-    @hash = @hash.delete_if{|key, value| value == false}
-    @league.update_attributes(:contestant_pool => @hash)
+    # # This is to update the :contestant_pool attribute for the draft
+    # @hash = {}
+    # @contestants = Contestant.all
+    # @contestants.each do |x|
+    #   @hash.merge!(x.name => x.survive)
+    # end
+    # @hash = @hash.delete_if{|key, value| value == false}
+    # @league.update_attributes(:contestant_pool => @hash)
     
     @users = @league.users
     @user = current_user
     @ncontestants = @league.contestant_pool.length
     @nusers = @users.count
-    @nrounds = (@ncontestants / @nusers).floor
+    @nrounds = @league.teamsize
     @narray = @nusers * @nrounds
 
-    # This is how we will set up the array that basically is the draft pick-list and assign it to the league's :draft_pick attribute.  
+    # This is how we will set up the array that basically is the draft pick-list and assign it to the league's :draft_order attribute.  
     @pick_list = []
     for i in 1..@nrounds
       if i.odd?
@@ -119,7 +175,6 @@ class LeaguesController < ApplicationController
         end
       end
     end
-
     @draft_order = []
     @pick_list.each do |x|
       @draft_order << x.username
@@ -137,10 +192,20 @@ class LeaguesController < ApplicationController
     end
   end
 
-  def set_draft
+  def start_draft
+    # This is just used to redirect people if they try to access this action and they aren't the lc for this league.
+    @user = current_user
+    if @user == nil
+      redirect_to log_in_path
+    else
+      unless @user.lc == true && @user.league_id == params[:id].to_i
+      # unless @user.league_id == @id
+        redirect_to user_path(@user)
+      end
+    end
     
     League.find_by_id(params[:id]).update_attributes(:draft_active => true, :draft_start => true)
-    redirect_to draft_page_path
+    redirect_to draft_path
     # sleep(2)
     # redirect_to log_in_path
     
@@ -153,7 +218,7 @@ class LeaguesController < ApplicationController
   # end
 
 
-  def start_draft
+  def draft
     # This begins the draft
     # if League.find_by_id(params[:id]).draft_start == true
     #   sleep(2)
@@ -190,7 +255,7 @@ class LeaguesController < ApplicationController
       @team = @user.team
       @ncontestants = @league.contestant_pool.length
       @nusers = @users.count
-      @nrounds = (@ncontestants / @nusers).floor
+      @nrounds = @league.teamsize
       @narray = @nusers * @nrounds
       @turn = @league.draft_round
       @up = @draft_order[@turn]

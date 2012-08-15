@@ -36,7 +36,44 @@ class UsersController < ApplicationController
     else 
       @league = @user.league
       @users = @league.users
+
+      # This is to update the :contestant_pool attribute for the draft, but only if the draft hasn't already taken place.
+      if current_user.lc == true && @league.draft_start == false
+        @hash = {}
+        @contestants = Contestant.all
+        @contestants.each do |x|
+          @hash.merge!(x.name => x.survive)
+        end
+        @hash = @hash.delete_if{|key, value| value == false}
+        @league.update_attributes(:contestant_pool => @hash)
+      end
+
+      # This sets up the array for the 'drop user' form on the LC's page.  It's just an array of each user's name, excluding the LC.
+      @usernames = []
+      @drop_users = []
+      @users.each do |user|
+        @usernames << user.username
+        unless user.lc == true
+          @drop_users << user
+        end
+      end
+
       @round = Contestant.find_by_id(1).round
+      @lc = @users.find_by_lc(true)
+      # @draft_order = @league.draft_order
+      @team = @user.team
+      @ncontestants = @league.contestant_pool.length
+      @nusers = @users.count
+      @nrounds = (@ncontestants / @nusers).floor
+      # @narray = @nusers * @nrounds
+      
+      # This handles an edge case where the LC has set teamsize to the maximum allowed and then another user joins the league.  In that instance, the teamsize would be greater than the maximum allowed or even possible, so we have to reset it manually to the maximum possible.
+      if @league.teamsize > @nrounds
+        @league.teamsize = @nrounds
+        @league.save
+      end
+      
+
       
     end
   end
@@ -77,6 +114,21 @@ class UsersController < ApplicationController
         redirect_to sign_up_path
       end
     end
+  end
+
+  def delete_user
+    @drop_user = User.find_by_id(params[:drop_user])
+    @drop_user.delete
+    render :js => "$('#drop_user_response').text('#{@drop_user.username} has been deleted.'); $('#drop_user option[value=#{@drop_user.id}]').remove()" 
+  end
+
+  def first_visit
+    @user = current_user
+    @user.update_attribute('first_visit', false)
+    # @user.first_visit = false
+    # if @user.save
+    render :js => "$('#first_visit_response').text('This box will be gone next time you visit.')" 
+    # end
   end
 
 end

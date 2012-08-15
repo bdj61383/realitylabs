@@ -1,40 +1,43 @@
 %div.hero
-  %div.hero_inset
+  %div.hero_inset_image
     %h1.league_header Create New User
 
     = form_tag users_path do
-      %div.hero_left
-        %h2.league_subheader#user_subheader User Info
-        %p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
-        %p.league_field
-          = label :user, :username, 'Username', :class => "league_label"
-          = text_field :user, :username, :class => "league_input"
+      %div.hero_left.new_user_hero_div
+        %div.opacity
+          %h2.league_subheader#user_subheader User Info
+          %p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
+          %p.league_field
+            = label :user, :username, 'Username', :class => "league_label"
+            = text_field :user, :username, :class => "league_input"
 
-        %p.league_field
-          = label :user, :password, 'Password', :class => "league_label"
-          = text_field :user, :password, :class => "league_input"
+          %p.league_field
+            = label :user, :password, 'Password', :class => "league_label"
+            = text_field :user, :password, :class => "league_input"
 
-        %p.league_field
-          = label :user, :password_confirmation, 'Confirm Password', :class => "league_label"
-          = text_field :user, :password_confirmation, :class => "league_input"
+          %p.league_field
+            = label :user, :password_confirmation, 'Confirm Password', :class => "league_label"
+            = text_field :user, :password_confirmation, :class => "league_input"
 
-        %p.league_field
-          = label :user, :email, 'Email', :class => "league_label"
-          = email_field :user, :email, :class => "league_input" 
+          %p.league_field
+            = label :user, :email, 'Email', :class => "league_label"
+            = email_field :user, :email, :class => "league_input" 
 
-      %div.hero_right
-        %h2.league_subheader#league_subheader League Info
-        %p.description#league_description Please enter the name and confirmation code of the league you are joining.  This info can be found in the email you received or from your friend who created the league.  
-        %p.league_field
-          = label :league, :name, 'League Name', :class => "league_label"
-          = text_field :league, :name, :class => "league_input"
+      %div.hero_right.new_user_hero_div
+        %div.opacity
+          %h2.league_subheader#league_subheader League Info
+          %p.description#league_description Please enter the name and confirmation code of the league you are joining.  This info can be found in the email you received or from your friend who created the league.  
+          %p.league_field
+            = label :league, :name, 'League Name', :class => "league_label"
+            = text_field :league, :name, :class => "league_input"
 
-        %p.league_field
-          = label :league, :confirmation_code, 'League Confirmation Code', :class => "league_label"
-          = text_field :league, :confirmation_code, :class => "league_input"
+          %p.league_field
+            = label :league, :confirmation_code, 'League Code', :class => "league_label"
+            = text_field :league, :confirmation_code, :class => "league_input"
+          = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"
       %div.clear
 
-      = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"
+      / = submit_tag 'Create New User', :class => "new_league_submit new_user_submit"
 
 :javascript
   $(document).ready(function(){

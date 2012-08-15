@@ -11,7 +11,7 @@
 </head>
 <body class="bg_gradient">
   <header class = 'main_header'>
-    <div class = 'rl_logo'><img alt="Reality Labs" src="/assets/rl_logo.png"></div>
+    <div class = 'rl_logo'><a href = "/"><img alt="Reality Labs" src="/assets/rl_logo.png"></a></div>
     <div class = 'surv_logo'> <img alt="Survivor Fantasy League" src="/assets/surv_logo.png"></div>
     <% if current_user %>
       <div class = 'signout'>
@@ -36,5 +36,6 @@
 <%= yield %>
     </div>
   </div>
+  
 </body>
 </html>

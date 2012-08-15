@@ -3,9 +3,9 @@
     =image_tag('left-scroll.png', :class => 'left_scroll', :id => 'left_scroll')
     =image_tag('right-scroll.png', :class => 'right_scroll', :id => 'right_scroll')
   %div#hero.hero_inset
-    =image_tag('hero_4.jpg')
-    =image_tag('hero_5.jpg')
-    =image_tag('hero_6.jpg')
+    =image_tag('hero_4.jpg', :class => 'hero_image')
+    =image_tag('hero_5.jpg', :class => 'hero_image')
+    =image_tag('hero_6.jpg', :class => 'hero_image')
   %div.start_game
     %div.new_league
       %button#new_league Start a league
@@ -60,7 +60,7 @@
       =link_to 'CBS Cast Bios', 'http://www.cbs.com/shows/survivor/cast/'
 %div.sidebar 
   %ul
-    %li#about About
+    %li#about.active About
     %li#rules How to Play
     %li#cast Meet the Cast
     %li#my_survivor My Survivor
@@ -106,16 +106,22 @@
 
     // This handles the behavior of links in the sidebar.
     $('#about').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
       $('div.bottom_content > div').css('display', 'none')
       $('.about').css('display', 'block')
     })
 
     $('#rules').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
       $('div.bottom_content > div').css('display', 'none')
       $('.rules').css('display', 'block')
     })
 
     $('#cast').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
       $('div.bottom_content > div').css('display', 'none')
       $('.cast').css('display', 'block')
     })

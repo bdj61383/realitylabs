@@ -3,11 +3,11 @@ Realitylabs::Application.routes.draw do
   get "log_in" => "sessions#new", :as => "log_in"
   get "sign_up" => "users#new", :as => "sign_up"
   get "start_league" => 'leagues#new', :as => 'start_league'
-  post "leagues/:id/draft" => 'leagues#start_draft', :as => 'start_draft'
-  get 'leagues/:id/draft_page' => 'leagues#start_draft', :as => 'draft_page'
-  post "leagues/:id/add_to_team" => 'leagues#add_to_team', :as => 'add_to_team'
-  post "leagues/:id/set_draft" => 'leagues#set_draft', :as => 'set_draft'
-  post "leagues/:id/begin_draft" => 'leagues#begin_draft', :as => 'begin_draft'
+  post "leagues/:id/start_draft" => 'leagues#start_draft', :as => 'start_draft'
+  get 'leagues/:id/draft' => 'leagues#draft', :as => 'draft'
+  post "leagues/:id/add_to_team" => 'leagues#add_to_team', :as => 'add_to_team'  
+  post "users/:id/delete_user" => 'users#delete_user', :as => 'delete_user'
+  get 'users/:id/first_visit' => 'users#first_visit', :as => 'first_visit'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -38,6 +38,7 @@ Realitylabs::Application.routes.draw do
   resources :leagues do
     member do
       get 'draft'
+      get 'draft_preview'
     end
   end
 

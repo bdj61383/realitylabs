@@ -12,19 +12,5 @@
  *= require_tree .
 */
 
-.available {
-	background-color: green
-}
 
-.unavailable {
-	background-color: red
-}
-
-.temp_block {
-	opacity: .5
-}
-
-#start_draft {
-	opacity: .5;
-}
 

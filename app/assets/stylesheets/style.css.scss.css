@@ -437,7 +437,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
             inset 0px 0px 0px rgba(0,0,0,0.5),  
             inset -1px -1px 2px #3b3b3b; /*bevel effect*/ 
 
-  img {
+  .hero_image {
     padding-top: 15px;
     padding-left: 15px;
     width: 798px;
@@ -671,7 +671,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
 .sidebar {
   position: relative;
   width: 200px;
-  height: 230px;
+  /*height: 230px;*/
   float: left;
   left: 80px;
   top: -50px;
@@ -686,13 +686,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   ul, ul li a {
     text-decoration: none;
     list-style: none;
-    line-height: 48px;
+    /*line-height: 48px;*/
     color: white;
     font-size: 18px;
     li:hover, li a:hover {
       cursor:pointer;cursor:hand;
       color: #97C3E4;
     }
+  }
+  li {
+    margin-bottom: 29px;
+  }
+  li.active {
+    color: #97C3E4;
   }
 }
 
@@ -712,143 +718,174 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
 
 
 /* The stylings below are for the each user's individual page (i.e. /users/#{user.id})*/
-.league_name {
+.black_overlay{
+      /*display: none;*/
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 843px;
+      background-color: black;
+      z-index:1001;
+      -moz-opacity: 0.8;
+      opacity:.80;
+      filter: alpha(opacity=80);
+    }
+
+.tutorial {
+  /*display: none;*/
+  color: black;
+  font-family: helvetica, sans-serif;
+  position: absolute;
+  top: 0px;
+  left: 192px;
+  width: 415px;
+  /*height: 50%;*/
+  padding: 16px;
+  border: 8px solid #FFC000;
+  background-color: white;
+  z-index:1002;
+  overflow: auto;
+  h2 {
+    text-align: center;
+  }
+  p {
+    text-align: justify;
+    padding-top: 10px;
+    &.first_visit_response {
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+  a {
+    font-size: 12px;
+  }
+}
+
+.down_arrow {
+  position: absolute;
+  z-index:1002;
+  top: 300px;
+  left: 366px;
+}
+
+
+.hero_inset_image {
+  position: relative;
+  min-height: 394px;
+  width: 830px;
+  margin: 0 auto;
+  /*padding-bottom: 15px;*/
+  /*top: 12px;*/
+  /*margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;*/
+  background-image: url('hero_tropicalbckgrnd.jpg');
+  color: white;
+  font-family: 'ThrowMyHandsUpintheAirRegular';
+  background-color: #eaeaea;
+  -webkit-border-radius: 3px; /* Saf3-4, iOS 1-3.2, Android ≤1.6 */
+          border-radius: 3px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
+  -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
+  -webkit-box-shadow: 2px 2px 6px 1px #33373B; /* Saf3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+          box-shadow: 2px 2px 6px 1px #33373B, /* Opera 10.5, IE9, FF4+, Chrome 6+, iOS 5 */
+            inset 0px 0px 0px rgba(0,0,0,0.5),  
+            inset -1px -1px 2px #3b3b3b; /*bevel effect*/ 
+
+  h1.league_name {
+    position: relative;
+    left: 592px;
+    top: 20px;
+    width: 236px;
+  }
+  h3 {
+    font-size: 24px;
+  }
+  ul {
+    margin: 0;
+  }
+/*  &.new_league_user_div {
+    padding-bottom: 15px;
+  }*/
+}
+
+/*.league_name {
   text-align: center;
   padding-top: 60px;
-}
+}*/
 
 .round_number {
   text-align: center;
+  font-size: 18px;
+  position: relative;
+  top: -5px;
 }
 
 .hero_left {
   width: 415px;
   position: relative;
   float: left;
+  /*margin-top: 100px;*/
   
-  h3.scoreboard_title {
+  .scoreboard_title {
     text-align: center;
   }
 
   .user_score {
     padding: 10px 0px 10px 70px;
   }
-  /*table.scoreboard {
-    border-width: 1px;
-    border-spacing: 2px;
-    border-style: outset;
-    border-color: gray;
-    border-collapse: separate;
-    background-color: white;
-    margin: 15px auto 0px auto;
-    width: 355px;
-    th {
-      border-width: 2px;
-      padding: 1px;
-      border-style: inset;
-      border-color: gray;
-      background-color: white;
-      -moz-border-radius: 0;
-    }
-    td {
-      border-width: 2px;
-      padding: 1px;
-      border-style: inset;
-      border-color: gray;
-      background-color: white;
-      -moz-border-radius: 0;
-    }
+
+  .cast_userpage {
+    display: block;
+  }
+
+  &.new_user_hero_div {
+    margin-top: 20px;
+  }
+  &.user_hero_div {
+    margin-top: 100px;
+  }
+}
+
+table.scoreboard, table.scoring_system_table {
+  /*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
+  font-family: "Helvetica", Sans-Serif;
+  font-size: 12px;
+  width: 355px;
+  text-align: left;
+  border-collapse: collapse;
+  margin: 0px auto 15px auto;
+/*    .first_col {
+    width: 100px;
   }*/
-
-
-
-  /* An alternate table design*/
-  /*table.scoreboard {
-  border: 1px solid #e3e3e3;
-  background-color: #f2f2f2;
-        width: 100%;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  }
-  table.scoreboard td, table.scoreboard th {
-    padding: 5px;
-    color: #333;
-  }
-  table.scoreboard thead {
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-    padding: .2em 0 .2em .5em;
-    text-align: left;
-    color: #4B4B4B;
-    background-color: #C8C8C8;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#e3e3e3), color-stop(.6,#B3B3B3));
-    background-image: -moz-linear-gradient(top, #D6D6D6, #B0B0B0, #B3B3B3 90%);
-    border-bottom: solid 1px #999;
-  }
-  table.scoreboard th {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 17px;
-    line-height: 20px;
-    font-style: normal;
-    font-weight: normal;
-    text-align: left;
-    text-shadow: white 1px 1px 1px;
-  }
-  table.scoreboard td {
-    line-height: 20px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  thead th {
     font-size: 14px;
-    border-bottom: 1px solid #fff;
-    border-top: 1px solid #fff;
+    font-weight: normal;
+    background: #739DBD;
+    border-top: 4px solid #4C7593;
+    border-bottom: 1px solid white;
+    color: #244B68;
+    padding: 8px 8px 8px 20px;
   }
-  table.scoreboard td:hover {
-    background-color: #fff;
-  }*/
-
-
-
-
-    table.scoreboard {
-    /*font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;*/
-    font-family: "Helvetica", Sans-Serif;
+  tbody tr td {
+    background: #99C5E6;
+    border-bottom: 1px solid white;
+    color: #669;
+    border-top: 1px solid transparent;
+    padding: 8px 8px 8px 20px;
     font-size: 12px;
-    width: 355px;
-    text-align: left;
-    border-collapse: collapse;
-    margin: 15px auto 15px auto;
-    thead th {
-      font-size: 16px;
-      font-weight: normal;
-      background: #739DBD;
-      border-top: 4px solid #4C7593;
-      border-bottom: 1px solid white;
-      color: #244B68;
-      padding: 8px 8px 8px 40px;
-    }
-    tbody tr td {
-      background: #99C5E6;
-      border-bottom: 1px solid white;
-      color: #669;
-      border-top: 1px solid transparent;
+  }
+  tfoot tr td {
+    background: #99C5E6;
+    border-bottom: 1px solid white;
+    color: #244B68;
+    border-top: 1px solid transparent;
+    padding: 8px 8px 8px 40px;
+    font-size: 16px;
+    &:last-child {
       padding: 8px 8px 8px 55px;
-      font-size: 14px;
-    }
-    tfoot tr td {
-      background: #99C5E6;
-      border-bottom: 1px solid white;
-      color: #244B68;
-      border-top: 1px solid transparent;
-      padding: 8px 8px 8px 40px;
-      font-size: 16px;
-      &:last-child {
-        padding: 8px 8px 8px 55px;
-      }
     }
   }
-
-
-
-
 }
 
 .hero_right {
@@ -856,10 +893,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   position: relative;
   float: left;
   text-align: center;
-  table {
+  /*margin-top: 100px;*/
+  .arrow-scroll-left {
+    width: 30px;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 70px;
+  }
+  .arrow-scroll-right {
+    width: 30px;
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 340px;
+  }
+/*  .team_table_title {
+    width: 355px;
+  }*/
+  .teams {
+    left: 45px;
+  }
+  table.contestants {
     /*background-color: #B6C7D4;*/
     width: 355px;
-    margin: 0px auto 15px auto;
+    margin: 25px auto 15px auto;
     /*tr:first-child {
       td {
         img {
@@ -868,17 +926,79 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
       }
     }*/
     td {
-      padding: 0px 8px 0px 8px;
+      padding: 0px 0px 0px 0px;
+      width: 118px;
+      height: 146px;
       img {
         width: 91px;
         height: 114px;
       }
-      h4 {
+      h3 {
+        font-family: helvetica, sans-serif;
         font-size: 12px;
-        width: 66px;
-        /*margin: 0 auto;*/
-        margin-left: 28px;
+        width: 118px;
+        margin-top: 2px;
       }
+    }
+  }
+  &.new_user_hero_div {
+    margin-top: 20px;
+  }
+  &.user_hero_div {
+    margin-top: 100px;
+  }
+}
+
+.bottom_content {
+  .scoring_system {
+    display: none;
+  }
+  sup.teamsize {
+    text-decoration: underline;
+  }
+  sub.teamsize {
+    position: relative;
+    left: -122px;
+  }
+  .hide {
+      display: none;
+    }
+  .rules_header {
+    &:hover {
+    cursor:pointer;cursor:hand;
+    color: #97C3E4;
+    }
+  }
+  .lc_panel {
+    display: none;
+    h2, h3{
+      margin: 20px
+    }
+    p {
+      margin: 0px 35px 10px 35px;
+      text-align: justify;
+    }
+    .hide {
+      display: none;
+      margin: 20px;
+    }
+    .rules_header {
+      &:hover {
+      cursor:pointer;cursor:hand;
+      color: #97C3E4;
+      }
+    }
+    ul {
+      list-style: none;
+    }
+    li {
+      margin: 0 35px 0 0;
+    }
+    td {
+      padding: 10px;
+    }
+    .submit {
+      margin-left: 8px;
     }
   }
 }
@@ -971,17 +1091,33 @@ table.draft_setup_table {
 
 /* The following styling is specific to the /leagues/new page*/
 .league_header {
+  font-size: 48px;
   text-align: center;
-  padding-top: 60px;
+  padding-top: 80px;
 }
 
 .league_subheader {
+  font-size: 32px;
   text-align: left;
-  margin-top: 24px;
-  padding-left: 30px;
+  /*margin-top: 24px;*/
+  padding-left: 30px;  
+}
+
+.opacity {
+  background-image: url('black_opacity50.png');
+  margin: 0 auto 15px auto;
+  width: 315px;
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+
+.opacity_long {
+  background-image: url('black_opacity50.png');
 }
 
 p.description {
+  font-family: "helvetica, sans-serif";
+  color: black;
   margin-left: 30px;
   font-size: 12px;
   background-color: #B6C7D4;
@@ -992,6 +1128,7 @@ p.description {
 }
 
 .league_field {
+  /*font-family: "helvetica, sans-serif";*/
   padding-left: 30px;
 }
 
@@ -1011,13 +1148,13 @@ textarea {
 }
 
 .league_invite {
-  width: 157px;
+  width: 108px;
   position: relative;
   float: left;
-  margin-bottom: 20px;
-  margin-left: 30px;
-  &.top_row {
-    margin-top: 24px;
+  margin-bottom: 22px;
+  margin-right: 28px;
+  &.bottom_row {
+    margin-bottom: 0;
   }
 }
 
@@ -1041,7 +1178,7 @@ textarea {
   padding:6px 24px;
   text-decoration:none;
   text-shadow:1px 1px 0px #ffee66;
-  margin: 30px 0px 30px 0px;
+  margin: 30px 0px 16px 0px;
 
   &:hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffab23), color-stop(1, #ffec64) );
@@ -1050,14 +1187,14 @@ textarea {
     background-color:#ffab23;
   }
 
-  &:active {
+ /* &:active {
     margin-top: 31px;
-  }
+  }*/
 
   &.new_user_submit {
     position: relative;
-    left: 445px;
-    top: -70px;
+    /*left: -58px;*/
+    top: 16px;
   }
 }
 
@@ -1188,29 +1325,51 @@ table.draft_table {
       height: 201px;
     }
   }
+  .available {
+    background-color: green
+  }
+
+  .unavailable {
+    background-color: red;
+    opacity: .5;
+  }
+
+  .temp_block {
+    opacity: .5
+  }
+
+  #start_draft {
+    opacity: .5;
+  }
+
+  .left_col {
+    position: relative;
+    float: left;
+    width: 286px;
+    text-align: center;
+  }
+
+  .center_col {
+    position: relative;
+    float: left;
+    width: 286px;
+    text-align: center;
+  }
+
+  .right_col {
+    position: relative;
+    float: left;
+    width: 286px;
+    text-align: center;
+  }
 }
 
-.left_col {
-  position: relative;
-  float: left;
-  width: 286px;
-  text-align: center;
+p#turn {
+  position: absolute;
+  top: 0;
+  font-size: 50px;
 }
 
-.center_col {
-  position: relative;
-  float: left;
-  width: 286px;
-  text-align: center;
-}
-
-.right_col {
-  position: relative;
-  float: left;
-  width: 286px;
-  text-align: center;
-}
-
-p#turn, p#up {
+/*p#turn, p#up {
   visibility: hidden;
-}
+}*/

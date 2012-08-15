@@ -1,66 +1,184 @@
 %div.hero
-  %div.hero_inset
-    %h1.league_name= @league.name
-    %h2.round_number= "Round #{@round}"
-    %div.hero_left
-      %h3.scoreboard_title Scoreboard
+  %div.hero_inset_image
+    =lc_tutorial
+    / %div.tutorial 
+    /   %h2 Welcome!
+    /   %p= "Congratulations on starting a new league.  As the Commissioner for your new league, #{@league.name}, you have many awesome and frightful responsibilities ahead of you..."  
+    /   %p Nah, just kidding, it's actually really easy to set up your league.  Just follow the instructions by clicking on 'Commissioner Tools' below.
+    /   %p
+    /     =link_to "Oh, and click here if you don't want to see me every time you log in.", first_visit_path(@user), :remote => true
+    /     %p#first_visit_response.first_visit_response
+    / =image_tag 'down_arrow4.png', :class => 'down_arrow'
+
+    %h1.league_name= @league.name    
+    %div.hero_left.user_hero_div
+      %h2.scoreboard_title Scoreboard
+      %h2.round_number= "(Round #{@round})"
       %table#scoreboard.scoreboard
         %thead
           %tr
-            %th Username
-            %th Score
+            %th.first_col Username
+            %th.second_col # Survivors Remaining
+            %th.third_col Score (last round)
+            %th.fourth_col Total Score
 
         %tbody
           - @users.each do |user|
             %tr
-              %td= user.username 
-              %td= user.score
-        %tfoot
-          %tr
-            %td Current Score:
-            %td= "#{@user.total_score}"
-          %tr
-            %td Score from Last Round:
-            %td= "#{@user.score}"
-    %div.hero_right
-      %h3.team_table_title My Team
+              %td.first_col= user.username 
+              %td.second_col= remaining(user)
+              %td.third_col= user.score
+              %td.fourth_col= user.total_score
+        / %tfoot
+        /   %tr
+        /     %td Current Score:
+        /     %td= "#{@user.total_score}"
+        /   %tr
+        /     %td Score from Last Round:
+        /     %td= "#{@user.score}"
+    %div.hero_right.user_hero_div
+      / %h3.team_table_title My Team
       / - @user.team.each do |member|
       /   %li= member
-      =team
+      %div.scroll
+        =image_tag('arrow-scroll-left.png', :class => 'arrow-scroll-left', :id => 'arrow-scroll-left')
+        =image_tag('arrow-scroll-right.png', :class => 'arrow-scroll-right', :id => 'arrow-scroll-right')
+      %div#teams.teams
+        %div#my_team
+          %h2.team_table_title My Team
+          =my_team
+        =other_teams
     %div.clear
 %div.bottom_content 
-  %div.about
-    %h1 Outwit - Outplay - Outlast
-    %p Welcome to Reality Lab's Survivor Fantasy Game!  The game takes all the aspects of fantasy sports leagues that you love and brings them to the world of reality tv.  Start a league and invite your friends.  Pick Survivor contenders to be on your team through a realtime draft with other folks in your league.  Earn points based on how your team members perform each week.  Whoever has the most points at the end of the season wins!  
-  %div.rules
-    %h1 Gameplay
-    %h2 Setting Up
-    %p This is a description of how the user either creates a league and invites friends or joins a league that's already been created. 
-    %h2 The Draft
-    %p This describes the intricacies of the draft.
-    %h2 Regular Gameplay
-    %p This describes how scoring works during regular gameplay and how a winner is determined.
-  %div.cast  
+  %div.cast_userpage  
     %h1 Meet the Cast
     %p 
       This is where the content for Meet the Cast will go.  It will look just like this: 
       =link_to 'CBS Cast Bios', 'http://www.cbs.com/shows/survivor/cast/'
+  %div.rules
+    %h1 How to Play
+    %h2#setup_head.rules_header Setting Up
+    %div#setup_body.hide
+      %p 
+        This game works pretty much like other fantasy sports games you may have played, including a realtime draft.  New users have one of two options.  You can either 
+        =link_to 'start a new league', new_league_path
+        and become its League Commissioner or you can 
+        =link_to 'join a league', new_user_path 
+        that has been started by one of your friends.
+        %h3.rules_header#start_league_head Starting a League
+        %p.hide#start_league_body Starting a league from scratch and becomming its League Commissioner gives you the AWESOME responsibility of inviting your friends to join and setting up the rules your league will play by.  You will also be responsible for starting the draft and letting the members of your league know when the draft will take place.
+        %h3.rules_header#join_league_head Joining a League
+        %p.hide#join_league_body If you were invited to join a league by a friend and given the league's name and confirmation code, this option is for you.  Your League Commissioner will let you know when the draft for your league will take place and then you can pick the members of your team!
+    %h2#draft_head.rules_header The Draft
+    %div#draft_body.hide
+      %p The draft is a turn-based system to allow league members to choose Survivor contestants to be on their team.  The League Commissioner (LC) is responsible for letting other league members know when the draft will take place, making sure they are all logged in at that time, setting up and starting the draft.  Before starting the draft, the LC will be prompted to establish certain rules of the league, such as how many Survivor contestants league members will have on their team and how the scoring system will work (see below).  Other things, like the order of the draft, are determined randomly.  <b>A draft can only take place once per league, is non-reversible and cannot be abandoned midway through, so it is very important that the LC sets everything up correctly!</b>
+      %p Once the LC begins the draft, all league members who are currently signed-in will get a pop-up message on their browser letting them know that the draft is starting.  This will automatically direct them to the draft page.  From there, the order by which members will pick contestants for their team is visible.  You will see a message at the top of the screen when it is your turn, as well as a timer letting you know how much time is left for your turn.  Every member has 2 minutes to make a selection each turn.  
+      %p After you make a selection, your pick will appear in a chart showing the status of the draft.  The draft will then continue to the next person in the draft order and that league member will make their selection.  This continues until everyone has formed their teams.  League members who are not signed-in or who take longer than 2 minutes to make a selection will have a Survivor contestant randomly assigned to their team.  At the end of the draft, everyone will be redirected back to their member page.  
+    %h2#score_head.rules_header Regular Gameplay
+    %div#score_body.hide
+      %p Once the draft is complete and everyone has their team, regular gameplay commences.  After every elimination round on the show Survivor, the results will be automatically used to give every league member a score for that week, based on the scoring system devised by the League Commissioner.  An elimination round is defined as every time someone gets voted off, to handle those rare cases where more than one person is voted off during a single episode.  
+      %h3.rules_header#score_sys_head Scoring System
+      %div.hide#score_sys_body 
+        %p Each member of a user's team is assigned points based on the following criteria:
+        %ul
+          %li <b>Survival (1-5 points):</b>  Did this contestant survive through the episode?  
+          %li <b>Immunity (1-5 points):</b>  Did this contestant win an immunith challenge this episode?  
+          %li <b>Merger (1-5 points):</b>  Did this contestant survive through the merger of the tribes into one tribe?  
+          %li <b>Final Three (1-5 points):</b>  Did this contestant survive to become one of the final 3 contestants?  
+          %li <b>Winner (1-10 points):</b>  Did this contestant win the show?  
+        %p The number of points given for each criteria is determined by the League Commissioner, with the default value for each being 1 point. Survival and Immunity points will be awarded whenever applicable, whereas the points for Merger, Final Three, and Winner will only be awarded once per season of Survivor.    
+  %div#scoring_system.scoring_system
+    %h1= "Scoring System for #{@league.name}"
+    %table#scoring_system_table.scoring_system_table
+      %thead
+        %tr
+          %th Criteria
+          %th Point Value
+      %tbody
+        %tr
+          %td Survival
+          %td= @league.scoring_system[:survive]
+        %tr
+          %td Immunity  
+          %td= @league.scoring_system[:immunity]
+        %tr
+          %td Merger
+          %td= @league.scoring_system[:merger]
+        %tr
+          %td Final Three
+          %td= @league.scoring_system[:final_three]
+        %tr
+          %td Winner
+          %td= @league.scoring_system[:winner]
+    %p= pluralize
+  %div#lc_panel.lc_panel
+    %h1 Commissioner Tools
+    %p This is the League Commissioner Control Panel.  From here, you can set up the details of your league and your draft.  These details can be changed at any time up until the start of your draft.  After that, they are set in stone, so please make sure you've set everything up exactly how you want it.  When you have set everything up and assembled the members of your league, press 'Start Draft' below to begin the draft!
+    %h2.rules_header#scoring_sys_head Scoring System
+    %div#scoring_sys_body.hide 
+      =form_tag("/leagues/#{@league.id}", :method =>"put", :id => "score_sys_form", :remote => true) do
+        %table
+          %tr
+            %td Survival
+            %td=range_field_tag('survive', nil, :min => 1, :max => 5, :value => @league.scoring_system[:survive])
+            %td#survive_val.value= "#{@league.scoring_system[:survive]}"
+          %tr
+            %td Immunity
+            %td=range_field_tag('immunity', nil, :min => 1, :max => 5, :value => @league.scoring_system[:immunity])
+            %td#immunity_val.value= "#{@league.scoring_system[:immunity]}"
+          %tr
+            %td Merger
+            %td=range_field_tag('merger', nil, :min => 1, :max => 5, :value => @league.scoring_system[:merger])
+            %td#merger_val.value= "#{@league.scoring_system[:merger]}"
+          %tr
+            %td Final Three
+            %td=range_field_tag('final_three', nil, :min => 1, :max => 5, :value => @league.scoring_system[:final_three])
+            %td#final_three_val.value= "#{@league.scoring_system[:final_three]}"
+          %tr
+            %td Winner
+            %td=range_field_tag('winner', nil, :min => 1, :max => 10, :value => @league.scoring_system[:winner])
+            %td#winner_val.value= "#{@league.scoring_system[:winner]}"
+        = hidden_field_tag 'league_update_type', 'league_update_score_sys'
+        = submit_tag 'Update', :class => "edit_score_sys_submit submit"
+        %span#score_sys_response   
+    %h2.rules_header#teamsize_head Contestants per Team
+    %div#teamsize_body.hide 
+      =form_tag("/leagues/#{@league.id}", :method =>"put", :id => "teamsize_form", :remote => true) do
+        =range_field_tag('teamsize', nil, :min => 1, :max => @nrounds, :value => @league.teamsize)
+        %span 
+          = "#{@nrounds} max" 
+          %sup.teamsize= "#{@ncontestants} contestants" 
+          %sub.teamsize= "#{@nusers} teams" 
+        %p 
+          <span id = 'teamsize_val'>#{@league.teamsize}</span> per team
+        = hidden_field_tag 'league_update_type', 'league_update_teamsize'
+        = submit_tag 'Update', :class => "edit_teamsize_submit submit"
+        %span#teamsize_response  
+    %h2.rules_header#invite_head Invite More Friends
+    %div#invite_body.hide 
+      %p This will be a form with fields for entering new email addresses
+    %h2.rules_header#drop_user_head Remove Player from League
+    %div#drop_user_body.hide 
+      =form_tag("/users/#{@user.id}/delete_user", :method =>"post", :id => "delete_user_form", :remote => true) do
+        =select_tag "drop_user", options_from_collection_for_select(@drop_users, "id", "username"), :prompt => "Select user to delete"
+        = submit_tag 'Delete User', :class => "drop_user_submit submit", :confirm => "Are you sure you want to delete this user?  This action is permanent and can't be undone."
+        %span#drop_user_response  
+    %button= link_to "Start the Draft", draft_preview_league_path(@league)
+
 %div.sidebar 
   %ul
-    %li#about About
+    %li#cast.active Meet the Cast
     %li#rules How to Play
-    %li#cast Meet the Cast
-    %li#lc= lc
+    %li#scoring_system_list Scoring System
+    %li= lc_sidebar
 %div.clear
+%div= lc_panel
+=lc_overlay
 
-/ %div#toolbar
-/   %ul
-/     %li My profile
-/     = lc
-/     =link_to "Draft Page", draft_page_path(@user.league_id)
-/     / %li= @user.lc == true ? "LC Control Box" : nil
+
   
 :javascript
+  // This defines the faye server and subscribes to the /draft/start channel
   var broadcast_server = "#{broadcast_server}"
   var faye;
   $(function() {
@@ -68,51 +186,196 @@
     faye.connect();
     Faye.Transport.WebSocket.isUsable = function(_,c) { c(false) }
     var subscription = faye.subscribe("/#{@league.id}/draft/start", function(message) {
-      // handle message
       alert("Your draft is starting!");
-      window.location.href = "/leagues/#{@league.id}/draft_page";
+      window.location.href = "/leagues/#{@league.id}/draft";
     });
-    //subscription.callback(function() {
-    //  alert('Subscription is now active!');
-    //});
-
-    //$('#pushme').on('click', function() {
-      //var publication = faye.publish("/test", {
-        //text: 'Hi there',
-        //username: "#{@user.username}",
-        //league: "#{@user.league}",
-        //userid: "#{@user.id}"
-        //});
-
-      //publication.callback(function() {
-      //  alert('Message received by server!');
-      //});
-
-      //publication.errback(function(error) {
-      //  alert('There was a problem: ' + error.message);
-      //});
-    //});
 
       // These are to control the behavior of the different links
-  $('#about').on('click', function() {
-    $('div.bottom_content > div').css('display', 'none')
-    $('.about').css('display', 'block')
-  })
+    $('#rules').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
+      $('div.bottom_content > div').css('display', 'none')
+      $('.rules').css('display', 'block')
+    })
 
-  $('#rules').on('click', function() {
-    $('div.bottom_content > div').css('display', 'none')
-    $('.rules').css('display', 'block')
-  })
+    $('#cast').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
+      $('div.bottom_content > div').css('display', 'none')
+      $('.cast_userpage').css('display', 'block')
+    })
 
-  $('#cast').on('click', function() {
-    $('div.bottom_content > div').css('display', 'none')
-    $('.cast').css('display', 'block')
-  })
+    $('#scoring_system_list').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
+      $('div.bottom_content > div').css('display', 'none')
+      $('.scoring_system').css('display', 'block')
+    })
+
+     $('#lc_list').on('click', function() {
+      $('li').removeClass('active')
+      $(this).addClass('active')
+      $('div.bottom_content > div').css('display', 'none')
+      $('.lc_panel').css('display', 'block')
+    })
+
+    // If you wind up with time on your hands, refactor this code to be more succinct.  This handles all of the accordian behavior in the 'Commissioner Tools' section.
+    $('#scoring_sys_head').on('click', function(){
+      if ($('#scoring_sys_body').css('display') == "none") {
+        $('#scoring_sys_body').slideDown()
+      }
+      else {
+        $('#scoring_sys_body').slideUp()
+      }
+    })
+
+    $('#teamsize_head').on('click', function(){
+      if ($('#teamsize_body').css('display') == "none") {
+        $('#teamsize_body').slideDown()
+      }
+      else {
+        $('#teamsize_body').slideUp()
+      }
+    })
+
+    $('#invite_head').on('click', function(){
+      if ($('#invite_body').css('display') == "none") {
+        $('#invite_body').slideDown()
+      }
+      else {
+        $('#invite_body').slideUp()
+      }
+    })
+
+    $('#drop_user_head').on('click', function(){
+      if ($('#drop_user_body').css('display') == "none") {
+        $('#drop_user_body').slideDown()
+      }
+      else {
+        $('#drop_user_body').slideUp()
+      }
+    })
+
+    // If you wind up with time on your hands, refactor this code to be more succinct.  This handles all of the accordian behavior in the 'How to Play' section.
+    $('#setup_head').on('click', function(){
+      if ($('#setup_body').css('display') == "none") {
+        $('#setup_body').slideDown()
+      }
+      else {
+        $('#setup_body').slideUp()
+      }
+    })
+
+    $('#draft_head').on('click', function(){
+      if ($('#draft_body').css('display') == "none") {
+        $('#draft_body').slideDown()
+      }
+      else {
+        $('#draft_body').slideUp()
+      }
+    })
+
+    $('#score_head').on('click', function(){
+      if ($('#score_body').css('display') == "none") {
+        $('#score_body').slideDown()
+      }
+      else {
+        $('#score_body').slideUp()
+      }
+    })
+
+    $('#start_league_head').on('click', function(){
+      if ($('#start_league_body').css('display') == "none") {
+        $('#start_league_body').slideDown()
+      }
+      else {
+        $('#start_league_body').slideUp()
+      }
+    })
+
+    $('#join_league_head').on('click', function(){
+      if ($('#join_league_body').css('display') == "none") {
+        $('#join_league_body').slideDown()
+      }
+      else {
+        $('#join_league_body').slideUp()
+      }
+    })
+
+    $('#score_sys_head').on('click', function(){
+      if ($('#score_sys_body').css('display') == "none") {
+        $('#score_sys_body').slideDown()
+      }
+      else {
+        $('#score_sys_body').slideUp()
+      }
+    })
+
+    // This is to handle the cycling of the #teams interior divs
+    $('#teams').cycle({ 
+      fx:     'scrollHorz', 
+      speed:  'slow', 
+      timeout: 0, 
+      next:   '#arrow-scroll-right', 
+      prev:   '#arrow-scroll-left' 
+    });
+    //$('#teams').cycle({ 
+      //fx:    'scrollRight', 
+      //delay: -1000 
+    //});
+
+    // This handles the population of the text display under the range slider in the LC control box.
+    if (#{@league.teamsize} ==1 ){
+      var current = $('#teamsize_val').text()
+      $('#teamsize_val').text(current + " contestant")
+    } 
+    else {
+      var current = $('#teamsize_val').text()
+      $('#teamsize_val').text(current + " contestants")
+    }
+
+    // These functions control the display of the slider values in the Commissioner Tools
+    $('#teamsize').change(function(){
+      console.log(this.value)
+      if (this.value == 1){
+        $('#teamsize_val').text(this.value + " contestant")
+      }
+      else {
+      $('#teamsize_val').text(this.value + " contestants")
+      }
+    })
+
+    $('#survive').change(function(){
+      $('#survive_val').text(this.value)
+    })
+
+    $('#immunity').change(function(){
+      $('#immunity_val').text(this.value)
+    })
+
+    $('#merger').change(function(){
+      $('#merger_val').text(this.value)
+    })
+
+    $('#final_three').change(function(){
+      $('#final_three_val').text(this.value)
+    })
+
+    $('#winner').change(function(){
+      $('#winner_val').text(this.value)
+    })
+
+    // This clears the tutorial box from off of the screen if you click anywhere outside of it.
+    $(document).mouseup(function(e) {
+      var container = $('.tutorial');
+      if (container.has(e.target).length === 0) {
+          container.fadeOut();
+          $('.black_overlay').fadeOut();
+          $('.down_arrow').fadeOut();
+      }
+    });
+
   });
 
 
-/ if (confirm("Your draft is starting!")) {
-/   window.location.href("http://localhost:3000/leagues/#{@league.id}/draft");
-/ }
-/ alert("Your draft is starting!");
-/ window.location.href = "/leagues/#{@league.id}/draft_page";
+

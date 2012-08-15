@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120726220706) do
+ActiveRecord::Schema.define(:version => 20120815015310) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20120726220706) do
     t.boolean  "draft_active",      :default => false
     t.integer  "draft_round",       :default => 0
     t.boolean  "draft_start",       :default => false
+    t.integer  "teamsize",          :default => 1
   end
 
   create_table "users", :force => true do |t|
@@ -47,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20120726220706) do
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
     t.datetime "last_seen"
+    t.boolean  "first_visit",     :default => true
   end
 
 end

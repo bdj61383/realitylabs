@@ -1,0 +1,44 @@
+%div.hero
+  %div.hero_inset
+    %h1.lc_page_heading  Draft Setup
+    %div.hero_left
+      %table.online_table 
+        %thead
+          %tr
+            %th Signed In
+            %th Not Signed In
+        %tbody
+        - @users.each do |user|
+          %tr
+            =online(user)
+            =offline(user) 
+    %div.hero_right
+      %table.draft_setup_table
+        %thead
+          %tr
+            %th{:colspan => "2"} Draft Details
+        %tbody
+          %tr
+            %td Available Contestants
+            %td= "#{@ncontestants}" 
+          %tr
+            %td League Members
+            %td= "#{@nusers}"
+          %tr
+            %td Team Size 
+            %td= "#{@nrounds}"
+    %div.clear
+    =draft_order
+
+    =form_tag start_draft_path do
+      / =hidden_field_tag "draft_order", @draft_order
+      =submit_tag "Start Draft!", :id => "start_draft"
+
+/ :javascript
+/   $("#start_draft").on('click', function() {
+/     $.ajax({
+/     type: 'POST',
+/     url: "http://localhost:9292/faye",
+/     data: 'message={"channel":"/draft/start", "data":"data"}'
+/     });
+/   });
