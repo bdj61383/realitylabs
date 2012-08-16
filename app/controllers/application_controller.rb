@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  # force_ssl disabling this for the time-being because of problems with following the link that is emailed if you reset your password.
+  force_ssl 
   before_filter :update_last_seen
   # before_filter :cors_preflight_check
   # after_filter :cors_set_access_control_headers
