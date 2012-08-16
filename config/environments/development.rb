@@ -34,4 +34,7 @@ Realitylabs::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # This configures things so that we can use URL's inside of ActionMailer, as per this railscast: http://railscasts.com/episodes/274-remember-me-reset-password
+  config.action_mailer.default_url_options = { :host => "localhost:3000" }
 end

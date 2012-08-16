@@ -64,4 +64,18 @@ class User < ActiveRecord::Base
 		system("rake db:migrate")
 		self.reset_column_information
 	end
+
+	def send_password_reset
+	  generate_token(:password_reset_token)
+	  self.password_reset_sent_at = Time.zone.now
+	  save!
+	  Invite.password_reset(self).deliver
+	end
+
+	def generate_token(column)
+	  begin  
+	    self[column] = SecureRandom.base64.tr("+/", "-_")
+	  end while User.exists?(column => self[column])
+	end
 end
+

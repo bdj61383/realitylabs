@@ -27,7 +27,7 @@ Realitylabs::Application.routes.draw do
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
   #   resources :products
-  resources :users, :sessions
+  resources :users, :sessions, :password_resets
   resources :contestants do
     collection do
       get 'add_round'

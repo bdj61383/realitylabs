@@ -55,6 +55,9 @@ Realitylabs::Application.configure do
   # Configuring actionMailer for smtp as outlined on Heroku's website
   config.action_mailer.delivery_method = :smtp
 
+  # This configures things so that we can use URL's inside of ActionMailer, as per this railscast: http://railscasts.com/episodes/274-remember-me-reset-password
+  config.action_mailer.default_url_options = { :host => "https://realitylabs.herokuapp.com" }
+
   # Enable threaded mode
   # config.threadsafe!
 
