@@ -67,7 +67,7 @@ class LeaguesController < ApplicationController
         end
       end
       unless params[:invite][:email1] == "" && params[:invite][:email2] == "" && params[:invite][:email3] == "" && params[:invite][:email4] == ""
-        render :js => "$('#new_invite_response').text('Invitation sent!')" 
+        render :js => "$('#new_invite_response').text('Invitation sent!'); $('.new_invite').val('')" 
       else
         render :js => "$('#new_invite_response').text('Please enter at least one email address')" 
       end
