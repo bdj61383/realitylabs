@@ -8,9 +8,12 @@ class UsersController < ApplicationController
     end
     class InvalidUsernameOrPassword < AuthenticationError 
     end
+    class UnconfirmedPassword < AuthenticationError 
+    end
   end
   rescue_from Exceptions::InvalidLeagueNameOrCode, :with => :invalid_league
   rescue_from Exceptions::InvalidUsernameOrPassword, :with => :invalid_password
+  rescue_from Exceptions::UnconfirmedPassword, :with => :unconfirmed_password
 
   def invalid_league
     redirect_to sign_up_path
@@ -20,6 +23,11 @@ class UsersController < ApplicationController
   def invalid_password
     redirect_to sign_up_path
     flash[:notice] = "Invalid username or password"
+  end
+
+  def unconfirmed_password  
+    redirect_to sign_up_path
+    flash[:notice] = "Password and confirmation do not match" 
   end
     
   def show
@@ -103,7 +111,9 @@ class UsersController < ApplicationController
     if @league == nil
       raise Exceptions::InvalidLeagueNameOrCode
     elsif params[:user][:password] == nil || params[:user][:username] == nil
-      raise Exceptions::InvalidUsernameOrPassword        
+      raise Exceptions::InvalidUsernameOrPassword 
+    elsif params[:user][:password] != params[:user][:password_confirmation] 
+      raise Exceptions::UnconfirmedPassword      
     else
       @user = User.new(params[:user])
       @league_id = @league.id
