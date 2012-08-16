@@ -969,6 +969,12 @@ table.scoreboard, table.scoring_system_table {
     color: #97C3E4;
     }
   }
+  .new_invite {
+    position: relative;
+    float: left;
+    width: 175px;
+    margin: 0px 15px 15px 0px;
+  }
   .lc_panel {
     display: none;
     h2, h3{

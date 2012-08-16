@@ -58,6 +58,21 @@ class LeaguesController < ApplicationController
       end
     end
 
+    if params[:league_update_type] == 'send_new_invite'
+      for i in 1..4
+        @name = "email#{i}"
+        unless params[:invite][@name.to_sym] == ""
+          @email = params[:invite][@name.to_sym]
+          Invite.invite_email(@email, @league.name, @league.confirmation_code).deliver
+        end
+      end
+      unless params[:invite][:email1] == "" && params[:invite][:email2] == "" && params[:invite][:email3] == "" && params[:invite][:email4] == ""
+        render :js => "$('#new_invite_response').text('Invitation sent!')" 
+      else
+        render :js => "$('#new_invite_response').text('Please enter at least one email address')" 
+      end
+    end
+
   end
 
   def add_to_team

@@ -156,7 +156,16 @@
         %span#teamsize_response  
     %h2.rules_header#invite_head Invite More Friends
     %div#invite_body.hide 
-      %p This will be a form with fields for entering new email addresses
+      =form_tag("/leagues/#{@league.id}", :method =>"put", :id => "new_invite_form", :remote => true) do
+        = email_field :invite, :email1, :class => "new_invite"
+        = email_field :invite, :email2, :class => "new_invite"
+        %div.clear
+        = email_field :invite, :email3, :class => "new_invite"
+        = email_field :invite, :email4, :class => "new_invite"
+        %div.clear
+        = hidden_field_tag 'league_update_type', 'send_new_invite'
+        = submit_tag 'Invite', :class => 'send_new_invite_submit submit' 
+        %span#new_invite_response  
     %h2.rules_header#drop_user_head Remove Player from League
     %div#drop_user_body.hide 
       =form_tag("/users/#{@user.id}/delete_user", :method =>"post", :id => "delete_user_form", :remote => true) do
