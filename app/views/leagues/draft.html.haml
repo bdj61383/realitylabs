@@ -32,7 +32,7 @@
 
 :javascript
   $(document).ready(function(){
-
+    // sets an empty array called timeOuts 
     var timeOuts = new Array()
 
     // This highlights the name of the person whose turn it is
@@ -73,42 +73,16 @@
             });
           }
         });
+        // set the return value to false in an attempt to prevent the bubbling issues with setTimeout.  It's had no effect.
         return false
       //}
     }
 
     // This is the autodraft feature implemented by the LC in the case where the first user up takes longer than 2 minutes to make a selection.
-   // if (#{@user.lc} === true) {
+   if (#{@user.lc} === true) {
+   timeOuts.push(setTimeout(Autopick, 10000));
      // var autopick = setTimeout(Autopick, 15000)
-   // }
-
-      // This is how the lc makes autopics for people who are not logged in .
-      //if (#{@user.lc == true}) {
-        //var offline = #{@offline.to_json}
-        //for (var i=0; i<offline.length; i++) {
-          //if (up === offline[i]) {
-
-            //var array = $('.available')
-            //var count = array.length
-            //var rand = Math.floor(Math.random() * count)
-            //var choice = array[rand].id
-            //$.ajax({type: "POST", url: "add_to_team", 
-              //data: {user: up, member: choice, turn: #{@turn}},
-              //dataType: 'json',
-              //success: 
-              //function(data){
-                //$('#flash_notice').html('')
-                //var up = $('#up').text()
-                //var publication = faye.publish("/test", {
-                  //username: "' + up + '",
-                  //member: choice
-                //});
-
-              //}
-            //});
-          //}
-        //}
-      //}
+   }
     
 
     // This handles the case where the user is the first one up or has refreshed their page.  Otherwise, the function below is triggered by incoming messages on /draft/pick.  See below.
@@ -118,35 +92,11 @@
       $('button:not(#start_draft)').removeClass('temp_block');
       // Calls the CreateTimer function defined in /assets/javascripts/timer.js
       //CreateTimer('timer', 120);
-     
-
-      // Sets the autopic function if the user doesn't make a choice within 2min
-     // function Autopick() {
-
-       // var array = $('.available')
-        //var count = array.length
-        //var rand = Math.floor(Math.random() * count)
-        //var choice = array[rand].id
-        //$.ajax({type: "POST", url: "add_to_team", 
-          //data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
-          //dataType: 'json',
-          //success: 
-          //function(data){
-            // Broadcasts the results of the autopic to the Faye channel "/#{@league.id}/draft/pick"
-            //var publication = faye.publish("/#{@league.id}/draft/pick", {
-              //username: "#{@user.username}",
-              //member: choice
-            //});
 
 
-          //}
-
-        //});
-      //}
-
-
-        // Sets the timeout to 2min
+      //Sets the timeout to 2min.  Only applies to the first person who is up in the draft, as the rest of them are handled
       //var autopick = setTimeout(Autopick, 20000)
+      //timeOuts.push(setTimeout("Autopick()", 10000));
 
 
     }
@@ -154,11 +104,41 @@
       $('button').addClass('temp_block')
     }
 
+    // This is the regular button by which users make their selection.  This only applies to the first person who is up.  Otherwiser, the click event is handled by a binding set in the Faye 'draft/pick' channel.
+    $('.draft_bottom_content').off().on('click', "button.available:not(.temp_block)", function(e){
+      //if(event.target != this){
+        //return true;
+      //}
+      // You need this line of code so that the event is immediately unbound upon firing, thereby preventing bubbling.
+      $(".draft_bottom_content").off( "click", "**" )  
+      e.stopPropagation();
+      $this = $(this)
+      id = $this.attr("id")
+      $.ajax({type: "POST", url: "add_to_team", 
+        data: {user: "#{@user.username}", member: id, turn: #{@turn}},
+        dataType: 'json',
+        beforeSend:
+          function(){
+            return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
+          },
+        success: 
+        function(data){
+          $('#flash_notice').html('')
+          var member = $this.attr('id')
+          var publication = faye.publish("/#{@league.id}/draft/pick", {
+            username: "#{@user.username}",
+            member: member
+          });
 
+        }
+      });
+      
+    });
 
-    // This is how users subscribe to the /draft/pick channel and handle the incoming data
+    // This is how users subscribe to the /draft/pick channel and handle the incoming data.  These are the functions that are applicable for all selections except the very first one or in the case where someone hits refresh.
     var subscription = faye.subscribe("/#{@league.id}/draft/pick", function(data) {
       //debugger
+      // This creates a function to clear all of the setTimeout events in our timeOuts array.
       function clearTimeouts(){  
         for( key in timeOuts ){  
           clearTimeout(timeOuts[key]);  
@@ -166,13 +146,17 @@
       } 
       //debugger
 
+      // Here is an alternate method to clear the timeOuts array
+      for(var i=0; i<timeOuts.length; i++) clearTimeout(timeOuts[i]);
+      timeOuts = []; //quick reset of the timer array you just cleared
+
+      // This is how the LC sets the autodraft each time the Faye channel receives a broadcast
+      if (#{@user.lc} === true) {
+       timeOuts.push(setTimeout(Autopick, 30000));
+         // var autopick = setTimeout(Autopick, 15000)
+       }
        
-      
-      $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
-      $('button#' + data.member).addClass('unavailable').removeClass('available');          
-      var current = parseInt($("#turn").text(),10); 
-      var newval = current + 1; 
-      $('#turn').text(newval);
+
 
      // if (#{@user.lc} === true) {
         //var timeOuts = new Array()
@@ -196,11 +180,19 @@
         //debugger
       //}
 
+      // This populates the results table, makes the selection button unavailable for future turns and updates the hidden 'div#turn' element's value to reflect the change in turn.
+      $('tr#' + data.username + '_pick td:empty:eq(0)').text(data.member.replace("_", " "))
+      $('button#' + data.member).addClass('unavailable').removeClass('available');          
+      var current = parseInt($("#turn").text(),10); 
+      var newval = current + 1; 
+      $('#turn').text(newval);
+
+      // This highlights the person who's turn it is on the draft order list.
       $('li').eq(current).css('background-color', '#99C5E6')
       $('li').eq(newval).css('background-color', '#EAEAEA')
 
+      // This is what ends the draft when all the choices have been made.
       var draft_order = #{@draft_order.to_json}
-
       if (newval >= #{@draft_order.length}) {
         alert("The draft has ended!");
         window.location.href = "/users/#{@user.id}";
@@ -215,27 +207,7 @@
         $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection.</span>");
         $('button:not(#start_draft)').removeClass('temp_block');
        // CreateTimer('timer', 120);
-        
 
-       // function Autopick(){
-
-         // var array = $('.available')
-         // var count = array.length
-         // var rand = Math.floor(Math.random() * count)
-         // var choice = array[rand].id
-         // $.ajax({type: "POST", url: "add_to_team", 
-           // data: {user: "#{@user.username}", member: choice, turn: #{@turn}},
-           // dataType: 'json',
-           // success: 
-           // function(data){
-             // var publication = faye.publish("/#{@league.id}/draft/pick", {
-               // username: "#{@user.username}",
-               // member: choice
-              //});
-
-            //}
-          //});
-        //}
         //var autopick = setTimeout(Autopick, 20000)
       }
 
@@ -287,38 +259,4 @@
      //debugger
     });
     // End of code associated with Faye /draft/pick subscription
-
-
-
-    // This is the regular button by which users make their selection.  This only applies to the first person who is up.  Otherwiser, the click event is handled by a binding set in the Faye 'draft/pick' channel.
-
-    $('.draft_bottom_content').off().on('click', "button.available:not(.temp_block)", function(e){
-      //if(event.target != this){
-        //return true;
-      //}
-      // You need this line of code so that the event is immediately unbound upon firing, thereby preventing bubbling.
-      $(".draft_bottom_content").off( "click", "**" )  
-      e.stopPropagation();
-      $this = $(this)
-      id = $this.attr("id")
-      $.ajax({type: "POST", url: "add_to_team", 
-        data: {user: "#{@user.username}", member: id, turn: #{@turn}},
-        dataType: 'json',
-        beforeSend:
-          function(){
-            return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
-          },
-        success: 
-        function(data){
-          $('#flash_notice').html('')
-          var member = $this.attr('id')
-          var publication = faye.publish("/#{@league.id}/draft/pick", {
-            username: "#{@user.username}",
-            member: member
-          });
-
-        }
-      });
-      
-    });
   });

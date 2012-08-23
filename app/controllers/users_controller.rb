@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  respond_to :html, :xml, :json, :js
 
   include ActiveModel::MassAssignmentSecurity
   module Exceptions
@@ -117,13 +118,15 @@ class UsersController < ApplicationController
     else
       @user = User.new(params[:user])
       @league_id = @league.id
-      @user.update_attribute('league_id', @league_id)
-      if @user.save 
+      @user.league_id = @league_id
+      if @user.valid?
+        @user.save 
         session[:user_id] = @user.id
         flash[:notice] = "#{@user.username} was successfully created."
         redirect_to user_path(@user)
       else
         redirect_to sign_up_path
+        flash[:notice] = "#{@user.errors.full_messages}"
       end
     end
   end
@@ -141,6 +144,15 @@ class UsersController < ApplicationController
     # if @user.save
     render :js => "$('#first_visit_response').text('This box will be gone next time you visit.')" 
     # end
+  end
+
+  def check_username
+    @new_name = params[:new_name]
+    if User.find_by_username(@new_name) == nil
+      render :js => "$('#check_username_response').text('available').addClass('username_available').removeClass('username_unavailable')" 
+    else
+      render :js => "$('#check_username_response').text('already taken').addClass('username_unavailable').removeClass('username_available')" 
+    end
   end
 
 end

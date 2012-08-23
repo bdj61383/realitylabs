@@ -1,33 +1,34 @@
 %div.hero
 	%div.hero_inset_image
 		%h1.league_header Create New League
-		= form_tag leagues_path do
+		= form_tag leagues_path, :id => "new_league" do
 			%div.hero_left.new_user_hero_div
 				%div.opacity
 					%h2.league_subheader#league_subheader League Info
 					%p.description#league_description Please choosse a name and confirmation code for your new leage.  You'll need to give this information to all of the friends you invite in order for them to join the league, so please write it down.  
 					%p.league_field
-						= label :league, :name, 'Name', :class => "league_label"
-						= text_field :league, :name, :class => "league_input"
+						= label :league, :name, 'Name', :class => "league_label name_label"
+						%span#check_username_response.check_username_response 
+						= text_field :league, :name, :class => "league_input required", :maxlength => "30"
 
 
 					%p.league_field
 						= label :league, :confirmation_code, 'Code', :class => "league_label"
-						= text_field :league, :confirmation_code, :class => "league_input"
+						= text_field :league, :confirmation_code, :class => "league_input required"
 				%div.opacity
 					%h2.league_subheader#user_subheader User Info
 					%p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
 					%p.league_field
 						= label :user, :username, 'Username', :class => "league_label"
-						= text_field :user, :username, :class => "league_input"
+						= text_field :user, :username, :class => "league_input required"
 
 					%p.league_field
 						= label :user, :password, 'Password', :class => "league_label"
-						= password_field :user, :password, :class => "league_input"
+						= password_field :user, :password, :class => "league_input required"
 
 					%p.league_field
 						= label :user, :email, 'Email', :class => "league_label"
-						= email_field :user, :email, :class => "league_input"	
+						= email_field :user, :email, :class => "league_input required"	
 								
 
 			%div.hero_right.new_user_hero_div
@@ -92,5 +93,35 @@
 				//return new_code
 			//});
 		//});
+
+		// This calls front-end validation on the form using the jQuery validate plugin
+	    $('#new_league').validate()
+
+	    // This checks the availability of the username in realtime
+	    $('#league_name').change(function(){
+	      var username = $(this).val()
+	      $.ajax({
+	          type: "POST", 
+	          url: "check_username", 
+	          data: {new_name: username},
+	          dataType: 'script',
+	          success: function(){
+	            var str = $('#league_name').val()
+	            var pat = /^[a-z0-9  \-\_]+$/
+	            // This makes it impossible to submit the form if the username is not available
+	            if ($('#check_username_response').text() == "already taken") {
+	              $('.new_league_submit').attr('disabled', true)
+	            }
+	            else if (pat.test(str) == false) {
+	              $('#check_username_response').text('letters and numbers only').addClass('username_unavailable').removeClass('username_available')
+	              $('.new_league_submit').attr('disabled', true)
+	            }
+	            else {
+	              $('.new_league_submit').attr('disabled', false)
+	            }
+
+	          }
+	      });
+	    });
 
 	})

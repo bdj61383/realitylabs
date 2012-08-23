@@ -329,7 +329,12 @@ body {
   }
 }
 
-
+/*This is the styling for any front-end JQuery validation error messages*/
+.error {
+  font-size: 12px;
+  font-family: helvetica, sans-serif;
+  color: red;
+}
 
 /*This is the styling for the header and includes the Reality Lab logo, the Survivor logo and the Sign In link in the upper right*/
 .rl_logo {
@@ -1095,6 +1100,24 @@ table.draft_setup_table {
 
 
 
+/* The following is specific to the /users/new page*/
+
+
+.check_username_response {
+  font-family: helvetica, sans-serif;
+  font-size: 12px;
+}
+
+.username_available {
+  color: green;
+}
+
+.username_unavailable {
+  color: red;
+}
+
+
+
 /* The following styling is specific to the /leagues/new page*/
 .league_header {
   font-size: 48px;
@@ -1151,6 +1174,9 @@ textarea {
 .league_label {
   display: block;
   text-align: left;
+  &.name_label {
+  display: inline-block;
+  }
 }
 
 .league_invite {

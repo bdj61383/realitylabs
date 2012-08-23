@@ -11,6 +11,9 @@ class League < ActiveRecord::Base
 	serialize :scoring_system, Hash
 	serialize :draft_order, Array
 	
+	validates_presence_of :confirmation_code, :on => :save
+	validates :name, :length => { :maximum => 30 }, :uniqueness => true, :allow_blank => false, :presence => true
+
 	# This is the method by which we'll return a hash with each username as a key and their total_score as a value.
 	def scoreboard
 		@scoreboard = {}

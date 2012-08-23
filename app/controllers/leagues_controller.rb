@@ -162,6 +162,15 @@ class LeaguesController < ApplicationController
     end
   end
 
+  def check_league_name
+    @new_name = params[:new_name]
+    if User.find_by_name(@new_name) == nil
+      render :js => "$('#check_username_response').text('available').addClass('username_available').removeClass('username_unavailable')" 
+    else
+      render :js => "$('#check_username_response').text('already taken').addClass('username_unavailable').removeClass('username_available')" 
+    end
+  end
+
 # This is the LC Control Panel
   def draft_preview
     @league = League.find_by_id(params[:id])

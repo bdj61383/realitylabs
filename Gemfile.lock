@@ -66,6 +66,7 @@ GEM
     daemons (1.1.8)
     database_cleaner (0.8.0)
     diff-lcs (1.1.3)
+    dynamic_form (1.1.4)
     em-http-request (1.0.2)
       addressable (>= 2.2.3)
       cookiejar
@@ -210,6 +211,7 @@ DEPENDENCIES
   cucumber-rails
   cucumber-rails-training-wheels
   database_cleaner
+  dynamic_form
   faye
   haml
   jquery-rails

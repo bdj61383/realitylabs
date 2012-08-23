@@ -19,6 +19,7 @@ gem "cancan" # To handle user authentication
 gem "faye"
 gem "thin"
 gem "rufus-scheduler"
+gem "dynamic_form" # for dynamic form validation
 
 # Gems used only for assets and not required
 # in production environments by default.
