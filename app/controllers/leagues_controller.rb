@@ -1,5 +1,5 @@
 class LeaguesController < ApplicationController
-  force_ssl :only => [:new, :create]
+  # force_ssl :only => [:new, :create]
 	include ActiveModel::MassAssignmentSecurity
   respond_to :html, :xml, :json
 
