@@ -9,7 +9,7 @@ Realitylabs::Application.routes.draw do
   post "users/:id/delete_user" => 'users#delete_user', :as => 'delete_user'
   get 'users/:id/first_visit' => 'users#first_visit', :as => 'first_visit'
   post 'check_username' => 'users#check_username', :as => 'check_username'
-  post 'check_league_name' => 'users#check_league_name', :as => 'check_league_name'
+  post 'leagues/check_league_name' => 'leagues#check_league_name', :as => 'check_league_name'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

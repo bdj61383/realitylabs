@@ -1103,7 +1103,7 @@ table.draft_setup_table {
 /* The following is specific to the /users/new page*/
 
 
-.check_username_response {
+.check_username_response, .check_league_name_response{
   font-family: helvetica, sans-serif;
   font-size: 12px;
 }
@@ -1114,6 +1114,14 @@ table.draft_setup_table {
 
 .username_unavailable {
   color: red;
+}
+
+.name_field {
+  position: relative;
+  float: left;
+  &input {
+    width: 108px;
+  }
 }
 
 

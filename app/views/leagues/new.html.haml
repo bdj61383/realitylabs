@@ -8,7 +8,7 @@
 					%p.description#league_description Please choosse a name and confirmation code for your new leage.  You'll need to give this information to all of the friends you invite in order for them to join the league, so please write it down.  
 					%p.league_field
 						= label :league, :name, 'Name', :class => "league_label name_label"
-						%span#check_username_response.check_username_response 
+						%span#check_league_name_response.check_league_name_response 
 						= text_field :league, :name, :class => "league_input required", :maxlength => "30"
 
 
@@ -19,7 +19,8 @@
 					%h2.league_subheader#user_subheader User Info
 					%p.description#user_description You'll log in for future visits with your username and password.  We ask for your email in case you need to reset your password.
 					%p.league_field
-						= label :user, :username, 'Username', :class => "league_label"
+						= label :user, :username, 'Username', :class => "league_label name_label"
+						%span#check_username_response.check_username_response 
 						= text_field :user, :username, :class => "league_input required"
 
 					%p.league_field
@@ -29,6 +30,15 @@
 					%p.league_field
 						= label :user, :email, 'Email', :class => "league_label"
 						= email_field :user, :email, :class => "league_input required"	
+
+					%p.league_field.name_field
+						= label :user, :first_name, 'First Name', :class => "league_label"
+						= text_field :user, :first_name, :class => "league_input required", :maxlength => "30"
+
+					%p.league_field.name_field
+						= label :user, :last_name, 'Last Name', :class => "league_label"
+						= text_field :user, :last_name, :class => "league_input required", :maxlength => "30"
+					%div.clear
 								
 
 			%div.hero_right.new_user_hero_div
@@ -97,17 +107,44 @@
 		// This calls front-end validation on the form using the jQuery validate plugin
 	    $('#new_league').validate()
 
-	    // This checks the availability of the username in realtime
+	    // This checks the availability of the league name in realtime
 	    $('#league_name').change(function(){
 	      var username = $(this).val()
 	      $.ajax({
 	          type: "POST", 
-	          url: "check_username", 
+	          url: "check_league_name", 
 	          data: {new_name: username},
 	          dataType: 'script',
 	          success: function(){
 	            var str = $('#league_name').val()
-	            var pat = /^[a-z0-9  \-\_]+$/
+	            var pat = /^[a-zA-Z0-9  \-\_]+$/
+	            // This makes it impossible to submit the form if the league name is not available
+	            if ($('#check_league_name_response').text() == "already taken") {
+	              $('.new_league_submit').attr('disabled', true)
+	            }
+	            else if (pat.test(str) == false) {
+	              $('#check_username_response').text('letters and numbers only').addClass('username_unavailable').removeClass('username_available')
+	              $('.new_league_submit').attr('disabled', true)
+	            }
+	            else {
+	              $('.new_league_submit').attr('disabled', false)
+	            }
+
+	          }
+	      });
+	    });
+
+	    // This checks the availability of the username in realtime
+	    $('#user_username').change(function(){
+	      var username = $(this).val()
+	      $.ajax({
+	          type: "POST", 
+	          url: "/check_username", 
+	          data: {new_name: username},
+	          dataType: 'script',
+	          success: function(){
+	            var str = $('#user_username').val()
+	            var pat = /^[a-zA-Z0-9\-]+$/
 	            // This makes it impossible to submit the form if the username is not available
 	            if ($('#check_username_response').text() == "already taken") {
 	              $('.new_league_submit').attr('disabled', true)

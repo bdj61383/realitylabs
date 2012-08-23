@@ -17,7 +17,7 @@
       %table#scoreboard.scoreboard
         %thead
           %tr
-            %th.first_col Username
+            %th.first_col Name
             %th.second_col # Survivors Remaining
             %th.third_col Score (last round)
             %th.fourth_col Total Score
@@ -25,7 +25,7 @@
         %tbody
           - @users.each do |user|
             %tr
-              %td.first_col= user.username 
+              %td.first_col= user.first_name 
               %td.second_col= remaining(user)
               %td.third_col= user.score
               %td.fourth_col= user.total_score

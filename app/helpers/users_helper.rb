@@ -61,9 +61,9 @@ module UsersHelper
 			# end
 			@users.each do |user|
 				unless user == current_user
-					haml_tag :div, :id => "#{user.username}_team" do
+					haml_tag :div, :id => "#{user.first_name}_team" do
 						haml_tag :h2, :class => "team_table_title" do
-							haml_concat "#{user.username}'s Team"	
+							haml_concat "#{user.first_name}'s Team"	
 						end	
 						haml_tag :table, :id => "contestants", :class => "contestants" do
 							team = user.team

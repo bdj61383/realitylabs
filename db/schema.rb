@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120816022043) do
+ActiveRecord::Schema.define(:version => 20120823200255) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name"
@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(:version => 20120816022043) do
     t.boolean  "first_visit",            :default => true
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
 end

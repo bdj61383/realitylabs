@@ -24,6 +24,16 @@
             = label :user, :email, 'Email', :class => "league_label"
             = email_field :user, :email, :class => "league_input required" 
 
+          %p.league_field
+            = label :user, :first_name, 'First Name', :class => "league_label"
+            = text_field :user, :first_name, :class => "league_input required", :maxlength => "30"
+
+          %p.league_field
+            = label :user, :last_name, 'Last Name', :class => "league_label"
+            = text_field :user, :last_name, :class => "league_input required", :maxlength => "30"
+
+          %div.clear
+
       %div.hero_right.new_user_hero_div
         %div.opacity
           %h2.league_subheader#league_subheader League Info
@@ -70,7 +80,7 @@
           dataType: 'script',
           success: function(){
             var str = $('#user_username').val()
-            var pat = /^[a-z0-9\-]+$/
+            var pat = /^[a-zA-Z0-9\-]+$/
             // This makes it impossible to submit the form if the username is not available
             if ($('#check_username_response').text() == "already taken") {
               $('.new_user_submit').attr('disabled', true)

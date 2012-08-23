@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  force_ssl :only => [:new, :create]
   respond_to :html, :xml, :json, :js
 
   include ActiveModel::MassAssignmentSecurity

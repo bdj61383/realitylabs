@@ -21,6 +21,8 @@ gem "thin"
 gem "rufus-scheduler"
 gem "dynamic_form" # for dynamic form validation
 
+gem 'bartt-ssl_requirement', '~>1.4.0', :require => 'ssl_requirement' # for specifying that only certain paths should run ssl
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

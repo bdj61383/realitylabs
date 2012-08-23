@@ -1,4 +1,5 @@
 class LeaguesController < ApplicationController
+  force_ssl :only => [:new, :create]
 	include ActiveModel::MassAssignmentSecurity
   respond_to :html, :xml, :json
 
@@ -164,10 +165,10 @@ class LeaguesController < ApplicationController
 
   def check_league_name
     @new_name = params[:new_name]
-    if User.find_by_name(@new_name) == nil
-      render :js => "$('#check_username_response').text('available').addClass('username_available').removeClass('username_unavailable')" 
+    if League.find_by_name(@new_name) == nil
+      render :js => "$('#check_league_name_response').text('available').addClass('username_available').removeClass('username_unavailable')" 
     else
-      render :js => "$('#check_username_response').text('already taken').addClass('username_unavailable').removeClass('username_available')" 
+      render :js => "$('#check_league_name_response').text('already taken').addClass('username_unavailable').removeClass('username_available')" 
     end
   end
 
