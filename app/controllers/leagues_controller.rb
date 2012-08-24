@@ -333,4 +333,11 @@ class LeaguesController < ApplicationController
     end
   end
 
+  def end_draft
+    @user = current_user
+    @league = @user.league
+    @league.update_attribute('draft_active', 'false')
+    render :nothing => true
+  end
+
 end

@@ -75,7 +75,7 @@
       var username = $(this).val()
       $.ajax({
           type: "POST", 
-          url: "check_username", 
+          url: "/check_username", 
           data: {new_name: username},
           dataType: 'script',
           success: function(){

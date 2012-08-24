@@ -47,6 +47,11 @@ class UsersController < ApplicationController
       @league = @user.league
       @users = @league.users
 
+      # This redirects valid users to their draft page for the edge case when a draft is ongoing, but the user signs-in after it has started.
+      if @league.draft_start == true && @league.draft_active == true
+        redirect_to draft_path(@league)
+      end
+
       # This is to update the :contestant_pool attribute for the draft, but only if the draft hasn't already taken place.
       if current_user.lc == true && @league.draft_start == false
         @hash = {}
@@ -115,7 +120,11 @@ class UsersController < ApplicationController
     elsif params[:user][:password] == nil || params[:user][:username] == nil
       raise Exceptions::InvalidUsernameOrPassword 
     elsif params[:user][:password] != params[:user][:password_confirmation] 
-      raise Exceptions::UnconfirmedPassword      
+      raise Exceptions::UnconfirmedPassword 
+    elsif @league.draft_active == false && @league.draft_start == true
+      # This redirects users who try to join the league after the draft has taken place.
+      redirect_to sign_up_path
+      flash[:notice] = "This league is locked.  The draft has already taken place"
     else
       @user = User.new(params[:user])
       @league_id = @league.id

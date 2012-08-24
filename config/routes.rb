@@ -10,6 +10,7 @@ Realitylabs::Application.routes.draw do
   get 'users/:id/first_visit' => 'users#first_visit', :as => 'first_visit'
   post 'check_username' => 'users#check_username', :as => 'check_username'
   post 'leagues/check_league_name' => 'leagues#check_league_name', :as => 'check_league_name'
+  post 'leagues/:id/end_draft' => 'leagues#end_draft', :as => 'end_draft'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

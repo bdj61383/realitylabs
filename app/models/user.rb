@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
 	has_secure_password
   validates_presence_of :password, :on => :save
-  validates :username, :length => { :maximum => 15 }, :uniqueness => true, :allow_blank => false, :presence => true
+  validates :username, :length => { :maximum => 15 }, :uniqueness => true, :allow_blank => false, :presence => true, :on => :create
   validates_format_of :username, :with => /^[A-Za-z\d_]+$/, :message => "can only contain letters and numbers, with no spaces"
 
   	def online

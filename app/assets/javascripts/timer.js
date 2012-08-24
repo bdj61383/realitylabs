@@ -1,12 +1,26 @@
 var Timer;
 var TotalSeconds;
+var timeOuts = new Array();
 
 function CreateTimer(TimerID, Time) {
+    // first thing to do is to clear the array of past setTimeout events.
+    function clearTimeouts(){  
+        for( key in timeOuts ){  
+          clearTimeout(timeOuts[key]);  
+        }  
+      } 
+      //debugger
+
+    // Here is an alternate method to clear the timeOuts array
+    for(var i=0; i<timeOuts.length; i++) clearTimeout(timeOuts[i]);
+    timeOuts = []; //quick reset of the timer array you just cleared
+
     Timer = document.getElementById(TimerID);
     TotalSeconds = Time;
         
     UpdateTimer()
-    window.setTimeout("Tick()", 1000);
+    // window.setTimeout("Tick()", 1000);
+    timeOuts.push(setTimeout("Tick()", 1000));
     }
 
 function Tick() {
@@ -16,7 +30,8 @@ function Tick() {
 
         TotalSeconds -= 1;
         UpdateTimer()
-        window.setTimeout("Tick()", 1000);
+        // window.setTimeout("Tick()", 1000);
+        timeOuts.push(setTimeout("Tick()", 1000));
     }
 
 function UpdateTimer() {

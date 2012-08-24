@@ -1246,6 +1246,11 @@ span {
   font-size: 24px;
 }
 
+.league_name.draft_name {
+  padding-top: 50px;
+  text-align: center;
+}
+
 .draft_order {
   /*max-width: 550px;*/
   margin: 0 auto;
@@ -1267,8 +1272,9 @@ span {
   }
 }
 
-#flash_notice {
+.flash_notice {
   height: 30px;
+  text-align: center;
 }
 
 table.draft_table {

@@ -1,10 +1,10 @@
 %p#up=@up
 %div.hero
   %div.hero_inset
-    %h1.league_name
+    %h1.league_name.draft_name
       = @league.name + ":"
-      %span The Draft Has Begun!
-    %div#flash_notice
+      %span Your Draft is Underway!
+    %div#flash_notice.flash_notice
     =draft_order
     / %div.draft_order
     /   %h2 Draft Order
@@ -22,7 +22,7 @@
   %p#turn=@turn
   
 
-%div#timer
+/ %div#timer
 
 
 
@@ -36,7 +36,7 @@
     var timeOuts = new Array()
 
     // This highlights the name of the person whose turn it is
-    $('li').eq($('#turn').val()).css('background-color', '#EAEAEA')
+    $('li').eq($('#turn').text()).css('background-color', '#EAEAEA')
 
     // This is what initializes the Faye client
     var broadcast_server = "#{broadcast_server}"
@@ -79,30 +79,36 @@
     }
 
     // This is the autodraft feature implemented by the LC in the case where the first user up takes longer than 2 minutes to make a selection.
-   if (#{@user.lc} === true) {
-   timeOuts.push(setTimeout(Autopick, 10000));
-     // var autopick = setTimeout(Autopick, 15000)
-   }
+    if (#{@user.lc} === true) {
+     timeOuts.push(setTimeout(Autopick, 120000));
+    }
     
+    // This implements the autrodraft feature in the case where the first user is not logged-in.
+    if (#{@user.lc} === true) {
+      var online = #{@online.to_json}
+      var user = $('#up').text()
+      if ($.inArray(user, online) == -1){
+        Autopick()
+      }
+    }
 
     // This handles the case where the user is the first one up or has refreshed their page.  Otherwise, the function below is triggered by incoming messages on /draft/pick.  See below.
     var up = $('#up').text()
     if (up === "#{@user.username}") {
-      $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection from the contestant pool below.</span>");
+      // $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection from the contestant pool below.</span>");
       $('button:not(#start_draft)').removeClass('temp_block');
       // Calls the CreateTimer function defined in /assets/javascripts/timer.js
       //CreateTimer('timer', 120);
-
-
-      //Sets the timeout to 2min.  Only applies to the first person who is up in the draft, as the rest of them are handled
-      //var autopick = setTimeout(Autopick, 20000)
-      //timeOuts.push(setTimeout("Autopick()", 10000));
-
-
     }
     else {
       $('button').addClass('temp_block')
     }
+
+    // This displays who is on the clock for the first turn or if users hit refresh.
+    
+    var flash = "<span>" + up + " is on the clock: </span><span id = timer></span><span> remaining.</span>"
+    $('#flash_notice').html(flash)
+    CreateTimer('timer', 120);
 
     // This is the regular button by which users make their selection.  This only applies to the first person who is up.  Otherwiser, the click event is handled by a binding set in the Faye 'draft/pick' channel.
     $('.draft_bottom_content').off().on('click', "button.available:not(.temp_block)", function(e){
@@ -134,6 +140,17 @@
       });
       
     });
+    // THE END OF CODE APPLYING ONLY TO THE FIRST TIME USERS LOG IN OR REFRESH PAGE
+
+
+
+    // ****************************************************************************
+    // ****************************************************************************
+    // ****************************************************************************
+
+
+
+    // BEGINNING OF CODE APPLYING TO ACTIONS PROMPTED BY RECEIVING BROADCAST ON FAYE CHANNEL /DRAFT/id/PICK
 
     // This is how users subscribe to the /draft/pick channel and handle the incoming data.  These are the functions that are applicable for all selections except the very first one or in the case where someone hits refresh.
     var subscription = faye.subscribe("/#{@league.id}/draft/pick", function(data) {
@@ -152,11 +169,17 @@
 
       // This is how the LC sets the autodraft each time the Faye channel receives a broadcast
       if (#{@user.lc} === true) {
-       timeOuts.push(setTimeout(Autopick, 30000));
-         // var autopick = setTimeout(Autopick, 15000)
+       timeOuts.push(setTimeout(Autopick, 120000));
        }
        
-
+      // This is the autodraft feature implemented by the LC in the case where the user who is 'up' is not logged-in.
+      if (#{@user.lc} === true) {
+        var online = #{@online.to_json}
+        var user = $('#up').text()
+        if ($.inArray(user, online) == -1){
+          Autopick()
+        }
+      }
 
      // if (#{@user.lc} === true) {
         //var timeOuts = new Array()
@@ -188,12 +211,16 @@
       $('#turn').text(newval);
 
       // This highlights the person who's turn it is on the draft order list.
+      $('li').eq(0).css('background-color', '#99C5E6')
       $('li').eq(current).css('background-color', '#99C5E6')
       $('li').eq(newval).css('background-color', '#EAEAEA')
 
       // This is what ends the draft when all the choices have been made.
       var draft_order = #{@draft_order.to_json}
       if (newval >= #{@draft_order.length}) {
+      // This is what sets the :draft_active attribute for the league back to false.
+        $.post('end_draft')
+
         alert("The draft has ended!");
         window.location.href = "/users/#{@user.id}";
         
@@ -204,7 +231,7 @@
 
       var up = $('#up').text()
       if (up === "#{@user.username}") {
-        $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection.</span>");
+        // $('#flash_notice').html("<span>It's your turn! You have </span><span id = timer></span><span> to make your selection.</span>");
         $('button:not(#start_draft)').removeClass('temp_block');
        // CreateTimer('timer', 120);
 
@@ -214,6 +241,12 @@
       else {
         $('button').addClass('temp_block')
       }
+
+      // This displays who is on the clock.
+      var flash = "<span>" + up + " is on the clock: </span><span id = timer></span><span> remaining.</span>"
+      $('#flash_notice').html(flash)
+      CreateTimer('timer', 120);
+      
 
       
 

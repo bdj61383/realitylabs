@@ -7,7 +7,7 @@
 					%h2.league_subheader#league_subheader League Info
 					%p.description#league_description Please choosse a name and confirmation code for your new leage.  You'll need to give this information to all of the friends you invite in order for them to join the league, so please write it down.  
 					%p.league_field
-						= label :league, :name, 'Name', :class => "league_label name_label"
+						= label :league, :name, 'League Name', :class => "league_label name_label"
 						%span#check_league_name_response.check_league_name_response 
 						= text_field :league, :name, :class => "league_input required", :maxlength => "30"
 
