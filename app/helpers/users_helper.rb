@@ -74,14 +74,14 @@ module UsersHelper
 										name = "#{team[(i*3)]}"
 										filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 										haml_concat image_tag filename
-										haml_tag :h3, name
+										haml_tag :h3, name.gsub(/( \S*)/, "")
 									end
 									haml_tag :td do
 										if team[(i*3)+1] != nil
 											name = "#{team[(i*3)+1]}"
 											filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 											haml_concat image_tag filename
-											haml_tag :h3, name
+											haml_tag :h3, name.gsub(/( \S*)/, "")
 										end
 									end
 									haml_tag :td do
@@ -89,7 +89,7 @@ module UsersHelper
 											name = "#{team[(i*3)+2]}"
 											filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 											haml_concat image_tag filename
-											haml_tag :h3, name
+											haml_tag :h3, name.gsub(/( \S*)/, "")
 										end
 									end
 								end
@@ -120,14 +120,14 @@ module UsersHelper
 							name = "#{team[(i*3)]}"
 							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 							haml_concat image_tag filename
-							haml_tag :h3, name
+							haml_tag :h3, name.gsub(/( \S*)/, "")
 						end
 						haml_tag :td do
 							if team[(i*3)+1] != nil
 								name = "#{team[(i*3)+1]}"
 								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 								haml_concat image_tag filename
-								haml_tag :h3, name
+								haml_tag :h3, name.gsub(/( \S*)/, "")
 							end
 						end
 						haml_tag :td do
@@ -135,7 +135,7 @@ module UsersHelper
 								name = "#{team[(i*3)+2]}"
 								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 								haml_concat image_tag filename
-								haml_tag :h3, name
+								haml_tag :h3, name.gsub(/( \S*)/, "")
 							end
 						end
 					end
@@ -161,28 +161,37 @@ module UsersHelper
 			return "Above you'll find the scoring system that your league, #{@league.name}, is using to determine how points are awarded after each elimination round.  For example, #{@league.scoring_system[:survive]} point is awarded for each contestant that survives an elimination round.  If you have 3 contestants on your team and they all survive that elimination round, you'd receive #{@league.scoring_system[:survive].to_i * 3} points.  This point system was determined by your League Commissioner, #{@lc.username}, and is set in stone after the draft takes place.  Up until that time, #{@lc.username} can make changes to the scoring system."
 		end
 	end
+	def meet_the_cast
+		capture_haml do
+			@contestants.each do |member|
+				if (@contestants.index(member) % 3) == 0
+					haml_tag :div, :class => 'left_col' do
+						haml_tag :div, :id => member.gsub(" ", "_"), :class => 'cast_pics' do
+							filename = "contestants/" + member.gsub(" ", "_") + ".jpg"
+							haml_concat image_tag filename
+							haml_tag :h4, member
+						end
+					end
+				elsif (@contestants.index(member) % 3) == 1
+					haml_tag :div, :class => 'center_col' do
+						haml_tag :div, :id => member.gsub(" ", "_"), :class => 'cast_pics' do
+							filename = "contestants/" + member.gsub(" ", "_") + ".jpg"
+							haml_concat image_tag filename
+							haml_tag :h4, member
+						end
+					end
+				else
+					haml_tag :div, :class => 'right_col' do
+						haml_tag :div, :id => member.gsub(" ", "_"), :class => 'cast_pics' do
+							filename = "contestants/" + member.gsub(" ", "_") + ".jpg"
+							haml_concat image_tag filename
+							haml_tag :h4, member
+						end
+					end
+				end
+			end
+		end
+	end
 end
-
-
-
-					# n = @nusers
-					# for i in 0...n
-					# 	haml_tag :tr, :id => "#{@users[i].username}_pick" do
-					# 		haml_tag :td do
-					# 			haml_concat "#{@users[i].username}" 
-					# 		end 
-					# 		n = @nrounds
-					# 		for x in 0...n
-					# 			if "#{@users[i].team[x]}" == ''
-					# 				haml_tag :td 
-					# 			else 
-					# 				haml_tag :td do
-					# 					haml_concat "#{@users[i].team[x]}"
-					# 				end
-					# 			end
-					# 			# haml_tag :td
-					# 		end
-					# 	end
-					# end
 				
 

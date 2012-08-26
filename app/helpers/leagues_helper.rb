@@ -200,26 +200,6 @@ module LeaguesHelper
 					end
 				end
 			end
-
-
-
-			# haml_tag :ul do 
-			# 	@league.contestant_pool.each do |x|
-			# 		if x[1] == true
-			# 			haml_tag :li do
-			# 				haml_tag :button, :id => "#{x[0].gsub(/ /, "_")}", :class => "available" do
-			# 					haml_concat "#{x[0]}"
-			# 				end
-			# 			end
-			# 		else
-			# 			haml_tag :li do
-			# 				haml_tag :button, :id => "#{x[0].gsub(/ /, "_")}", :class => "unavailable" do
-			# 					haml_concat "#{x[0]}"
-			# 				end
-			# 			end
-			# 		end
-			# 	end
-			# end
 		end
 	end
 end

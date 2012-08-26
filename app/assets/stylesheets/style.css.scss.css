@@ -671,6 +671,31 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
   .cast {
     display: none;
   }
+  .cast, .cast_userpage {
+    .cast_pics {
+      padding-bottom: 30px;
+    }
+    .left_col {
+      position: relative;
+      float: left;
+      width: 210px;
+      text-align: center;
+    }
+
+    .center_col {
+      position: relative;
+      float: left;
+      width: 210px;
+      text-align: center;
+    }
+
+    .right_col {
+      position: relative;
+      float: left;
+      width: 210px;
+      text-align: center;
+    }
+  }
 }
 
 .sidebar {
@@ -840,9 +865,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ec8613', end
     padding: 10px 0px 10px 70px;
   }
 
-  .cast_userpage {
+/*  .cast_userpage {
     display: block;
-  }
+  }*/
 
   &.new_user_hero_div {
     margin-top: 20px;
@@ -955,6 +980,14 @@ table.scoreboard, table.scoring_system_table {
 }
 
 .bottom_content {
+  .description {
+    display: none;
+    font-size: 12px;
+    color: white;
+    background-color: #244B68;
+    position: absolute;
+    padding: 4px;
+  }
   .scoring_system {
     display: none;
   }

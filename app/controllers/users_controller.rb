@@ -75,12 +75,15 @@ class UsersController < ApplicationController
 
       @round = Contestant.find_by_id(1).round
       @lc = @users.find_by_lc(true)
-      # @draft_order = @league.draft_order
       @team = @user.team
       @ncontestants = @league.contestant_pool.length
       @nusers = @users.count
       @nrounds = (@ncontestants / @nusers).floor
-      # @narray = @nusers * @nrounds
+      # This creates an array of all contestant names for 'meet_the_cast' helper method.
+      @contestants = []
+      Contestant.all.each do |x|
+        @contestants << x.name
+      end
       
       # This handles an edge case where the LC has set teamsize to the maximum allowed and then another user joins the league.  In that instance, the teamsize would be greater than the maximum allowed or even possible, so we have to reset it manually to the maximum possible.
       if @league.teamsize.to_i > @nrounds

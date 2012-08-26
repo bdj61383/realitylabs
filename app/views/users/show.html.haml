@@ -53,8 +53,7 @@
   %div.cast_userpage  
     %h1 Meet the Cast
     %p 
-      This is where the content for Meet the Cast will go.  It will look just like this: 
-      =link_to 'CBS Cast Bios', 'http://www.cbs.com/shows/survivor/cast/'
+      =meet_the_cast
   %div.rules
     %h1 How to Play
     %h2#setup_head.rules_header Setting Up
@@ -82,7 +81,7 @@
         %p Each member of a user's team is assigned points based on the following criteria:
         %ul
           %li <b>Survival (1-5 points):</b>  Did this contestant survive through the episode?  
-          %li <b>Immunity (1-5 points):</b>  Did this contestant win an immunith challenge this episode?  
+          %li <b>Immunity (1-5 points):</b>  Did this contestant win an immunity challenge this episode?  
           %li <b>Merger (1-5 points):</b>  Did this contestant survive through the merger of the tribes into one tribe?  
           %li <b>Final Three (1-5 points):</b>  Did this contestant survive to become one of the final 3 contestants?  
           %li <b>Winner (1-10 points):</b>  Did this contestant win the show?  
@@ -96,19 +95,31 @@
           %th Point Value
       %tbody
         %tr
-          %td Survival
+          %td#survive_subheader
+            Survival
+            %span.description#survive_description Did this contestant survive through the episode?  
           %td= @league.scoring_system[:survive]
+        / %tr.description#survive_description 
+        /   %td Did this contestant survive through the episode?  
         %tr
-          %td Immunity  
+          %td#immunity_subheader 
+            Immunity
+            %span.description#immunity_description Did this contestant win an immunity challenge this episode?  
           %td= @league.scoring_system[:immunity]
         %tr
-          %td Merger
+          %td#merger_subheader 
+            Merger
+            %span.description#merger_description Did this contestant survive through the merger of the tribes into one tribe? 
           %td= @league.scoring_system[:merger]
         %tr
-          %td Final Three
+          %td#final_three_subheader 
+            Final Three
+            %span.description#final_three_description Did this contestant survive to become one of the final 3 contestants?  
           %td= @league.scoring_system[:final_three]
         %tr
-          %td Winner
+          %td#winner_subheader 
+            Winner
+            %span.description#winner_description Did this contestant win the show?  
           %td= @league.scoring_system[:winner]
     %p= pluralize
   %div#lc_panel.lc_panel
@@ -382,6 +393,42 @@
           $('.black_overlay').fadeOut();
           $('.down_arrow').fadeOut();
       }
+    });
+
+    // This handles the on-hover descriptions of the league's scoring system
+    $('#survive_subheader').on('mouseover', function(){
+      $('#survive_description').css('display', 'block')
+    });
+    $('#survive_subheader').on('mouseout', function(){
+      $('#survive_description').css('display', 'none')
+    });
+
+        $('#immunity_subheader').on('mouseover', function(){
+      $('#immunity_description').css('display', 'block')
+    });
+    $('#immunity_subheader').on('mouseout', function(){
+      $('#immunity_description').css('display', 'none')
+    });
+
+        $('#merger_subheader').on('mouseover', function(){
+      $('#merger_description').css('display', 'block')
+    });
+    $('#merger_subheader').on('mouseout', function(){
+      $('#merger_description').css('display', 'none')
+    });
+
+        $('#final_three_subheader').on('mouseover', function(){
+      $('#final_three_description').css('display', 'block')
+    });
+    $('#final_three_subheader').on('mouseout', function(){
+      $('#final_three_description').css('display', 'none')
+    });
+
+        $('#winner_subheader').on('mouseover', function(){
+      $('#winner_description').css('display', 'block')
+    });
+    $('#winner_subheader').on('mouseout', function(){
+      $('#winner_description').css('display', 'none')
     });
 
   });
