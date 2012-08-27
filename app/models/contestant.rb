@@ -10,7 +10,8 @@ class Contestant < ActiveRecord::Base
 	    @round = Contestant.first.round
 	    @time = Time.now.to_s.gsub!(/ /, '_')
 	    @dir = Dir.entries("db").select {|x| x =~ /^round#{@round}/}.to_s
-	    	if @dir != nil
+	    	# if @dir != nil
+	    	if @dir.length != 0
 	    		@dir.each do |directory|
 				system("rm -rf db/#{directory.to_s}")
 				end
