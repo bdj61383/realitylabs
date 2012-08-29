@@ -116,7 +116,7 @@
         //return true;
       //}
       // You need this line of code so that the event is immediately unbound upon firing, thereby preventing bubbling.
-      $(".draft_bottom_content").off( "click", "**" )  
+      //$(".draft_bottom_content").off( "click", "**" )  
       e.stopPropagation();
       $this = $(this)
       id = $this.attr("id")
@@ -125,8 +125,17 @@
         dataType: 'json',
         beforeSend:
           function(){
-            return confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
+            var answer = confirm("Would you like " + id.replace("_", " ") + " to be on your team?")
+            if (answer){
+              return true
+            }
+            else {
+              alert('you decided not to click this')
+              return false
+            }
           },
+
+
         success: 
         function(data){
           $('#flash_notice').html('')
@@ -257,7 +266,7 @@
           //return true;
         //}
         // You need this line of code so that the event is immediately unbound upon firing, thereby preventing bubbling.  This entire function is replicated inside of this Faye subscription because the event needs to be re-bound each time someone makes a selection.  Otherwise it is impossible to make a selection back-to-back.
-        $(".draft_bottom_content").off( "click", "**" )  
+        //$(".draft_bottom_content").off( "click", "**" )  
         e.stopPropagation();
         $this = $(this)
         id = $this.attr("id")

@@ -1447,6 +1447,11 @@ p#turn {
   position: absolute;
   top: 0;
   font-size: 50px;
+  display: none;
+}
+
+p#up {
+  display: none;
 }
 
 /*p#turn, p#up {
