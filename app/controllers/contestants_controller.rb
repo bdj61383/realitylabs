@@ -52,11 +52,11 @@ class ContestantsController < ApplicationController
 		# This loads the info from the last round.
 		@round = Contestant.first.round
 		@last_round = @round - 1
-		@dir = Dir.entries("db").select {|x| x =~ /^round#{@last_round}/}.to_s
+		@dir = Dir.entries("db").select {|x| x =~ /^round#{@last_round}/}.join
 		system("rake db:data:load_dir dir=#{@dir}")
 
 		# This renames the dirname of the incorrect copy.  I'm leaving the filename of the migration alone, because it will need to be created anyway and doesn't seem to hurt anything being left in.
-		@dir = Dir.entries("db").select {|x| x =~ /^round#{@round}/}.to_s
+		@dir = Dir.entries("db").select {|x| x =~ /^round#{@round}/}.join
 		File.rename "db/#{@dir}", "db/reverse_#{@dir}"
 		redirect_to contestants_path
 	end
