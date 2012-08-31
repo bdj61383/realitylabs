@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	# def self.add_column
+	# def self.add_column  -- If you ever want to go back in and get this method working on Heroku, your problem is most likely with the '.to_s' method you're running on the 'filename' definition below.
 	# 	@round = Contestant.find_by_id(1).round 
 	# 	system("rails generate migration AddUserColumnRound#{@round}")
 	# 	filename = Dir.entries("db/migrate").select {|x| x =~ /_add_user_column_round#{@round}/}.to_s

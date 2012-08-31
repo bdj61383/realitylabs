@@ -955,13 +955,24 @@ table.scoreboard, table.scoring_system_table {
         }
       }
     }*/
+    .x {
+      position: absolute;
+      top: -14px;
+      left: 0;
+      width: 122px;
+      height: 148px;
+    }
     td {
+      position: relative;
       padding: 0px 0px 0px 0px;
       width: 118px;
       height: 146px;
       img {
         width: 91px;
         height: 114px;
+        &.eliminated {
+          opacity: .50;
+        }
       }
       h3 {
         font-family: helvetica, sans-serif;

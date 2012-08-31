@@ -119,23 +119,41 @@ module UsersHelper
 						haml_tag :td do
 							name = "#{team[(i*3)]}"
 							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-							haml_concat image_tag filename
-							haml_tag :h3, name.gsub(/( \S*)/, "")
+							if Contestant.find_by_name(name).survive == false
+								haml_concat image_tag filename, :class => 'eliminated'
+								haml_concat image_tag 'x.png', :class => 'x'
+								haml_tag :h3, name.gsub(/( \S*)/, "")
+							else
+								haml_concat image_tag filename
+								haml_tag :h3, name.gsub(/( \S*)/, "")
+							end
 						end
 						haml_tag :td do
 							if team[(i*3)+1] != nil
 								name = "#{team[(i*3)+1]}"
 								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-								haml_concat image_tag filename
-								haml_tag :h3, name.gsub(/( \S*)/, "")
+								if Contestant.find_by_name(name).survive == false
+									haml_concat image_tag filename, :class => 'eliminated'
+									haml_concat image_tag 'x.png', :class => 'x'
+									haml_tag :h3, name.gsub(/( \S*)/, "")
+								else
+									haml_concat image_tag filename
+									haml_tag :h3, name.gsub(/( \S*)/, "")
+								end
 							end
 						end
 						haml_tag :td do
 							if team[(i*3)+2] != nil
 								name = "#{team[(i*3)+2]}"
 								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-								haml_concat image_tag filename
-								haml_tag :h3, name.gsub(/( \S*)/, "")
+								if Contestant.find_by_name(name).survive == false
+									haml_concat image_tag filename, :class => 'eliminated'
+									haml_concat image_tag 'x.png', :class => 'x'
+									haml_tag :h3, name.gsub(/( \S*)/, "")
+								else
+									haml_concat image_tag filename
+									haml_tag :h3, name.gsub(/( \S*)/, "")
+								end
 							end
 						end
 					end
