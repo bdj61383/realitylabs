@@ -1,0 +1,101 @@
+
+--- 
+users: 
+  columns: 
+  - id
+  - username
+  - password_digest
+  - email
+  - league_id
+  - team
+  - lc
+  - created_at
+  - updated_at
+  - last_seen
+  - first_visit
+  - password_reset_token
+  - password_reset_sent_at
+  - first_name
+  - last_name
+  - score_round1
+  - score_round2
+  - score_round3
+  - score_round4
+  - score_round5
+  - score_round6
+  - score_round7
+  - score_round8
+  - score_round9
+  - score_round10
+  - score_round11
+  - score_round12
+  - score_round13
+  - score_round14
+  - score_round15
+  - score_round16
+  - score_round17
+  - score_round18
+  - score_round19
+  - score_round20
+  - score_round21
+  - score_round22
+  - score_round23
+  - score_round24
+  - score_round25
+  - score_round26
+  - score_round27
+  - score_round28
+  - score_round29
+  - score_round30
+  records: 
+  - - 1
+    - tester
+    - $2a$10$CCNC2m2QWP7a64KOchsyU.8sURw/Gd4LR..h08oS20XEkLBAhDILi
+    - test@aol.com
+    - 1
+    - |
+      --- 
+      - Abi-Maria Gomes
+      - Angie Layton
+      - Denise Stapley
+      - Artis Silvester
+
+    - true
+    - 2012-08-31 19:49:53.337066
+    - 2012-08-31 19:54:05.565750
+    - 2012-08-31 19:53:17.000000
+    - false
+    - 
+    - 
+    - Test
+    - User
+    - 4
+    - 5
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0

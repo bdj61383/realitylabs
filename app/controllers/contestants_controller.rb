@@ -34,7 +34,7 @@ class ContestantsController < ApplicationController
 			x.update_attribute("round", @next_round)
 		end
 
-		User.add_column # This is what builds and runs the new migration file that will add a new column to the User model ActiveRecord.  It runs the migration, with no default value. 
+		# User.add_column # This is what builds and runs the new migration file that will add a new column to the User model ActiveRecord.  It runs the migration, with no default value. 
 		# User.reload
 		@users = User.all
 		@users.each do |user|

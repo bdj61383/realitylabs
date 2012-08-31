@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120823200255) do
+ActiveRecord::Schema.define(:version => 20120831194126) do
 
   create_table "contestants", :force => true do |t|
     t.string   "name"
@@ -53,6 +53,36 @@ ActiveRecord::Schema.define(:version => 20120823200255) do
     t.datetime "password_reset_sent_at"
     t.string   "first_name"
     t.string   "last_name"
+    t.integer  "score_round1",           :default => 0
+    t.integer  "score_round2",           :default => 0
+    t.integer  "score_round3",           :default => 0
+    t.integer  "score_round4",           :default => 0
+    t.integer  "score_round5",           :default => 0
+    t.integer  "score_round6",           :default => 0
+    t.integer  "score_round7",           :default => 0
+    t.integer  "score_round8",           :default => 0
+    t.integer  "score_round9",           :default => 0
+    t.integer  "score_round10",          :default => 0
+    t.integer  "score_round11",          :default => 0
+    t.integer  "score_round12",          :default => 0
+    t.integer  "score_round13",          :default => 0
+    t.integer  "score_round14",          :default => 0
+    t.integer  "score_round15",          :default => 0
+    t.integer  "score_round16",          :default => 0
+    t.integer  "score_round17",          :default => 0
+    t.integer  "score_round18",          :default => 0
+    t.integer  "score_round19",          :default => 0
+    t.integer  "score_round20",          :default => 0
+    t.integer  "score_round21",          :default => 0
+    t.integer  "score_round22",          :default => 0
+    t.integer  "score_round23",          :default => 0
+    t.integer  "score_round24",          :default => 0
+    t.integer  "score_round25",          :default => 0
+    t.integer  "score_round26",          :default => 0
+    t.integer  "score_round27",          :default => 0
+    t.integer  "score_round28",          :default => 0
+    t.integer  "score_round29",          :default => 0
+    t.integer  "score_round30",          :default => 0
   end
 
 end

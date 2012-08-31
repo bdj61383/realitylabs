@@ -56,16 +56,16 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def self.add_column
-		@round = Contestant.find_by_id(1).round 
-		system("rails generate migration AddUserColumnRound#{@round}")
-		filename = Dir.entries("db/migrate").select {|x| x =~ /_add_user_column_round#{@round}/}.to_s
-		file = File.open("db/migrate/#{filename}", "w+") 
-		file.write("class AddUserColumnRound#{@round} < ActiveRecord::Migration\n  def up\n    add_column :users, :score_round#{@round}, :integer\n  end\n  def down\n    remove_column :users, :score_round#{@round}\n  end\nend")
-		file.close
-		system("rake db:migrate")
-		self.reset_column_information
-	end
+	# def self.add_column
+	# 	@round = Contestant.find_by_id(1).round 
+	# 	system("rails generate migration AddUserColumnRound#{@round}")
+	# 	filename = Dir.entries("db/migrate").select {|x| x =~ /_add_user_column_round#{@round}/}.to_s
+	# 	file = File.open("db/migrate/#{filename}", "w+") 
+	# 	file.write("class AddUserColumnRound#{@round} < ActiveRecord::Migration\n  def up\n    add_column :users, :score_round#{@round}, :integer\n  end\n  def down\n    remove_column :users, :score_round#{@round}\n  end\nend")
+	# 	file.close
+	# 	system("rake db:migrate")
+	# 	self.reset_column_information
+	# end
 
 	def send_password_reset
 	  generate_token(:password_reset_token)
