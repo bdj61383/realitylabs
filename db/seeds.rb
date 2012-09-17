@@ -5,6 +5,8 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
+#!/bin/env ruby
+# encoding: utf-8
 
 Contestant.create!(:name => "Abi-Maria Gomes", :survive => 1, :immunity => 0, :merger => 0, :final_three => 0, :winner => 0, :round => 0,
 :nickname => "Abi-Maria", :tribe => "Tandang", :age=> 32, :hometown => "Los Angeles, CA", :occupation => "Business Student", :preseason_rank => 5, :labwork => "Thinks she’s smarter, more charming and more athletic than she’ll end up being, but lands on a nice tribe where her energy and education may fit nicely. Once she’s in a groove, she could go far."
