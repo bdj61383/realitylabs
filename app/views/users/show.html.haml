@@ -121,10 +121,10 @@
             Winner
             %span.description#winner_description Did this contestant win the show?  
           %td= @league.scoring_system[:winner]
-    %p= pluralize
+    %p Above you'll find the scoring system that your league is using to determine how points are awarded after each tribal council. This point system was determined by your <em>League Commissioner</em> and is set in stone after the draft takes place. Up until that time, the <em>Commissioner</em>2128 can make changes to the scoring system.
   %div#lc_panel.lc_panel
     %h1 Commissioner Tools
-    %p This is the League Commissioner Control Panel.  From here, you can set up the details of your league and your draft.  These details can be changed at any time up until the start of your draft.  After that, they are set in stone, so please make sure you've set everything up exactly how you want it.  When you have set everything up and assembled the members of your league, press 'Start Draft' below to begin the draft!
+    %p This is the League Commissioner Control Panel. Set your league’s scoring system here. These details can be changed at any time up until the start of your draft, but are set in stone thereafter. When you set everything to your liking and arranged a time for your league to convene for the draft on site, press 'Start Draft' below to begin!
     %h2.rules_header#scoring_sys_head Scoring System
     %div#scoring_sys_body.hide 
       =form_tag("/leagues/#{@league.id}", :method =>"put", :id => "score_sys_form", :remote => true) do
@@ -430,8 +430,9 @@
     $('#winner_subheader').on('mouseout', function(){
       $('#winner_description').css('display', 'none')
     });
+    
+    // This controls the hover behavior for displaying the cast bios.
+    $('.cast_pics img').on('mouseover', function(){var selector = "#" + $(this).parent().attr('id') +"_bio"; $(selector).slideDown()})
+    $('.cast_pics img').on('mouseout', function(){var selector = "#" + $(this).parent().attr('id') +"_bio"; $(selector).slideUp()})
 
   });
-
-
-

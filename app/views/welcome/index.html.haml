@@ -19,40 +19,52 @@
   %button.hero_button Start Now!
 %div.bottom_content 
   %div.about
-    %h1 Outwit - Outplay - Outlast
-    %p Welcome to Reality Lab's Survivor Fantasy Game!  The game takes all the aspects of fantasy sports leagues that you love and brings them to the world of reality tv.  Start a league and invite your friends.  Pick Survivor contenders to be on your team through a realtime draft with other folks in your league.  Earn points based on how your team members perform each week.  Whoever has the most points at the end of the season wins!  
+    %h1 OutPrep - OutDraft - OutWatch
+    %p 
+      Welcome to 
+      %em Reality Lab's 
+      Survivor Fantasy Game! The game takes the basic elements of your favorite fantasy sports leagues and brings them to the world of Survivor. It’s simple: start a league and invite your friends; pick Survivor contestants through a real-time draft with other members in your league; earn points based on how your Survivors perform each week. Whoever has the most points at the end of the season wins! 
   %div.rules
     %h1 How to Play
     %h2#setup_head.rules_header Setting Up
     %div#setup_body.hide
       %p 
-        This game works pretty much like other fantasy sports games you may have played, including a realtime draft.  New users have one of two options.  You can either 
+        New users have one of two options. You can either 
         =link_to 'start a new league', new_league_path
-        and become its League Commissioner or you can 
+        and become its 
+        %em League Commissioner 
+        or you can 
         =link_to 'join a league', new_user_path 
         that has been started by one of your friends.
         %h3.rules_header#start_league_head Starting a League
-        %p.hide#start_league_body Starting a league from scratch and becomming its League Commissioner gives you the AWESOME responsibility of inviting your friends to join and setting up the rules your league will play by.  You will also be responsible for starting the draft and letting the members of your league know when the draft will take place.
+        %p.hide#start_league_body 
+          Starting a league from scratch and becoming its 
+          %em League Commissioner 
+          gives you three responsibilities: (1) inviting your friends to join, (2) setting a draft time for everyone to convene on 
+          %em Reality-Labs.com
+          , and (3) setting your league’s scoring system. 
         %h3.rules_header#join_league_head Joining a League
-        %p.hide#join_league_body If you were invited to join a league by a friend and given the league's name and confirmation code, this option is for you.  Your League Commissioner will let you know when the draft for your league will take place and then you can pick the members of your team!
+        %p.hide#join_league_body 
+          If you were invited to join a league, your 
+          %em League Commissioner 
+          will supply you with a league name and a confirmation code. He or she will also arrange a time for you and other league members to sign in to Reality-Labs.com to draft your team of Survivors. 
     %h2#draft_head.rules_header The Draft
     %div#draft_body.hide
-      %p The draft is a turn-based system to allow league members to choose Survivor contestants to be on their team.  The League Commissioner (LC) is responsible for letting other league members know when the draft will take place, making sure they are all logged in at that time, setting up and starting the draft.  Before starting the draft, the LC will be prompted to establish certain rules of the league, such as how many Survivor contestants league members will have on their team and how the scoring system will work (see below).  Other things, like the order of the draft, are determined randomly.  <b>A draft can only take place once per league, is non-reversible and cannot be abandoned midway through, so it is very important that the LC sets everything up correctly!</b>
-      %p Once the LC begins the draft, all league members who are currently signed-in will get a pop-up message on their browser letting them know that the draft is starting.  This will automatically direct them to the draft page.  From there, the order by which members will pick contestants for their team is visible.  You will see a message at the top of the screen when it is your turn, as well as a timer letting you know how much time is left for your turn.  Every member has 2 minutes to make a selection each turn.  
-      %p After you make a selection, your pick will appear in a chart showing the status of the draft.  The draft will then continue to the next person in the draft order and that league member will make their selection.  This continues until everyone has formed their teams.  League members who are not signed-in or who take longer than 2 minutes to make a selection will have a Survivor contestant randomly assigned to their team.  At the end of the draft, everyone will be redirected back to their member page.  
+      %p The draft is a turn-based, “snake” system to allow league members to choose Survivor contestants to be on their team. A snake draft allows the league member who chose last in the first round to choose first in the second round, eliminating the unfair advantage inherit in winning the first pick. The <em>League Commissioner</em> (LC) is responsible for designating a time for league members to convene online, and for starting the draft. Before starting the draft, the LC will be prompted to establish the number of survivor contestants per team and set the league’s scoring system. The order in which league members draft is determined randomly.   <b>A draft can only take place once per league, is non-reversible and cannot be abandoned midway through, so it is very important that the LC sets everything up correctly!</b>
+      %p Once the LC begins the draft, all league members currently signed-in will get a pop-up message on their browser letting them know that the draft is starting. This will automatically direct them to the draft page. From there, the order by which members will pick contestants for their team is visible. Members will see a message at the top of the screen when it is your turn, as well as a timer letting you know how much time is left for your turn.  <b>Every member has 2 minutes to make a selection each turn.</b> 
+      %p After you make a selection, your pick will appear in a chart showing the status of the draft. The draft will then continue to the next person in the draft order and that league member will make their selection. This continues until everyone has formed their teams.  <b>League members who are not signed-in or who take longer than 2 minutes to make a selection will have a Survivor contestant “auto-drafted” at random by Reality-Labs.</b>  At the end of the draft, everyone will be redirected back to their member page.
     %h2#score_head.rules_header Regular Gameplay
     %div#score_body.hide
-      %p Once the draft is complete and everyone has their team, regular gameplay commences.  After every elimination round on the show Survivor, the results will be automatically used to give every league member a score for that week, based on the scoring system devised by the League Commissioner.  An elimination round is defined as every time someone gets voted off, to handle those rare cases where more than one person is voted off during a single episode.  
+      %p Once the draft is complete, regular gameplay commences. After every elimination round on the show Survivor, the results will be automatically used to give every league member a score for that week, based on the scoring system devised by the League Commissioner. An elimination round is defined as every time someone gets voted off, to handle those rare cases where more than one person is voted off during a single episode. 
       %h3.rules_header#score_sys_head Scoring System
       %div.hide#score_sys_body 
-        %p Each member of a user's team is assigned points based on the following criteria:
+        %p Each member of a user's team is assigned points based on all or some of the following criteria, depending on the scoring system set by the <em>League Commissioner</em>. The default setting for each scoring category is one point.
         %ul
-          %li <b>Survival (1-5 points):</b>  Did this contestant survive through the episode?  
-          %li <b>Immunity (1-5 points):</b>  Did this contestant win an immunith challenge this episode?  
-          %li <b>Merger (1-5 points):</b>  Did this contestant survive through the merger of the tribes into one tribe?  
-          %li <b>Final Three (1-5 points):</b>  Did this contestant survive to become one of the final 3 contestants?  
-          %li <b>Winner (1-10 points):</b>  Did this contestant win the show?  
-        %p The number of points given for each criteria is determined by the League Commissioner, with the default value for each being 1 point. Survival and Immunity points will be awarded whenever applicable, whereas the points for Merger, Final Three, and Winner will only be awarded once per season of Survivor.    
+          %li <b>Survival (1-5 points):</b>  Did this contestant survive through tribal council?  
+          %li <b>Immunity (1-5 points):</b>  Did this contestant win an individual immunity challenge? 
+          %li <b>Merger (1-5 points):</b>  Did this contestant survive through the merge into one tribe?
+          %li <b>Final Three (1-5 points):</b>  Did this contestant survive to become one of the final 3 contestants?
+          %li <b>Winner (1-10 points):</b>  Did this contestant win the title of sole survivor?    
   %div.cast  
     %h1 Meet the Cast
     %p 
@@ -184,6 +196,12 @@
       }
     })
 
-
+    // This controls the hover behavior for displaying the cast bios.
+    $('.cast_pics img').on('mouseover', function(){var selector = "#" + $(this).parent().attr('id') +"_bio"; $(selector).slideDown()})
+    $('.cast_pics img').on('mouseout', function(){var selector = "#" + $(this).parent().attr('id') +"_bio"; $(selector).slideUp()})
+    // This adds a special class on to the last bios in all three columns, so that they can be repositioned.
+    / $('.left_col .cast_bio:last').addClass('last_bio')
+    / $('.center_col .cast_bio:last').addClass('last_bio')
+    / $('.right_col .cast_bio:last').addClass('last_bio')
 
   });

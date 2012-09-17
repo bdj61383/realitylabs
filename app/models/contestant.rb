@@ -1,6 +1,6 @@
 require 'rake'
 class Contestant < ActiveRecord::Base
-	attr_accessible :name, :survive, :immunity, :merger, :final_three, :winner, :round
+	attr_accessible :name, :survive, :immunity, :merger, :final_three, :winner, :round, :occupation, :tribe, :hometown, :labwork, :nickname, :preseason_rank, :age
 
 	def self.rake_db_copy
 	    # load File.join(Rails.root, 'lib', 'tasks', 'tempfile.rake')

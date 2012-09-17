@@ -30,11 +30,13 @@ module UsersHelper
 		capture_haml do
 			if @user.lc == true && @user.first_visit == true
 				haml_tag :div, :class => 'tutorial' do
-					haml_tag :h2, "Welcome!"
-					haml_tag :p, "Congratulations on starting a new league.  As the Commissioner for your new league, #{@league.name}, you have many awesome and frightful responsibilities ahead of you..."
-					haml_tag :p, "Nah, just kidding, it's actually really easy to set up your league.  Just follow the instructions by clicking on 'Commissioner Tools' below."
+					haml_tag :h2, "Welcome!"					
+					haml_tag :p, "Congratulations on starting a new league! As the" 
+					haml_tag :em, "Commissioner" 
+					haml_concat " for your new league, you have a couple of responsibilities to get your league off and running."  
+					haml_tag :b, "Just follow the instructions by clicking on 'Commissioner Tools' below."
 					haml_tag :p do
-						haml_concat link_to "Oh, and click here if you don't want to this box every time you log in.", first_visit_path(@user), :remote => true
+						haml_concat link_to "Click here if you don't want to see this box every time you log in.", first_visit_path(@user), :remote => true
 						haml_tag :p, :id => 'first_visit_response', :class => 'first_visit_response'
 					end
 				end
@@ -73,23 +75,38 @@ module UsersHelper
 									haml_tag :td do
 										name = "#{team[(i*3)]}"
 										filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-										haml_concat image_tag filename
-										haml_tag :h3, name.gsub(/( \S*)/, "")
+										if Contestant.find_by_name(name).survive == false
+											haml_concat image_tag filename, :class => 'eliminated'								
+											haml_tag :h3, name.gsub(/( \S*)/, "")
+										else
+											haml_concat image_tag filename
+											haml_tag :h3, name.gsub(/( \S*)/, "")
+										end
 									end
 									haml_tag :td do
 										if team[(i*3)+1] != nil
 											name = "#{team[(i*3)+1]}"
 											filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-											haml_concat image_tag filename
-											haml_tag :h3, name.gsub(/( \S*)/, "")
+											if Contestant.find_by_name(name).survive == false
+												haml_concat image_tag filename, :class => 'eliminated'								
+												haml_tag :h3, name.gsub(/( \S*)/, "")
+											else
+												haml_concat image_tag filename
+												haml_tag :h3, name.gsub(/( \S*)/, "")
+											end
 										end
 									end
 									haml_tag :td do
 										if team[(i*3)+2] != nil
 											name = "#{team[(i*3)+2]}"
 											filename = "contestants/" + name.gsub(" ", "_")+".jpg"
-											haml_concat image_tag filename
-											haml_tag :h3, name.gsub(/( \S*)/, "")
+											if Contestant.find_by_name(name).survive == false
+												haml_concat image_tag filename, :class => 'eliminated'								
+												haml_tag :h3, name.gsub(/( \S*)/, "")
+											else
+												haml_concat image_tag filename
+												haml_tag :h3, name.gsub(/( \S*)/, "")
+											end
 										end
 									end
 								end
@@ -120,8 +137,8 @@ module UsersHelper
 							name = "#{team[(i*3)]}"
 							filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 							if Contestant.find_by_name(name).survive == false
-								haml_concat image_tag filename, :class => 'eliminated'
-								haml_concat image_tag 'x.png', :class => 'x'
+								haml_concat image_tag 'grey.png', :class => 'grey'
+								haml_concat image_tag filename, :class => 'eliminated'															
 								haml_tag :h3, name.gsub(/( \S*)/, "")
 							else
 								haml_concat image_tag filename
@@ -133,8 +150,8 @@ module UsersHelper
 								name = "#{team[(i*3)+1]}"
 								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 								if Contestant.find_by_name(name).survive == false
-									haml_concat image_tag filename, :class => 'eliminated'
-									haml_concat image_tag 'x.png', :class => 'x'
+									haml_concat image_tag 'grey.png', :class => 'grey'
+									haml_concat image_tag filename, :class => 'eliminated'																		
 									haml_tag :h3, name.gsub(/( \S*)/, "")
 								else
 									haml_concat image_tag filename
@@ -147,8 +164,8 @@ module UsersHelper
 								name = "#{team[(i*3)+2]}"
 								filename = "contestants/" + name.gsub(" ", "_")+".jpg"
 								if Contestant.find_by_name(name).survive == false
-									haml_concat image_tag filename, :class => 'eliminated'
-									haml_concat image_tag 'x.png', :class => 'x'
+									haml_concat image_tag 'grey.png', :class => 'grey'
+									haml_concat image_tag filename, :class => 'eliminated'									
 									haml_tag :h3, name.gsub(/( \S*)/, "")
 								else
 									haml_concat image_tag filename
@@ -172,13 +189,13 @@ module UsersHelper
 		remaining.inject{|sum,x| sum + x }
 
 	end
-	def pluralize
-		if @league.scoring_system[:survive].to_i > 1
-			return "Above you'll find the scoring system that your league, #{@league.name}, is using to determine how points are awarded after each elimination round.  For example, #{@league.scoring_system[:survive]} points are awarded for each contestant that survives an elimination round.  If you have 3 contestants on your team and they all survive that elimination round, you'd receive #{@league.scoring_system[:survive].to_i * 3} points.  This point system was determined by your League Commissioner, #{@lc.username}, and is set in stone after the draft takes place.  Up until that time, #{@lc.username} can make changes to the scoring system."
-		else
-			return "Above you'll find the scoring system that your league, #{@league.name}, is using to determine how points are awarded after each elimination round.  For example, #{@league.scoring_system[:survive]} point is awarded for each contestant that survives an elimination round.  If you have 3 contestants on your team and they all survive that elimination round, you'd receive #{@league.scoring_system[:survive].to_i * 3} points.  This point system was determined by your League Commissioner, #{@lc.username}, and is set in stone after the draft takes place.  Up until that time, #{@lc.username} can make changes to the scoring system."
-		end
-	end
+	# def pluralize
+	# 	if @league.scoring_system[:survive].to_i > 1
+	# 		return "Above you'll find the scoring system that your league, #{@league.name}, is using to determine how points are awarded after each elimination round.  For example, #{@league.scoring_system[:survive]} points are awarded for each contestant that survives an elimination round.  If you have 3 contestants on your team and they all survive that elimination round, you'd receive #{@league.scoring_system[:survive].to_i * 3} points.  This point system was determined by your League Commissioner, #{@lc.username}, and is set in stone after the draft takes place.  Up until that time, #{@lc.username} can make changes to the scoring system."
+	# 	else
+	# 		return "Above you'll find the scoring system that your league, #{@league.name}, is using to determine how points are awarded after each elimination round.  For example, #{@league.scoring_system[:survive]} point is awarded for each contestant that survives an elimination round.  If you have 3 contestants on your team and they all survive that elimination round, you'd receive #{@league.scoring_system[:survive].to_i * 3} points.  This point system was determined by your League Commissioner, #{@lc.username}, and is set in stone after the draft takes place.  Up until that time, #{@lc.username} can make changes to the scoring system."
+	# 	end
+	# end
 	def meet_the_cast
 		capture_haml do
 			@contestants.each do |member|
@@ -189,6 +206,33 @@ module UsersHelper
 							haml_concat image_tag filename
 							haml_tag :h4, member
 						end
+						haml_tag :div, :class => 'cast_bio', :id => (member.gsub(" ", "_") + "_bio") do
+							contestant = Contestant.find_by_name(member)
+							haml_tag :p do
+								haml_tag :strong, contestant.nickname
+								haml_tag :br
+								haml_tag :b, "Tribe"
+								haml_tag :span, contestant.tribe
+								haml_tag :br
+								haml_tag :b, "Age"
+								haml_tag :span, contestant.age
+								haml_tag :br
+								haml_tag :b, "Hometown"
+								haml_tag :span, contestant.hometown
+								haml_tag :br
+								haml_tag :b, "Occupation"
+								haml_tag :span, contestant.occupation
+								haml_tag :br
+								haml_tag :b, "Reality Labs Pre-Season Rank"
+								haml_tag :span, contestant.preseason_rank
+								haml_tag :br
+								haml_tag :b, "The Lab Work"
+								haml_tag :span, :class => 'bio_float' do 
+									haml_concat contestant.labwork
+								end
+								haml_tag :br
+							end
+						end
 					end
 				elsif (@contestants.index(member) % 3) == 1
 					haml_tag :div, :class => 'center_col' do
@@ -197,6 +241,33 @@ module UsersHelper
 							haml_concat image_tag filename
 							haml_tag :h4, member
 						end
+						haml_tag :div, :class => 'cast_bio', :id => (member.gsub(" ", "_") + "_bio") do
+							contestant = Contestant.find_by_name(member)
+							haml_tag :p do
+								haml_tag :strong, contestant.nickname
+								haml_tag :br
+								haml_tag :b, "Tribe"
+								haml_tag :span, contestant.tribe
+								haml_tag :br
+								haml_tag :b, "Age"
+								haml_tag :span, contestant.age
+								haml_tag :br
+								haml_tag :b, "Hometown"
+								haml_tag :span, contestant.hometown
+								haml_tag :br
+								haml_tag :b, "Occupation"
+								haml_tag :span, contestant.occupation
+								haml_tag :br
+								haml_tag :b, "Reality Labs Pre-Season Rank"
+								haml_tag :span, contestant.preseason_rank
+								haml_tag :br
+								haml_tag :b, "The Lab Work"
+								haml_tag :span, :class => 'bio_float' do 
+									haml_concat contestant.labwork
+								end
+								haml_tag :br
+							end
+						end
 					end
 				else
 					haml_tag :div, :class => 'right_col' do
@@ -204,6 +275,33 @@ module UsersHelper
 							filename = "contestants/" + member.gsub(" ", "_") + ".jpg"
 							haml_concat image_tag filename
 							haml_tag :h4, member
+						end
+						haml_tag :div, :class => 'cast_bio', :id => (member.gsub(" ", "_") + "_bio") do
+							contestant = Contestant.find_by_name(member)
+							haml_tag :p do
+								haml_tag :strong, contestant.nickname
+								haml_tag :br
+								haml_tag :b, "Tribe"
+								haml_tag :span, contestant.tribe
+								haml_tag :br
+								haml_tag :b, "Age"
+								haml_tag :span, contestant.age
+								haml_tag :br
+								haml_tag :b, "Hometown"
+								haml_tag :span, contestant.hometown
+								haml_tag :br
+								haml_tag :b, "Occupation"
+								haml_tag :span, contestant.occupation
+								haml_tag :br
+								haml_tag :b, "Reality Labs Pre-Season Rank"
+								haml_tag :span, contestant.preseason_rank
+								haml_tag :br
+								haml_tag :b, "The Lab Work"
+								haml_tag :span, :class => 'bio_float' do 
+									haml_concat contestant.labwork
+								end
+								haml_tag :br
+							end
 						end
 					end
 				end
